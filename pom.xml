@@ -11,13 +11,13 @@
 
     <properties>
         <!--<skipTests>true</skipTests>-->
-        <maven.compiler.target>1.8</maven.compiler.target>
-        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <maven.compiler.source>17</maven.compiler.source>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <mybatis-starter.version>2.1.4</mybatis-starter.version>
-        <spring-boot.version>2.3.4.RELEASE</spring-boot.version>
+        <mybatis-starter.version>3.0.1</mybatis-starter.version>
+        <spring-boot.version>3.0.4</spring-boot.version>
         <cola.components.version>4.0.0</cola.components.version>
     </properties>
 
@@ -95,6 +95,11 @@
                 <artifactId>mybatis-spring-boot-starter</artifactId>
                 <version>${mybatis-starter.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.mysql</groupId>
+                <artifactId>mysql-connector-j</artifactId>
+                <version>8.0.32</version>
+            </dependency>
             <!--Spring Boot End-->
             <!--Validation API-->
             <dependency>
@@ -120,25 +125,9 @@
             <!--Validation API End -->
             <!-- Misc -->
             <dependency>
-                <groupId>org.projectlombok</groupId>
-                <artifactId>lombok</artifactId>
-                <version>1.18.16</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.commons</groupId>
-                <artifactId>commons-lang3</artifactId>
-                <version>3.11</version>
-            </dependency>
-            <dependency>
                 <groupId>com.alibaba</groupId>
                 <artifactId>fastjson</artifactId>
-                <version>1.2.73</version>
-            </dependency>
-            <dependency>
-                <groupId>junit</groupId>
-                <artifactId>junit</artifactId>
-                <version>4.13.1</version>
-                <scope>test</scope>
+                <version>1.2.83</version>
             </dependency>
             <!-- Misc End -->
         </dependencies>

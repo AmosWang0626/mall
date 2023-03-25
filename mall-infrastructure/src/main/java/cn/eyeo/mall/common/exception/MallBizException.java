@@ -1,7 +1,9 @@
 package cn.eyeo.mall.common.exception;
 
+import cn.eyeo.mall.client.common.BaseErrorCode;
 import com.alibaba.cola.exception.BizException;
-import cn.eyeo.mall.dto.data.ErrorCode;
+
+import java.io.Serial;
 
 /**
  * 业务异常
@@ -11,9 +13,10 @@ import cn.eyeo.mall.dto.data.ErrorCode;
  */
 public class MallBizException extends BizException {
 
+    @Serial
     private static final long serialVersionUID = -2776433598172531409L;
 
-    public MallBizException(ErrorCode errorCode) {
+    public MallBizException(BaseErrorCode errorCode) {
         super(errorCode.getErrCode(), errorCode.getErrDesc());
     }
 }

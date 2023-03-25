@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.eyeo.mall.gateway.impl.org.database.mapper.UserPermissionMapper">
+    <resultMap id="BaseResultMap" type="cn.eyeo.mall.gateway.impl.org.database.dataobject.UserPermissionDO">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="permission_id" jdbcType="BIGINT" property="permissionId"/>
+        <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate"/>
+    </resultMap>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from org_user_permission
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" parameterType="cn.eyeo.mall.gateway.impl.org.database.dataobject.UserPermissionDO">
+        insert into org_user_permission (id, user_id, permission_id,
+        gmt_create)
+        values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{permissionId,jdbcType=BIGINT},
+        #{gmtCreate,jdbcType=TIMESTAMP})
+    </insert>
+    <update id="updateByPrimaryKey" parameterType="cn.eyeo.mall.gateway.impl.org.database.dataobject.UserPermissionDO">
+        update org_user_permission
+        set user_id = #{userId,jdbcType=BIGINT},
+        permission_id = #{permissionId,jdbcType=BIGINT},
+        gmt_create = #{gmtCreate,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select id, user_id, permission_id, gmt_create
+        from org_user_permission
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select id, user_id, permission_id, gmt_create
+        from org_user_permission
+    </select>
+</mapper>

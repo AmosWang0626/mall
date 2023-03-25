@@ -1,28 +1,36 @@
-package cn.eyeo.mall.gateway.impl.member.database.dataobject;
+package cn.eyeo.mall.client.member.dto;
 
-import cn.eyeo.mall.common.api.BaseDO;
+import com.alibaba.cola.dto.Command;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.NotBlank;
+import java.io.Serial;
 import java.time.LocalDate;
 
 /**
- * 用户表
+ * 新增用户请求
  *
- * @author amos.wang
- * @date 2023-03-25 20:17
+ * @author <a href="mailto:daoyuan0626@gmail.com">amos.wang</a>
+ * @date 2021/1/8
  */
 @Getter
 @Setter
-public class MemberDO extends BaseDO {
+public class MemberRegisterCmd extends Command {
+
+    @Serial
+    private static final long serialVersionUID = -8452719903711385799L;
+
     /**
      * 用户名
      */
+    @NotBlank
     private String username;
 
     /**
      * 密码
      */
+    @NotBlank
     private String password;
 
     /**
@@ -55,8 +63,4 @@ public class MemberDO extends BaseDO {
      */
     private LocalDate birthday;
 
-    /**
-     * 用户状态：0-未激活，1-激活，2-禁用
-     */
-    private Integer status;
 }

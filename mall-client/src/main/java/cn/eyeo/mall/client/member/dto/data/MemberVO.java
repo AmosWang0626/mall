@@ -1,29 +1,34 @@
-package cn.eyeo.mall.gateway.impl.member.database.dataobject;
+package cn.eyeo.mall.client.member.dto.data;
 
-import cn.eyeo.mall.common.api.BaseDO;
+import cn.eyeo.mall.client.common.BaseVO;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serial;
 import java.time.LocalDate;
 
 /**
- * 用户表
+ * 用户VO
  *
- * @author amos.wang
- * @date 2023-03-25 20:17
+ * @author <a href="mailto:daoyuan0626@gmail.com">amos.wang</a>
+ * @date 2023/3/25
  */
 @Getter
 @Setter
-public class MemberDO extends BaseDO {
+public class MemberVO extends BaseVO {
+
+    @Serial
+    private static final long serialVersionUID = -6277152970777401441L;
+
+    /**
+     * 用户ID
+     */
+    private Long userId;
+
     /**
      * 用户名
      */
     private String username;
-
-    /**
-     * 密码
-     */
-    private String password;
 
     /**
      * 昵称
@@ -55,8 +60,4 @@ public class MemberDO extends BaseDO {
      */
     private LocalDate birthday;
 
-    /**
-     * 用户状态：0-未激活，1-激活，2-禁用
-     */
-    private Integer status;
 }
