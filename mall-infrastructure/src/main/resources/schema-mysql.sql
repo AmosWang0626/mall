@@ -75,10 +75,10 @@ CREATE TABLE `order_item` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='订单商品表';
 
 -- ----------------------------
--- Table structure for orders
+-- Table structure for order_info
 -- ----------------------------
-DROP TABLE IF EXISTS `orders`;
-CREATE TABLE `orders` (
+DROP TABLE IF EXISTS `order_info`;
+CREATE TABLE `order_info` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '订单ID',
   `member_id` bigint(20) NOT NULL COMMENT '用户ID',
   `recipient_name` varchar(50) NOT NULL COMMENT '收货人姓名',

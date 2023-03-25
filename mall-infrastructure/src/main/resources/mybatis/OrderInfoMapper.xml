@@ -17,11 +17,11 @@
         <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified"/>
     </resultMap>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-        delete from orders
+        delete from order_info
         where id = #{id,jdbcType=BIGINT}
     </delete>
     <insert id="insert" parameterType="cn.eyeo.mall.gateway.impl.order.database.dataobject.OrderInfoDO">
-        insert into orders (id, member_id, recipient_name,
+        insert into order_info (id, member_id, recipient_name,
         recipient_phone, recipient_address, payment_method,
         total_price, shipping_fee, order_price,
         order_time, order_status, gmt_create,
@@ -33,7 +33,7 @@
         #{gmtModified,jdbcType=TIMESTAMP})
     </insert>
     <update id="updateByPrimaryKey" parameterType="cn.eyeo.mall.gateway.impl.order.database.dataobject.OrderInfoDO">
-        update orders
+        update order_info
         set member_id = #{memberId,jdbcType=BIGINT},
         recipient_name = #{recipientName,jdbcType=VARCHAR},
         recipient_phone = #{recipientPhone,jdbcType=VARCHAR},
@@ -51,12 +51,12 @@
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select id, member_id, recipient_name, recipient_phone, recipient_address, payment_method,
         total_price, shipping_fee, order_price, order_time, order_status, gmt_create, gmt_modified
-        from orders
+        from order_info
         where id = #{id,jdbcType=BIGINT}
     </select>
     <select id="selectAll" resultMap="BaseResultMap">
         select id, member_id, recipient_name, recipient_phone, recipient_address, payment_method,
         total_price, shipping_fee, order_price, order_time, order_status, gmt_create, gmt_modified
-        from orders
+        from order_info
     </select>
 </mapper>
