@@ -1,12 +1,12 @@
-# think
+# Mall
 
 > 天下功夫，唯快不破
 
 ## 技术栈
 
 - Spring | MyBatis
-- dev环境使用h2, test环境使用mysql
-- dev环境会自动初始化数据库、数据库表；test环境会自动初始化数据库表，需要自己准备数据库
+- MySQL
+- dev/test环境会自动初始化数据库表，需要自己准备数据库
 
 ## 小技巧
 

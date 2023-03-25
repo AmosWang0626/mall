@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.eyeo.mall.gateway.impl.member.database.mapper.MemberCartDOMapper">
+    <resultMap id="BaseResultMap" type="cn.eyeo.mall.gateway.impl.member.database.dataobject.MemberCartDO">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="member_id" jdbcType="BIGINT" property="memberId"/>
+        <result column="product_id" jdbcType="BIGINT" property="productId"/>
+        <result column="quantity" jdbcType="INTEGER" property="quantity"/>
+        <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate"/>
+        <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified"/>
+    </resultMap>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from member_cart
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" parameterType="cn.eyeo.mall.gateway.impl.member.database.dataobject.MemberCartDO">
+        insert into member_cart (id, member_id, product_id,
+        quantity, gmt_create, gmt_modified
+        )
+        values (#{id,jdbcType=BIGINT}, #{memberId,jdbcType=BIGINT}, #{productId,jdbcType=BIGINT},
+        #{quantity,jdbcType=INTEGER}, #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+        )
+    </insert>
+    <update id="updateByPrimaryKey" parameterType="cn.eyeo.mall.gateway.impl.member.database.dataobject.MemberCartDO">
+        update member_cart
+        set member_id = #{memberId,jdbcType=BIGINT},
+        product_id = #{productId,jdbcType=BIGINT},
+        quantity = #{quantity,jdbcType=INTEGER},
+        gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select id, member_id, product_id, quantity, gmt_create, gmt_modified
+        from member_cart
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select id, member_id, product_id, quantity, gmt_create, gmt_modified
+        from member_cart
+    </select>
+</mapper>
