@@ -3,7 +3,7 @@ package cn.eyeo.mall.member;
 import cn.eyeo.mall.client.member.dto.MemberRegisterCmd;
 import org.junit.Test;
 
-public class MemberValidatorTest {
+public class CategoryValidatorTest {
 
     @Test
     public void testValidation() {

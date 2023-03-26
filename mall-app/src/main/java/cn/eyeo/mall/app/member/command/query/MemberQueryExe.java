@@ -23,7 +23,7 @@ public class MemberQueryExe {
     @Autowired
     private MemberMapper memberMapper;
 
-    public MemberVO execute(Long id) {
+    public MemberVO getById(Long id) {
         MemberDO memberDO = memberMapper.selectByPrimaryKey(id);
         if (Objects.isNull(memberDO)) {
             throw new MallBizException(MemberErrorCode.B_MEMBER_UNDEFINED);

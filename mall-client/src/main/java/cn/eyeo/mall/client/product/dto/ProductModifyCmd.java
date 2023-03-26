@@ -1,20 +1,30 @@
-package cn.eyeo.mall.gateway.impl.product.database.dataobject;
+package cn.eyeo.mall.client.product.dto;
 
-import cn.eyeo.mall.common.api.BaseDO;
+import com.alibaba.cola.dto.Command;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serial;
 import java.math.BigDecimal;
 
 /**
- * 商品表
+ * 商品修改
  *
- * @author amos.wang
- * @date 2023-03-25 20:17
+ * @author <a href="mailto:daoyuan0626@gmail.com">amos.wang</a>
+ * @date 2023/3/26
  */
 @Getter
 @Setter
-public class ProductDO extends BaseDO {
+public class ProductModifyCmd extends Command {
+
+    @Serial
+    private static final long serialVersionUID = 8296704249430382715L;
+
+    /**
+     * 商品ID
+     */
+    private Long id;
+
     /**
      * 商品名称
      */
@@ -36,11 +46,6 @@ public class ProductDO extends BaseDO {
     private Long stock;
 
     /**
-     * 商品状态：0-下架，1-上架
-     */
-    private Integer status;
-
-    /**
      * 商品分类ID
      */
     private Long categoryId;
@@ -49,4 +54,5 @@ public class ProductDO extends BaseDO {
      * 商品描述
      */
     private String description;
+
 }

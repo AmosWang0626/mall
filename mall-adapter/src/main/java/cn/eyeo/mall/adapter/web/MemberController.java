@@ -37,9 +37,9 @@ public class MemberController {
         return Response.buildSuccess();
     }
 
-    @GetMapping(value = "getUserInfo/{userId}")
+    @GetMapping(value = "getMemberInfo/{userId}")
     public Response login(@PathVariable("userId") Long userId) {
-        return iMemberService.getUserInfo(userId);
+        return iMemberService.getMemberInfo(userId);
     }
 
 }

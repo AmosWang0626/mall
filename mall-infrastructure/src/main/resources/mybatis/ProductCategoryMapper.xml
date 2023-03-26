@@ -16,7 +16,8 @@
         delete from product_category
         where id = #{id,jdbcType=BIGINT}
     </delete>
-    <insert id="insert" parameterType="cn.eyeo.mall.gateway.impl.product.database.dataobject.ProductCategoryDO">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id"
+            parameterType="cn.eyeo.mall.gateway.impl.product.database.dataobject.ProductCategoryDO">
         insert into product_category (id, name, parent_id,
         level, status, is_leaf, description,
         gmt_create, gmt_modified)
@@ -30,11 +31,13 @@
         set name = #{name,jdbcType=VARCHAR},
         parent_id = #{parentId,jdbcType=BIGINT},
         level = #{level,jdbcType=INTEGER},
-        status = #{status,jdbcType=TINYINT},
-        is_leaf = #{isLeaf,jdbcType=BIT},
         description = #{description,jdbcType=VARCHAR},
-        gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateIsLeafById">
+        update product_category
+        set is_leaf = #{isLeaf,jdbcType=BIT},
         where id = #{id,jdbcType=BIGINT}
     </update>
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -45,5 +48,10 @@
     <select id="selectAll" resultMap="BaseResultMap">
         select id, name, parent_id, level, status, is_leaf, description, gmt_create, gmt_modified
         from product_category
+    </select>
+    <select id="countByParentId" resultType="java.lang.Integer">
+        select count(*)
+        from product_category
+        where parent_id = #{parentId,jdbcType=BIGINT}
     </select>
 </mapper>

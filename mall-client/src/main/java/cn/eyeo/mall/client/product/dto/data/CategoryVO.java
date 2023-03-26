@@ -1,18 +1,29 @@
-package cn.eyeo.mall.gateway.impl.product.database.dataobject;
+package cn.eyeo.mall.client.product.dto.data;
 
-import cn.eyeo.mall.common.api.BaseDO;
+import cn.eyeo.mall.client.common.BaseVO;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serial;
+
 /**
- * 商品分类表
+ * 商品分类
  *
- * @author amos.wang
- * @date 2023-03-25 20:17
+ * @author <a href="mailto:daoyuan0626@gmail.com">amos.wang</a>
+ * @date 2023/3/26
  */
 @Getter
 @Setter
-public class ProductCategoryDO extends BaseDO {
+public class CategoryVO extends BaseVO {
+
+    @Serial
+    private static final long serialVersionUID = -8274970076689811640L;
+
+    /**
+     * 分类ID
+     */
+    private Long id;
+
     /**
      * 分类名称
      */
@@ -42,4 +53,5 @@ public class ProductCategoryDO extends BaseDO {
      * 分类描述
      */
     private String description;
+
 }

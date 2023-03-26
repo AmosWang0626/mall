@@ -43,6 +43,6 @@ public interface IMemberService {
      * @param id 用户ID
      * @return 用户信息
      */
-    SingleResponse<MemberVO> getUserInfo(Long id);
+    SingleResponse<MemberVO> getMemberInfo(Long id);
 
 }

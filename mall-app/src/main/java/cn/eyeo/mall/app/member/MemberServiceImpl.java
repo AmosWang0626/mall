@@ -48,7 +48,7 @@ public class MemberServiceImpl implements IMemberService {
     }
 
     @Override
-    public SingleResponse<MemberVO> getUserInfo(Long id) {
-        return SingleResponse.of(memberQueryExe.execute(id));
+    public SingleResponse<MemberVO> getMemberInfo(Long id) {
+        return SingleResponse.of(memberQueryExe.getById(id));
     }
 }

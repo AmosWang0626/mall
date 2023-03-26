@@ -1,10 +1,10 @@
 package cn.eyeo.mall.app.member.validator;
 
 /**
- * UserValidator
+ * Validator
  *
  * @author <a href="mailto:daoyuan0626@gmail.com">amos.wang</a>
- * @date 2021/1/10
+ * @date 2023/3/24
  */
 public class MemberValidator {
 

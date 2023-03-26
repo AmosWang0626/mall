@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.eyeo.mall.gateway.impl.product.database.mapper.ProductInfoMapper">
+<mapper namespace="cn.eyeo.mall.gateway.impl.product.database.mapper.ProductMapper">
     <resultMap id="BaseResultMap" type="cn.eyeo.mall.gateway.impl.product.database.dataobject.ProductDO">
         <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
@@ -17,7 +17,8 @@
         delete from product
         where id = #{id,jdbcType=BIGINT}
     </delete>
-    <insert id="insert" parameterType="cn.eyeo.mall.gateway.impl.product.database.dataobject.ProductDO">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id"
+            parameterType="cn.eyeo.mall.gateway.impl.product.database.dataobject.ProductDO">
         insert into product (id, name, image,
         price, stock, status, category_id,
         description, gmt_create, gmt_modified
@@ -33,10 +34,14 @@
         image = #{image,jdbcType=VARCHAR},
         price = #{price,jdbcType=DECIMAL},
         stock = #{stock,jdbcType=BIGINT},
-        status = #{status,jdbcType=TINYINT},
         category_id = #{categoryId,jdbcType=BIGINT},
         description = #{description,jdbcType=VARCHAR},
-        gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateStatusById" parameterType="cn.eyeo.mall.gateway.impl.product.database.dataobject.ProductDO">
+        update product
+        set status = #{status,jdbcType=TINYINT},
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
         where id = #{id,jdbcType=BIGINT}
     </update>
@@ -51,4 +56,52 @@
         gmt_modified
         from product
     </select>
+    <select id="countByCategoryId" resultType="java.lang.Integer">
+        select count(*)
+        from product
+        where category_id = #{categoryId,jdbcType=BIGINT}
+    </select>
+
+    <sql id="conditionByParam">
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="categoryId != null">
+                and category_id = #{categoryId}
+            </if>
+            <if test="name != null">
+                and name like concat('%', #{nickName}, '%')
+            </if>
+            <if test="minPrice != null">
+                and price &gt;= #{minPrice}
+            </if>
+            <if test="maxPrice != null">
+                and price &lt;= #{maxPrice}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+        </where>
+    </sql>
+
+    <select id="selectByParam" resultMap="BaseResultMap">
+        select id, name, image, price, stock, status, category_id, description, gmt_create,
+        gmt_modified
+        from product
+        <include refid="conditionByParam"/>
+        <if test="orderBy != null">
+            ORDER BY ${orderBy} ${orderDirection}
+        </if>
+        <if test="offset != null and pageSize != null">
+            LIMIT #{offset}, #{pageSize}
+        </if>
+    </select>
+
+    <select id="countByParam" resultType="java.lang.Integer">
+        select count(*)
+        from product
+        <include refid="conditionByParam"/>
+    </select>
+
 </mapper>

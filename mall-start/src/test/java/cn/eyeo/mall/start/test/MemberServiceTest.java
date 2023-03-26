@@ -120,7 +120,7 @@ public class MemberServiceTest {
         Long userId = id;
 
         //2.execute
-        SingleResponse<MemberVO> response = iMemberService.getUserInfo(userId);
+        SingleResponse<MemberVO> response = iMemberService.getMemberInfo(userId);
 
         System.out.println(JSON.toJSONString(response));
 
