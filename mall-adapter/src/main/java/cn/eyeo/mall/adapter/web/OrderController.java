@@ -18,14 +18,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class OrderController {
 
     @Autowired
-    private IOrderService orderService;
+    private IOrderService iOrderService;
 
     @PostMapping("create")
     public String create(CreateOrderCmd cmd) {
         boolean createResult;
 
         try {
-            createResult = orderService.create(cmd);
+            createResult = iOrderService.create(cmd);
         } catch (Exception e) {
             createResult = false;
             e.printStackTrace();

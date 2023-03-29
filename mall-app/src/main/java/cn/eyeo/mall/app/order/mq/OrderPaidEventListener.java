@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 public class OrderPaidEventListener {
 
     @Autowired
-    private IOrderService orderService;
+    private IOrderService iOrderService;
 
     public void start() {
         // 监听指定 topic，消费消息
@@ -27,7 +27,7 @@ public class OrderPaidEventListener {
             try {
                 OrderPaidCmd cmd = new OrderPaidCmd();
                 cmd.setOrderId(Long.valueOf(message));
-                orderService.paid(cmd);
+                iOrderService.paid(cmd);
             } catch (Exception e) {
                 e.printStackTrace();
                 // 重试多次，多次还失败的话，人工介入处理和处理死信队列
