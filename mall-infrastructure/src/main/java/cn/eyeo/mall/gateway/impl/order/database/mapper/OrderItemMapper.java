@@ -16,4 +16,6 @@ public interface OrderItemMapper {
     List<OrderItemDO> selectAll();
 
     int updateByPrimaryKey(OrderItemDO row);
+
+    List<OrderItemDO> findByOrderId(Long id);
 }

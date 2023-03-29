@@ -16,4 +16,9 @@ public interface OrderInfoMapper {
     List<OrderInfoDO> selectAll();
 
     int updateByPrimaryKey(OrderInfoDO row);
+
+    int updateStatus(OrderInfoDO orderDO);
+
+    List<OrderInfoDO> findUnpaidOrder();
+
 }
