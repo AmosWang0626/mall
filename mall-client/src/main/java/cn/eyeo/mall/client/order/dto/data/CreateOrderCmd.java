@@ -22,10 +22,30 @@ public class CreateOrderCmd extends Command {
     @Serial
     private static final long serialVersionUID = 8565694029085275647L;
 
+    /**
+     * 用户ID
+     */
+    private Long memberId;
+    /**
+     * 收货人姓名
+     */
+    private String recipientName;
 
+    /**
+     * 收货人联系电话
+     */
+    private String recipientPhone;
+
+    /**
+     * 收货地址
+     */
+    private String recipientAddress;
+
+    /**
+     * 订单条目
+     */
     @NotEmpty(message = "订单条目不能为空")
     private List<OrderItemParam> orderItemParamList;
-
 
     /**
      * 订单条目
@@ -43,7 +63,7 @@ public class CreateOrderCmd extends Command {
          * 购买数量
          */
         @NotNull(message = "购买数量不能为空")
-        private Long purchaseQuantity;
+        private Integer quantity;
 
     }
 }

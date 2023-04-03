@@ -12,6 +12,7 @@ import cn.eyeo.mall.gateway.impl.order.database.mapper.OrderItemMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -60,8 +61,8 @@ public class OrderRepository {
         return OrderConvertor.toEntity(orderDO, orderItemList);
     }
 
-    public List<OrderEntity> findUnpaidOrder() {
-        List<OrderInfoDO> unpaidOrder = orderMapper.findUnpaidOrder();
+    public List<OrderEntity> findUnpaidOrder(LocalDateTime lastTime) {
+        List<OrderInfoDO> unpaidOrder = orderMapper.findUnpaidOrder(lastTime);
         return unpaidOrder.stream().map(OrderConvertor::toEntity).collect(Collectors.toList());
     }
 

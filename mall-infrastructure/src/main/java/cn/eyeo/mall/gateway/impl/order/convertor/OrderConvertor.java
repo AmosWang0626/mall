@@ -21,10 +21,17 @@ public class OrderConvertor {
 
     public static OrderInfoDO toDO(OrderEntity entity) {
         OrderInfoDO orderDO = new OrderInfoDO();
+        orderDO.setMemberId(entity.getMemberId());
+        orderDO.setRecipientName(entity.getRecipientName());
+        orderDO.setRecipientPhone(entity.getRecipientPhone());
+        orderDO.setRecipientAddress(entity.getRecipientAddress());
+        orderDO.setTotalPrice(entity.getTotalPrice());
+        orderDO.setShippingFee(entity.getShippingFee());
+        orderDO.setOrderPrice(entity.getOrderPrice());
+        orderDO.setOrderStatus(entity.getStatus());
         if (Objects.isNull(entity.getOrderId())) {
             orderDO.setGmtCreate(LocalDateTime.now());
         }
-        orderDO.setOrderStatus(entity.getStatus());
         orderDO.setGmtModified(LocalDateTime.now());
         return orderDO;
     }
@@ -37,9 +44,9 @@ public class OrderConvertor {
 
     public static OrderItemDO toDO(Long orderId, OrderItem orderItem) {
         OrderItemDO orderItemDO = new OrderItemDO();
-        orderItemDO.setOrderInfoId(orderId);
-        orderItemDO.setGoodsSkuId(orderItem.getGoodsSkuId());
-        orderItemDO.setPurchaseQuantity(orderItem.getPurchaseQuantity());
+        orderItemDO.setOrderId(orderId);
+        orderItemDO.setProductId(orderItem.getGoodsSkuId());
+        orderItemDO.setQuantity(orderItem.getQuantity());
         return orderItemDO;
     }
 
@@ -63,8 +70,8 @@ public class OrderConvertor {
 
     public static OrderItem toEntity(OrderItemDO orderItemDO) {
         OrderItem orderItem = new OrderItem();
-        orderItem.setGoodsSkuId(orderItemDO.getGoodsSkuId());
-        orderItem.setPurchaseQuantity(orderItemDO.getPurchaseQuantity());
+        orderItem.setGoodsSkuId(orderItemDO.getProductId());
+        orderItem.setQuantity(orderItemDO.getQuantity());
         return orderItem;
     }
 

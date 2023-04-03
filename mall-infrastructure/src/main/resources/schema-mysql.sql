@@ -88,7 +88,7 @@ CREATE TABLE `order_info` (
   `total_price` decimal(10,2) NOT NULL COMMENT '商品总金额',
   `shipping_fee` decimal(10,2) NOT NULL COMMENT '运费',
   `order_price` decimal(10,2) NOT NULL COMMENT '订单金额，等于商品总金额加运费',
-  `order_time` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp() COMMENT '下单时间',
+  `payment_time` datetime DEFAULT NULL COMMENT '支付时间',
   `order_status` varchar(20) NOT NULL COMMENT '订单状态，如待付款、待发货、已发货等',
   `gmt_create` datetime NOT NULL COMMENT '创建时间',
   `gmt_modified` datetime NOT NULL COMMENT '更新时间',

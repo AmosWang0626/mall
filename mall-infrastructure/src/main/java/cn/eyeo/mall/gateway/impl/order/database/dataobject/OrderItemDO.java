@@ -18,65 +18,20 @@ public class OrderItemDO extends BaseDO {
     /**
      * 订单ID
      */
-    private Long orderInfoId;
+    private Long orderId;
 
     /**
-     * 商品id
+     * 商品ID
      */
-    private Long goodsId;
+    private Long productId;
 
     /**
-     * 商品sku ID
+     * 商品价格
      */
-    private Long goodsSkuId;
+    private BigDecimal price;
 
     /**
-     * 商品sku编号
+     * 商品数量
      */
-    private String goodsSkuCode;
-
-    /**
-     * 商品名称
-     */
-    private String goodsName;
-
-    /**
-     * 销售属性，机身颜色:白色,内存容量:256G
-     */
-    private String saleProperties;
-
-    /**
-     * 商品毛重
-     */
-    private BigDecimal goodsGrossWeight;
-
-    /**
-     * 购买数量
-     */
-    private Long purchaseQuantity;
-
-    /**
-     * 商品购买价格
-     */
-    private BigDecimal purchasePrice;
-
-    /**
-     * 促销活动ID
-     */
-    private Long promotionActivityId;
-
-    /**
-     * 商品长度
-     */
-    private BigDecimal goodsLength;
-
-    /**
-     * 商品宽度
-     */
-    private BigDecimal goodsWidth;
-
-    /**
-     * 商品高度
-     */
-    private BigDecimal goodsHeight;
+    private Integer quantity;
 }

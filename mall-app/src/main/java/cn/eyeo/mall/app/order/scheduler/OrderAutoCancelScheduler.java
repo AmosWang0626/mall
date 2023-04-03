@@ -5,6 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+
 /**
  * 自动扫描过期订单任务
  *
@@ -20,7 +23,8 @@ public class OrderAutoCancelScheduler {
     @Scheduled(cron = "0 0/1 * * * ?")
     public void execute() {
         try {
-            iOrderService.autoCancel();
+            LocalDateTime lastTime = LocalDateTime.now().minus(20, ChronoUnit.MINUTES);
+            iOrderService.autoCancel(lastTime);
         } catch (Exception e) {
             e.printStackTrace();
         }

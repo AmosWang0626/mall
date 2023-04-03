@@ -3,19 +3,10 @@
 <mapper namespace="cn.eyeo.mall.gateway.impl.order.database.mapper.OrderItemMapper">
     <resultMap id="BaseResultMap" type="cn.eyeo.mall.gateway.impl.order.database.dataobject.OrderItemDO">
         <id column="id" jdbcType="BIGINT" property="id"/>
-        <result column="order_info_id" jdbcType="BIGINT" property="orderInfoId"/>
-        <result column="goods_id" jdbcType="BIGINT" property="goodsId"/>
-        <result column="goods_sku_id" jdbcType="BIGINT" property="goodsSkuId"/>
-        <result column="goods_sku_code" jdbcType="VARCHAR" property="goodsSkuCode"/>
-        <result column="goods_name" jdbcType="VARCHAR" property="goodsName"/>
-        <result column="sale_properties" jdbcType="VARCHAR" property="saleProperties"/>
-        <result column="goods_gross_weight" jdbcType="DECIMAL" property="goodsGrossWeight"/>
-        <result column="purchase_quantity" jdbcType="BIGINT" property="purchaseQuantity"/>
-        <result column="purchase_price" jdbcType="DECIMAL" property="purchasePrice"/>
-        <result column="promotion_activity_id" jdbcType="BIGINT" property="promotionActivityId"/>
-        <result column="goods_length" jdbcType="DECIMAL" property="goodsLength"/>
-        <result column="goods_width" jdbcType="DECIMAL" property="goodsWidth"/>
-        <result column="goods_height" jdbcType="DECIMAL" property="goodsHeight"/>
+        <result column="order_id" jdbcType="BIGINT" property="orderId"/>
+        <result column="product_id" jdbcType="BIGINT" property="productId"/>
+        <result column="price" jdbcType="DECIMAL" property="price"/>
+        <result column="quantity" jdbcType="INTEGER" property="quantity"/>
         <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate"/>
         <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified"/>
     </resultMap>
@@ -24,49 +15,29 @@
         where id = #{id,jdbcType=BIGINT}
     </delete>
     <insert id="insert" parameterType="cn.eyeo.mall.gateway.impl.order.database.dataobject.OrderItemDO">
-        insert into order_item (id, order_info_id, goods_id,
-        goods_sku_id, goods_sku_code, goods_name,
-        sale_properties, goods_gross_weight, purchase_quantity,
-        purchase_price, promotion_activity_id, goods_length,
-        goods_width, goods_height, gmt_create,
+        insert into order_item (id, order_id, product_id,
+        price, quantity, gmt_create,
         gmt_modified)
-        values (#{id,jdbcType=BIGINT}, #{orderInfoId,jdbcType=BIGINT}, #{goodsId,jdbcType=BIGINT},
-        #{goodsSkuId,jdbcType=BIGINT}, #{goodsSkuCode,jdbcType=VARCHAR}, #{goodsName,jdbcType=VARCHAR},
-        #{saleProperties,jdbcType=VARCHAR}, #{goodsGrossWeight,jdbcType=DECIMAL}, #{purchaseQuantity,jdbcType=BIGINT},
-        #{purchasePrice,jdbcType=DECIMAL}, #{promotionActivityId,jdbcType=BIGINT}, #{goodsLength,jdbcType=DECIMAL},
-        #{goodsWidth,jdbcType=DECIMAL}, #{goodsHeight,jdbcType=DECIMAL}, #{gmtCreate,jdbcType=TIMESTAMP},
+        values (#{id,jdbcType=BIGINT}, #{orderId,jdbcType=BIGINT}, #{productId,jdbcType=BIGINT},
+        #{price,jdbcType=DECIMAL}, #{quantity,jdbcType=INTEGER}, #{gmtCreate,jdbcType=TIMESTAMP},
         #{gmtModified,jdbcType=TIMESTAMP})
     </insert>
     <update id="updateByPrimaryKey" parameterType="cn.eyeo.mall.gateway.impl.order.database.dataobject.OrderItemDO">
         update order_item
-        set order_info_id = #{orderInfoId,jdbcType=BIGINT},
-        goods_id = #{goodsId,jdbcType=BIGINT},
-        goods_sku_id = #{goodsSkuId,jdbcType=BIGINT},
-        goods_sku_code = #{goodsSkuCode,jdbcType=VARCHAR},
-        goods_name = #{goodsName,jdbcType=VARCHAR},
-        sale_properties = #{saleProperties,jdbcType=VARCHAR},
-        goods_gross_weight = #{goodsGrossWeight,jdbcType=DECIMAL},
-        purchase_quantity = #{purchaseQuantity,jdbcType=BIGINT},
-        purchase_price = #{purchasePrice,jdbcType=DECIMAL},
-        promotion_activity_id = #{promotionActivityId,jdbcType=BIGINT},
-        goods_length = #{goodsLength,jdbcType=DECIMAL},
-        goods_width = #{goodsWidth,jdbcType=DECIMAL},
-        goods_height = #{goodsHeight,jdbcType=DECIMAL},
+        set order_id = #{orderId,jdbcType=BIGINT},
+        product_id = #{productId,jdbcType=BIGINT},
+        price = #{price,jdbcType=DECIMAL},
+        quantity = #{quantity,jdbcType=INTEGER},
         gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
-        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
         where id = #{id,jdbcType=BIGINT}
     </update>
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-        select id, order_info_id, goods_id, goods_sku_id, goods_sku_code, goods_name, sale_properties,
-        goods_gross_weight, purchase_quantity, purchase_price, promotion_activity_id, goods_length,
-        goods_width, goods_height, gmt_create, gmt_modified
+        select id, order_id, product_id, price, quantity, gmt_create, gmt_modified
         from order_item
         where id = #{id,jdbcType=BIGINT}
     </select>
     <select id="selectAll" resultMap="BaseResultMap">
-        select id, order_info_id, goods_id, goods_sku_id, goods_sku_code, goods_name, sale_properties,
-        goods_gross_weight, purchase_quantity, purchase_price, promotion_activity_id, goods_length,
-        goods_width, goods_height, gmt_create, gmt_modified
+        select id, order_id, product_id, price, quantity, gmt_create, gmt_modified
         from order_item
     </select>
 </mapper>

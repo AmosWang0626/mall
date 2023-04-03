@@ -3,6 +3,7 @@ package cn.eyeo.mall.gateway.impl.order.database.mapper;
 import cn.eyeo.mall.gateway.impl.order.database.dataobject.OrderInfoDO;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Mapper
@@ -19,6 +20,6 @@ public interface OrderInfoMapper {
 
     int updateStatus(OrderInfoDO orderDO);
 
-    List<OrderInfoDO> findUnpaidOrder();
+    List<OrderInfoDO> findUnpaidOrder(LocalDateTime lastTime);
 
 }

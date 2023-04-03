@@ -104,4 +104,14 @@
         <include refid="conditionByParam"/>
     </select>
 
+    <select id="selectByIds" resultMap="BaseResultMap">
+        select id, name, image, price, stock, status, category_id, description, gmt_create,
+        gmt_modified
+        from product
+        where id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+
 </mapper>

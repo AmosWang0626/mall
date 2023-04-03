@@ -11,7 +11,7 @@
         <result column="total_price" jdbcType="DECIMAL" property="totalPrice"/>
         <result column="shipping_fee" jdbcType="DECIMAL" property="shippingFee"/>
         <result column="order_price" jdbcType="DECIMAL" property="orderPrice"/>
-        <result column="order_time" jdbcType="TIMESTAMP" property="orderTime"/>
+        <result column="payment_time" jdbcType="TIMESTAMP" property="paymentTime"/>
         <result column="order_status" jdbcType="VARCHAR" property="orderStatus"/>
         <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate"/>
         <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified"/>
@@ -24,12 +24,12 @@
         insert into order_info (id, member_id, recipient_name,
         recipient_phone, recipient_address, payment_method,
         total_price, shipping_fee, order_price,
-        order_time, order_status, gmt_create,
+        payment_time, order_status, gmt_create,
         gmt_modified)
         values (#{id,jdbcType=BIGINT}, #{memberId,jdbcType=BIGINT}, #{recipientName,jdbcType=VARCHAR},
         #{recipientPhone,jdbcType=VARCHAR}, #{recipientAddress,jdbcType=VARCHAR}, #{paymentMethod,jdbcType=VARCHAR},
         #{totalPrice,jdbcType=DECIMAL}, #{shippingFee,jdbcType=DECIMAL}, #{orderPrice,jdbcType=DECIMAL},
-        #{orderTime,jdbcType=TIMESTAMP}, #{orderStatus,jdbcType=VARCHAR}, #{gmtCreate,jdbcType=TIMESTAMP},
+        #{paymentTime,jdbcType=TIMESTAMP}, #{orderStatus,jdbcType=VARCHAR}, #{gmtCreate,jdbcType=TIMESTAMP},
         #{gmtModified,jdbcType=TIMESTAMP})
     </insert>
     <update id="updateByPrimaryKey" parameterType="cn.eyeo.mall.gateway.impl.order.database.dataobject.OrderInfoDO">
@@ -42,21 +42,32 @@
         total_price = #{totalPrice,jdbcType=DECIMAL},
         shipping_fee = #{shippingFee,jdbcType=DECIMAL},
         order_price = #{orderPrice,jdbcType=DECIMAL},
-        order_time = #{orderTime,jdbcType=TIMESTAMP},
+        payment_time = #{paymentTime,jdbcType=TIMESTAMP},
         order_status = #{orderStatus,jdbcType=VARCHAR},
-        gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateStatus" parameterType="cn.eyeo.mall.gateway.impl.order.database.dataobject.OrderInfoDO">
+        update order_info
+        set order_status = #{orderStatus,jdbcType=VARCHAR},
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
         where id = #{id,jdbcType=BIGINT}
     </update>
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select id, member_id, recipient_name, recipient_phone, recipient_address, payment_method,
-        total_price, shipping_fee, order_price, order_time, order_status, gmt_create, gmt_modified
+        total_price, shipping_fee, order_price, payment_time, order_status, gmt_create, gmt_modified
         from order_info
         where id = #{id,jdbcType=BIGINT}
     </select>
     <select id="selectAll" resultMap="BaseResultMap">
         select id, member_id, recipient_name, recipient_phone, recipient_address, payment_method,
-        total_price, shipping_fee, order_price, order_time, order_status, gmt_create, gmt_modified
+        total_price, shipping_fee, order_price, payment_time, order_status, gmt_create, gmt_modified
         from order_info
+    </select>
+    <select id="findUnpaidOrder" resultMap="BaseResultMap">
+        select id, member_id, recipient_name, recipient_phone, recipient_address, payment_method,
+        total_price, shipping_fee, order_price, payment_time, order_status, gmt_create, gmt_modified
+        from order_info
+        where order_status = 'PENDING_PAYMENT' and gmt_modified &lt;= #{lastTime}
     </select>
 </mapper>

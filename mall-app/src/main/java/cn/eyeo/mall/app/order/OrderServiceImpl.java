@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -37,6 +38,9 @@ public class OrderServiceImpl implements IOrderService {
 
         // 校验库存
         orderDomainService.checkStockEnough(orderEntity);
+
+        // 计算价格
+        orderDomainService.calculatePrice(orderEntity);
 
         // 保存订单
         orderRepository.save(orderEntity);
@@ -70,9 +74,9 @@ public class OrderServiceImpl implements IOrderService {
     }
 
     @Override
-    public void autoCancel() {
+    public void autoCancel(LocalDateTime lastTime) {
         // 长时间未支付的订单自动取消
-        List<OrderEntity> unpaidOrder = orderRepository.findUnpaidOrder();
+        List<OrderEntity> unpaidOrder = orderRepository.findUnpaidOrder(lastTime);
         unpaidOrder.forEach(orderEntity -> {
             orderEntity.setStatus(OrderStatus.CANCELED.name());
             orderRepository.updateStatus(orderEntity);

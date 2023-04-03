@@ -15,16 +15,20 @@ import java.util.List;
  */
 public class OrderAssembler {
 
-    public static OrderEntity build(CreateOrderCmd orderParam) {
+    public static OrderEntity build(CreateOrderCmd cmd) {
         List<OrderItem> orderItemList = new ArrayList<>();
-        for (CreateOrderCmd.OrderItemParam orderItemParam : orderParam.getOrderItemParamList()) {
+        for (CreateOrderCmd.OrderItemParam orderItemParam : cmd.getOrderItemParamList()) {
             OrderItem orderItem = new OrderItem();
             orderItem.setGoodsSkuId(orderItemParam.getGoodsSkuId());
-            orderItem.setPurchaseQuantity(orderItemParam.getPurchaseQuantity());
+            orderItem.setQuantity(orderItemParam.getQuantity());
             orderItemList.add(orderItem);
         }
 
         OrderEntity orderEntity = new OrderEntity();
+        orderEntity.setMemberId(cmd.getMemberId());
+        orderEntity.setRecipientName(cmd.getRecipientName());
+        orderEntity.setRecipientPhone(cmd.getRecipientPhone());
+        orderEntity.setRecipientAddress(cmd.getRecipientAddress());
         orderEntity.setOrderItems(orderItemList);
         return orderEntity;
     }

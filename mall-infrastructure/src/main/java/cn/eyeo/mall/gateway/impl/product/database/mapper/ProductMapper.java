@@ -5,6 +5,7 @@ import cn.eyeo.mall.gateway.impl.product.database.dataobject.ProductDO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Set;
 
 @Mapper
 public interface ProductMapper {
@@ -22,6 +23,8 @@ public interface ProductMapper {
     int updateStatusById(ProductDO productDO);
 
     List<ProductDO> selectByParam(ProductPageQuery cmd);
+
+    List<ProductDO> selectByIds(Set<Long> ids);
 
     Integer countByParam(ProductPageQuery cmd);
 

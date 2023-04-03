@@ -57,9 +57,9 @@ public class OrderInfoDO extends BaseDO {
     private BigDecimal orderPrice;
 
     /**
-     * 下单时间
+     * 支付时间
      */
-    private LocalDateTime orderTime;
+    private LocalDateTime paymentTime;
 
     /**
      * 订单状态，如待付款、待发货、已发货等

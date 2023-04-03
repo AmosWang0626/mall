@@ -15,6 +15,7 @@ public enum ProductErrorCode implements BaseErrorCode {
      */
     B_PRODUCT_CATEGORY_NOT_EXIST("B_PRODUCT_category_notExist", "分类不存在"),
     B_PRODUCT_ID_NOT_EXIST("B_PRODUCT_id_notExist", "无效的商品"),
+    B_PRODUCT_ALREADY_OFFLINE("B_PRODUCT_already_offline", "含有已下架的商品，请重新下单"),
     ;
 
     private final String errCode;
