@@ -1,6 +1,6 @@
-package cn.eyeo.mall.domain.order.model;
+package cn.eyeo.mall.client.order.dto.data;
 
-import cn.eyeo.mall.client.order.dto.data.OrderStatus;
+import cn.eyeo.mall.client.common.BaseVO;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,19 +8,19 @@ import java.math.BigDecimal;
 import java.util.List;
 
 /**
- * 订单实体(聚合根)
+ * 订单信息
  *
  * @author <a href="mailto:daoyuan0626@gmail.com">amos.wang</a>
- * @date 2021/11/27
+ * @date 2023/4/5
  */
 @Getter
 @Setter
-public class OrderEntity {
+public class OrderInfoVO extends BaseVO {
 
     /**
      * 订单编号
      */
-    private OrderId orderId;
+    private Long orderId;
 
     /**
      * 用户ID
@@ -44,7 +44,7 @@ public class OrderEntity {
     /**
      * 订单条目
      */
-    private List<OrderItem> orderItems;
+    private List<OrderItemVO> orderItems;
 
     /**
      * 商品总金额
@@ -55,6 +55,11 @@ public class OrderEntity {
      * 运费
      */
     private BigDecimal shippingFee;
+
+    /**
+     * 订单金额，等于商品总金额加运费
+     */
+    private BigDecimal orderPrice;
 
     /**
      * 订单状态
@@ -72,10 +77,4 @@ public class OrderEntity {
         this.status = orderStatus.name();
     }
 
-    /**
-     * 订单金额，等于商品总金额加运费
-     */
-    public BigDecimal getOrderPrice() {
-        return totalPrice.add(shippingFee);
-    }
 }

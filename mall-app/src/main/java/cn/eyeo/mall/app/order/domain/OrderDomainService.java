@@ -45,15 +45,15 @@ public class OrderDomainService {
         }
 
         // 计算订单总金额
-        BigDecimal orderPrice = BigDecimal.ZERO;
+        BigDecimal totalPrice = BigDecimal.ZERO;
         for (OrderItem orderItem : orderItems) {
             BigDecimal price = productPriceMap.get(orderItem.getGoodsSkuId());
             orderItem.setPrice(price);
 
-            orderPrice = orderPrice.add(price.multiply(new BigDecimal(orderItem.getQuantity())));
+            totalPrice = totalPrice.add(price.multiply(new BigDecimal(orderItem.getQuantity())));
         }
 
-        entity.setOrderPrice(orderPrice);
+        entity.setTotalPrice(totalPrice);
 
         // FIXME 默认运费为0
         entity.setShippingFee(BigDecimal.ZERO);

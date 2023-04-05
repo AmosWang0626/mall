@@ -20,7 +20,8 @@
         delete from order_info
         where id = #{id,jdbcType=BIGINT}
     </delete>
-    <insert id="insert" parameterType="cn.eyeo.mall.gateway.impl.order.database.dataobject.OrderInfoDO">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id"
+            parameterType="cn.eyeo.mall.gateway.impl.order.database.dataobject.OrderInfoDO">
         insert into order_info (id, member_id, recipient_name,
         recipient_phone, recipient_address, payment_method,
         total_price, shipping_fee, order_price,
@@ -47,7 +48,7 @@
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
         where id = #{id,jdbcType=BIGINT}
     </update>
-    <update id="updateStatus" parameterType="cn.eyeo.mall.gateway.impl.order.database.dataobject.OrderInfoDO">
+    <update id="updateStatus">
         update order_info
         set order_status = #{orderStatus,jdbcType=VARCHAR},
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

@@ -1,4 +1,4 @@
-package com.amos.mall.order.api.model;
+package cn.eyeo.mall.client.order.dto.data;
 
 /**
  * 订单状态
@@ -7,6 +7,11 @@ package com.amos.mall.order.api.model;
  * @date 2021/12/2
  */
 public enum OrderStatus {
+
+    /**
+     * 初始化订单
+     */
+    INIT("初始化"),
 
     /**
      * 待支付

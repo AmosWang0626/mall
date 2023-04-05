@@ -3,6 +3,7 @@ package cn.eyeo.mall.gateway.impl.product.database.mapper;
 import cn.eyeo.mall.client.product.dto.query.ProductPageQuery;
 import cn.eyeo.mall.gateway.impl.product.database.dataobject.ProductDO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Set;
@@ -24,7 +25,7 @@ public interface ProductMapper {
 
     List<ProductDO> selectByParam(ProductPageQuery cmd);
 
-    List<ProductDO> selectByIds(Set<Long> ids);
+    List<ProductDO> selectByIds(@Param("ids") Set<Long> ids);
 
     Integer countByParam(ProductPageQuery cmd);
 

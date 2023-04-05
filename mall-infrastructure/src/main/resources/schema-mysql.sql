@@ -84,7 +84,7 @@ CREATE TABLE `order_info` (
   `recipient_name` varchar(50) NOT NULL COMMENT '收货人姓名',
   `recipient_phone` varchar(20) NOT NULL COMMENT '收货人联系电话',
   `recipient_address` varchar(100) NOT NULL COMMENT '收货地址',
-  `payment_method` varchar(20) NOT NULL COMMENT '支付方式，如支付宝、微信支付等',
+  `payment_method` varchar(20) DEFAULT NULL COMMENT '支付方式，如支付宝、微信支付等',
   `total_price` decimal(10,2) NOT NULL COMMENT '商品总金额',
   `shipping_fee` decimal(10,2) NOT NULL COMMENT '运费',
   `order_price` decimal(10,2) NOT NULL COMMENT '订单金额，等于商品总金额加运费',

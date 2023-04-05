@@ -37,7 +37,11 @@ public class OrderRepository {
         int modifyLines = orderMapper.insert(orderDO);
         checkModifyLine(modifyLines, "保存订单失败!");
 
-        List<OrderItemDO> orderItemDOList = OrderConvertor.toItemDO(orderDO.getId(), orderEntity.getOrderItems());
+        // 订单ID
+        Long orderId = orderDO.getId();
+        orderEntity.setOrderId(new OrderId().setId(orderId));
+
+        List<OrderItemDO> orderItemDOList = OrderConvertor.toItemDO(orderId, orderEntity.getOrderItems());
         orderItemDOList.forEach(item -> {
             int lines = orderItemMapper.insert(item);
             checkModifyLine(lines, "保存订单条目失败!");
@@ -45,9 +49,10 @@ public class OrderRepository {
     }
 
     public void updateStatus(OrderEntity orderEntity) {
-        OrderInfoDO orderDO = OrderConvertor.toDO(orderEntity);
+        Long orderId = orderEntity.getOrderId().getId();
+        String orderStatus = orderEntity.getStatus();
 
-        int modifyLines = orderMapper.updateStatus(orderDO);
+        int modifyLines = orderMapper.updateStatus(orderId, orderStatus, LocalDateTime.now());
         checkModifyLine(modifyLines, "修改订单状态失败!");
     }
 

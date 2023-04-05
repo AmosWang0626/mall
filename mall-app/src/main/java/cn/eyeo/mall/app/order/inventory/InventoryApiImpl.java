@@ -17,12 +17,12 @@ public class InventoryApiImpl implements InventoryApi {
 
     @Override
     public boolean stockEnough(Long goodsSkuId, Integer count) {
-        return RANDOM.nextBoolean();
+        return true;
     }
 
     @Override
     public boolean lockStock(Long goodsSkuId, Integer count) {
-        return RANDOM.nextBoolean();
+        return true;
     }
 
     @Override
@@ -33,7 +33,7 @@ public class InventoryApiImpl implements InventoryApi {
 
     @Override
     public boolean reduceStock(Long goodsSkuId, Integer count) {
-        return RANDOM.nextBoolean();
+        return true;
     }
 
     @Override

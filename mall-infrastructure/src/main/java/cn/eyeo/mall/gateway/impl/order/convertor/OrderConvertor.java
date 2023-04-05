@@ -1,10 +1,10 @@
 package cn.eyeo.mall.gateway.impl.order.convertor;
 
-import cn.eyeo.mall.gateway.impl.order.database.dataobject.OrderInfoDO;
-import cn.eyeo.mall.gateway.impl.order.database.dataobject.OrderItemDO;
 import cn.eyeo.mall.domain.order.model.OrderEntity;
 import cn.eyeo.mall.domain.order.model.OrderId;
 import cn.eyeo.mall.domain.order.model.OrderItem;
+import cn.eyeo.mall.gateway.impl.order.database.dataobject.OrderInfoDO;
+import cn.eyeo.mall.gateway.impl.order.database.dataobject.OrderItemDO;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -21,6 +21,9 @@ public class OrderConvertor {
 
     public static OrderInfoDO toDO(OrderEntity entity) {
         OrderInfoDO orderDO = new OrderInfoDO();
+        if (Objects.nonNull(entity.getOrderId())) {
+            orderDO.setId(entity.getOrderId().getId());
+        }
         orderDO.setMemberId(entity.getMemberId());
         orderDO.setRecipientName(entity.getRecipientName());
         orderDO.setRecipientPhone(entity.getRecipientPhone());
@@ -46,7 +49,12 @@ public class OrderConvertor {
         OrderItemDO orderItemDO = new OrderItemDO();
         orderItemDO.setOrderId(orderId);
         orderItemDO.setProductId(orderItem.getGoodsSkuId());
+        orderItemDO.setPrice(orderItem.getPrice());
         orderItemDO.setQuantity(orderItem.getQuantity());
+        if (Objects.isNull(orderItemDO.getId())) {
+            orderItemDO.setGmtCreate(LocalDateTime.now());
+        }
+        orderItemDO.setGmtModified(LocalDateTime.now());
         return orderItemDO;
     }
 

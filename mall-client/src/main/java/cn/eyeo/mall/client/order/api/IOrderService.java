@@ -1,7 +1,10 @@
 package cn.eyeo.mall.client.order.api;
 
+import cn.eyeo.mall.client.member.dto.data.MemberVO;
 import cn.eyeo.mall.client.order.dto.data.CreateOrderCmd;
+import cn.eyeo.mall.client.order.dto.data.OrderInfoVO;
 import cn.eyeo.mall.client.order.dto.data.OrderPaidCmd;
+import com.alibaba.cola.dto.SingleResponse;
 
 import java.time.LocalDateTime;
 
@@ -19,7 +22,7 @@ public interface IOrderService {
      * @param cmd 创建订单参数
      * @return true-创建成功
      */
-    boolean create(CreateOrderCmd cmd);
+    SingleResponse<OrderInfoVO> create(CreateOrderCmd cmd);
 
     /**
      * 订单支付事件处理

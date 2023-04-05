@@ -1,14 +1,16 @@
 package cn.eyeo.mall.app.order;
 
+import cn.eyeo.mall.app.order.assembler.OrderAssembler;
 import cn.eyeo.mall.app.order.domain.OrderDomainService;
 import cn.eyeo.mall.client.order.api.IOrderService;
 import cn.eyeo.mall.client.order.dto.data.CreateOrderCmd;
+import cn.eyeo.mall.client.order.dto.data.OrderInfoVO;
 import cn.eyeo.mall.client.order.dto.data.OrderPaidCmd;
+import cn.eyeo.mall.client.order.dto.data.OrderStatus;
 import cn.eyeo.mall.domain.order.model.OrderEntity;
 import cn.eyeo.mall.domain.order.model.OrderId;
 import cn.eyeo.mall.gateway.impl.order.repository.OrderRepository;
-import com.amos.mall.order.api.model.OrderStatus;
-import com.amos.mall.order.application.assembler.OrderAssembler;
+import com.alibaba.cola.dto.SingleResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,7 +35,7 @@ public class OrderServiceImpl implements IOrderService {
 
     @Override
     @Transactional(rollbackFor = Throwable.class)
-    public boolean create(CreateOrderCmd cmd) {
+    public SingleResponse<OrderInfoVO> create(CreateOrderCmd cmd) {
         OrderEntity orderEntity = OrderAssembler.build(cmd);
 
         // 校验库存
@@ -52,7 +54,7 @@ public class OrderServiceImpl implements IOrderService {
         orderEntity.updateStatus(OrderStatus.PENDING_PAYMENT);
         orderRepository.updateStatus(orderEntity);
 
-        return true;
+        return SingleResponse.of(OrderAssembler.toVO(orderEntity));
     }
 
     @Override
