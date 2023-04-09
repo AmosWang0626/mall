@@ -2,6 +2,9 @@ package cn.eyeo.mall.adapter.web;
 
 import cn.eyeo.mall.client.order.api.IOrderService;
 import cn.eyeo.mall.client.order.dto.data.CreateOrderCmd;
+import cn.eyeo.mall.client.order.dto.data.OrderInfoVO;
+import com.alibaba.cola.dto.SingleResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author <a href="mailto:daoyuan0626@gmail.com">amos.wang</a>
  * @date 2021/12/1
  */
+@Slf4j
 @RestController
 @RequestMapping("order")
 public class OrderController {
@@ -20,18 +24,18 @@ public class OrderController {
     @Autowired
     private IOrderService iOrderService;
 
+
     @PostMapping("create")
-    public String create(CreateOrderCmd cmd) {
-        boolean createResult;
+    public SingleResponse<OrderInfoVO> create(CreateOrderCmd cmd) {
+        SingleResponse<OrderInfoVO> response = new SingleResponse<>();
 
         try {
-            createResult = iOrderService.create(cmd);
+            response = iOrderService.create(cmd);
         } catch (Exception e) {
-            createResult = false;
-            e.printStackTrace();
+            log.error("create order exception!", e);
         }
 
-        return createResult ? "success" : "fail";
+        return response;
     }
 
 }

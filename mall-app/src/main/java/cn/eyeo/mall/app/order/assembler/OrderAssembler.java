@@ -2,9 +2,11 @@ package cn.eyeo.mall.app.order.assembler;
 
 import cn.eyeo.mall.client.order.dto.data.CreateOrderCmd;
 import cn.eyeo.mall.client.order.dto.data.OrderInfoVO;
+import cn.eyeo.mall.client.order.dto.data.OrderItemVO;
 import cn.eyeo.mall.client.order.dto.data.OrderStatus;
 import cn.eyeo.mall.domain.order.model.OrderEntity;
 import cn.eyeo.mall.domain.order.model.OrderItem;
+import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,9 +40,34 @@ public class OrderAssembler {
 
     public static OrderInfoVO toVO(OrderEntity entity) {
         OrderInfoVO orderInfoVO = new OrderInfoVO();
-        orderInfoVO.setOrderId(entity.getOrderId());
-        return orderInfoVO;
+        orderInfoVO.setOrderId(entity.getOrderId().getId());
+        orderInfoVO.setMemberId(entity.getMemberId());
+        orderInfoVO.setRecipientName(entity.getRecipientName());
+        orderInfoVO.setRecipientPhone(entity.getRecipientPhone());
+        orderInfoVO.setRecipientAddress(entity.getRecipientAddress());
 
+        // 订单关联的商品
+        List<OrderItemVO> itemVOList = new ArrayList<>();
+        if (!CollectionUtils.isEmpty(entity.getOrderItems())) {
+            for (OrderItem orderItem : entity.getOrderItems()) {
+                itemVOList.add(toVO(orderItem));
+            }
+        }
+        orderInfoVO.setOrderItems(itemVOList);
+
+        orderInfoVO.setTotalPrice(entity.getTotalPrice());
+        orderInfoVO.setShippingFee(entity.getShippingFee());
+        orderInfoVO.setOrderPrice(entity.getOrderPrice());
+        orderInfoVO.setStatus(entity.getStatus());
+        return orderInfoVO;
+    }
+
+    public static OrderItemVO toVO(OrderItem item) {
+        OrderItemVO orderItemVO = new OrderItemVO();
+        orderItemVO.setGoodsSkuId(item.getGoodsSkuId());
+        orderItemVO.setQuantity(item.getQuantity());
+        orderItemVO.setPrice(item.getPrice());
+        return orderItemVO;
     }
 
 }

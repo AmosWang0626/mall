@@ -2,7 +2,9 @@ package cn.eyeo.mall.start.test;
 
 import cn.eyeo.mall.client.order.api.IOrderService;
 import cn.eyeo.mall.client.order.dto.data.CreateOrderCmd;
+import cn.eyeo.mall.client.order.dto.data.OrderInfoVO;
 import cn.eyeo.mall.start.Application;
+import com.alibaba.cola.dto.SingleResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
 import org.junit.FixMethodOrder;
@@ -44,8 +46,8 @@ public class OrderServiceTest {
         items.add(getOrderItem(2L, 3));
         cmd.setOrderItemParamList(items);
 
-        boolean result = iOrderService.create(cmd);
-        Assert.assertTrue(result);
+        SingleResponse<OrderInfoVO> response = iOrderService.create(cmd);
+        Assert.assertTrue(response.isSuccess());
     }
 
     private static CreateOrderCmd.OrderItemParam getOrderItem(Long skuId, Integer quantity) {
