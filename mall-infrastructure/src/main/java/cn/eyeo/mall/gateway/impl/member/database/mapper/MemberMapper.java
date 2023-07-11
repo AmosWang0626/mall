@@ -22,5 +22,5 @@ public interface MemberMapper {
     int existByUsername(@Param("userId") Long userId,
                         @Param("username") String username);
 
-    MemberDO findPasswordInfo(String username);
+    MemberDO selectByUsername(String username);
 }

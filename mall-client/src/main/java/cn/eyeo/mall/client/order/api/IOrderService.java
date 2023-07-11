@@ -1,6 +1,5 @@
 package cn.eyeo.mall.client.order.api;
 
-import cn.eyeo.mall.client.member.dto.data.MemberVO;
 import cn.eyeo.mall.client.order.dto.data.CreateOrderCmd;
 import cn.eyeo.mall.client.order.dto.data.OrderInfoVO;
 import cn.eyeo.mall.client.order.dto.data.OrderPaidCmd;
@@ -33,6 +32,8 @@ public interface IOrderService {
 
     /**
      * 自动取消订单
+     *
+     * @param lastTime 取消截止时间
      */
     void autoCancel(LocalDateTime lastTime);
 

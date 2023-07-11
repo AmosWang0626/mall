@@ -3,9 +3,12 @@ package cn.eyeo.mall.app.member.assembler;
 import cn.eyeo.mall.client.member.dto.MemberModifyCmd;
 import cn.eyeo.mall.client.member.dto.MemberRegisterCmd;
 import cn.eyeo.mall.client.member.dto.data.MemberVO;
+import cn.eyeo.mall.client.member.dto.data.RoleVO;
 import cn.eyeo.mall.gateway.impl.member.database.dataobject.MemberDO;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Member Application层 转换器
@@ -56,6 +59,22 @@ public class MemberAssembler {
         memberVO.setMobile(memberDO.getMobile());
         memberVO.setGender(memberDO.getGender());
         memberVO.setBirthday(memberDO.getBirthday());
+
+        // 临时拓展信息
+        memberVO.setRealName(memberDO.getUsername());
+        memberVO.setDesc("manager");
+        // FIXME 暂时使用用户ID作为TOKEN
+        memberVO.setToken(String.valueOf(memberVO.getUserId()));
+        memberVO.setHomePath("/dashboard/analysis");
+
+        RoleVO roleVO = new RoleVO();
+        roleVO.setRoleName("Super Admin");
+        roleVO.setValue("super");
+
+        List<RoleVO> roles = new ArrayList<>();
+        roles.add(roleVO);
+        memberVO.setRoles(roles);
+
         return memberVO;
     }
 

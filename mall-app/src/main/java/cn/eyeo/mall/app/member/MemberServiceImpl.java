@@ -43,8 +43,8 @@ public class MemberServiceImpl implements IMemberService {
     }
 
     @Override
-    public void login(MemberLoginQuery query) {
-        memberLoginQueryExe.execute(query);
+    public SingleResponse<MemberVO> login(MemberLoginQuery query) {
+        return SingleResponse.of(memberLoginQueryExe.execute(query));
     }
 
     @Override

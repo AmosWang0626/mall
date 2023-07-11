@@ -1,10 +1,14 @@
 package cn.eyeo.mall.adapter.web;
 
+import cn.eyeo.mall.adapter.web.common.api.CurrentUserContext;
+import cn.eyeo.mall.adapter.web.common.api.MallOpsResponse;
+import cn.eyeo.mall.adapter.web.common.api.Token;
 import cn.eyeo.mall.client.member.api.IMemberService;
 import cn.eyeo.mall.client.member.dto.MemberModifyCmd;
 import cn.eyeo.mall.client.member.dto.MemberRegisterCmd;
+import cn.eyeo.mall.client.member.dto.data.MemberVO;
 import cn.eyeo.mall.client.member.dto.query.MemberLoginQuery;
-import com.alibaba.cola.dto.Response;
+import com.alibaba.cola.dto.SingleResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,25 +26,40 @@ public class MemberController {
     private IMemberService iMemberService;
 
     @PostMapping(value = "register")
-    public Response register(@RequestBody MemberRegisterCmd cmd) {
-        return iMemberService.register(cmd);
+    public MallOpsResponse<MemberVO> register(@RequestBody MemberRegisterCmd cmd) {
+        SingleResponse<MemberVO> response = iMemberService.register(cmd);
+        if (response.isSuccess()) {
+            return MallOpsResponse.success(response.getData());
+        }
+        return MallOpsResponse.fail(response);
     }
 
     @PostMapping(value = "modify")
-    public Response modify(@RequestBody MemberModifyCmd cmd) {
-        return iMemberService.modify(cmd);
+    public MallOpsResponse<MemberVO> modify(@RequestBody MemberModifyCmd cmd) {
+        SingleResponse<MemberVO> response = iMemberService.modify(cmd);
+        if (response.isSuccess()) {
+            return MallOpsResponse.success(response.getData());
+        }
+        return MallOpsResponse.fail(response);
     }
 
+    @Token(check = false)
     @PostMapping(value = "login")
-    public Response login(@RequestBody MemberLoginQuery userLoginQuery) {
-        iMemberService.login(userLoginQuery);
-        return Response.buildSuccess();
+    public MallOpsResponse<MemberVO> login(@RequestBody MemberLoginQuery userLoginQuery) {
+        SingleResponse<MemberVO> response = iMemberService.login(userLoginQuery);
+        if (response.isSuccess()) {
+            return MallOpsResponse.success(response.getData());
+        }
+        return MallOpsResponse.fail(response);
     }
 
-    @GetMapping(value = "getMemberInfo/{userId}")
-    public Response login(@PathVariable("userId") Long userId) {
-        return iMemberService.getMemberInfo(userId);
+    @GetMapping(value = "getUserInfo")
+    public MallOpsResponse<MemberVO> getUserInfo() {
+        SingleResponse<MemberVO> response = iMemberService.getMemberInfo(CurrentUserContext.get());
+        if (response.isSuccess()) {
+            return MallOpsResponse.success(response.getData());
+        }
+        return MallOpsResponse.fail(response);
     }
 
 }
-

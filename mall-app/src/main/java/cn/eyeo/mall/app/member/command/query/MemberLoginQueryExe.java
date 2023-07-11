@@ -1,6 +1,8 @@
 package cn.eyeo.mall.app.member.command.query;
 
+import cn.eyeo.mall.app.member.assembler.MemberAssembler;
 import cn.eyeo.mall.client.member.dto.data.MemberErrorCode;
+import cn.eyeo.mall.client.member.dto.data.MemberVO;
 import cn.eyeo.mall.client.member.dto.query.MemberLoginQuery;
 import cn.eyeo.mall.common.exception.MallBizException;
 import cn.eyeo.mall.gateway.impl.member.database.dataobject.MemberDO;
@@ -22,8 +24,8 @@ public class MemberLoginQueryExe {
     @Autowired
     private MemberMapper memberMapper;
 
-    public void execute(MemberLoginQuery query) {
-        MemberDO memberDO = memberMapper.findPasswordInfo(query.getUsername());
+    public MemberVO execute(MemberLoginQuery query) {
+        MemberDO memberDO = memberMapper.selectByUsername(query.getUsername());
         if (Objects.isNull(memberDO)) {
             throw new MallBizException(MemberErrorCode.B_MEMBER_UNDEFINED);
         }
@@ -32,6 +34,8 @@ public class MemberLoginQueryExe {
         if (!memberDO.getPassword().equals(query.getPassword())) {
             throw new MallBizException(MemberErrorCode.B_MEMBER_PASSWORD_ERROR);
         }
+
+        return MemberAssembler.toValueObject(memberDO);
     }
 
 }

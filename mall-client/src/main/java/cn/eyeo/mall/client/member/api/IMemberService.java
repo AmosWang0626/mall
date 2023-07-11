@@ -34,8 +34,9 @@ public interface IMemberService {
      * 用户登录
      *
      * @param query 用户登录请求
+     * @return Response
      */
-    void login(MemberLoginQuery query);
+    SingleResponse<MemberVO> login(MemberLoginQuery query);
 
     /**
      * 获取用户信息

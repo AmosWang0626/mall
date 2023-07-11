@@ -68,8 +68,9 @@
         </where>
     </select>
 
-    <select id="findPasswordInfo" resultMap="BaseResultMap">
-        select password
+    <select id="selectByUsername" resultMap="BaseResultMap">
+        select id, username, password, nickname, avatar, email, mobile, gender, birthday,
+        status, gmt_create, gmt_modified
         from member
         where username = #{username} and status &lt;&gt; 0
     </select>

@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import java.io.Serial;
 import java.time.LocalDate;
+import java.util.List;
 
 /**
  * 用户VO
@@ -36,6 +37,11 @@ public class MemberVO extends BaseVO {
     private String nickname;
 
     /**
+     * 真实名字
+     */
+    private String realName;
+
+    /**
      * 头像
      */
     private String avatar;
@@ -59,5 +65,25 @@ public class MemberVO extends BaseVO {
      * 生日
      */
     private LocalDate birthday;
+
+    /**
+     * 描述
+     */
+    private String desc;
+
+    /**
+     * 登录相关TOKEN
+     */
+    private String token;
+
+    /**
+     * 用户默认首页
+     */
+    private String homePath;
+
+    /**
+     * 用户角色
+     */
+    private List<RoleVO> roles;
 
 }
