@@ -1,14 +1,15 @@
-FROM node:18-alpine AS build
+# 使用 DaoCloud 镜像加速 Docker Hub 拉取
+FROM docker.m.daocloud.io/library/node:18-alpine AS build
 
 WORKDIR /app
-COPY package.json package-lock.json ./
-RUN npm ci --registry=https://registry.npmmirror.com
+COPY package.json ./
+RUN npm install --registry=https://registry.npmmirror.com
 
 COPY . .
 RUN npm run build
 
 # 运行阶段
-FROM nginx:alpine
+FROM docker.m.daocloud.io/library/nginx:alpine
 
 # 删除默认配置
 RUN rm /etc/nginx/conf.d/default.conf

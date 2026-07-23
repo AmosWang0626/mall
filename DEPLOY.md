@@ -13,7 +13,7 @@
 
 ```bash
 # 1. 进入项目根目录
-cd /path/to/2026-07-21-23-31-52
+cd /path/to/mall
 
 # 2. 构建并启动所有服务（首次约 5-10 分钟）
 docker compose up -d --build
