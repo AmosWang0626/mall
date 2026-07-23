@@ -7,14 +7,14 @@
 ### 后端
 | 技术 | 版本 | 说明 |
 |------|------|------|
-| Spring Boot | 2.7.18 | 核心框架 |
-| MyBatis | 2.3.2 | ORM框架 |
+| Spring Boot | 3.3.2 | 核心框架 |
+| MyBatis | 3.0.4 | ORM框架 |
 | MySQL | 8.0+ | 数据库 |
 | Redis | 6.0+ | 缓存 |
-| PageHelper | 1.4.7 | 分页插件 |
+| PageHelper | 2.1.0 | 分页插件 |
 | JWT (jjwt) | 0.11.5 | 认证授权 |
 | Hutool | 5.8.25 | 工具库 |
-| Knife4j | 4.4.0 | API文档 |
+| Knife4j | 4.5.0 | API文档 |
 | Lombok | - | 简化代码 |
 | Maven | - | 构建工具 |
 
@@ -114,7 +114,7 @@ mall-admin/                            # 前端项目
 ## 快速开始
 
 ### 环境要求
-- JDK 8+
+- JDK 21+
 - MySQL 8.0+
 - Redis 6.0+
 - Node.js 18+

@@ -1,5 +1,5 @@
-# ===== 构建阶段 =====
-FROM maven:3.9-eclipse-temurin-8 AS build
+# 多阶段构建 — JDK 21
+FROM maven:3.9-eclipse-temurin-21 AS build
 
 WORKDIR /app
 
@@ -13,8 +13,8 @@ RUN mvn dependency:go-offline -B -q
 COPY src ./src
 RUN mvn clean package -DskipTests -B -q
 
-# ===== 运行阶段 =====
-FROM eclipse-temurin:8-jre-alpine
+# 运行阶段 — JRE 21 Alpine (轻量)
+FROM eclipse-temurin:21-jre-alpine
 
 WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
