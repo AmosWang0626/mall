@@ -9,6 +9,42 @@
 
 > 不再需要本地安装 Java、Maven、Node.js、MySQL、Redis —— 一切由 Docker 提供。
 
+## Docker 镜像加速配置（国内必做）
+
+国内直连 Docker Hub 会超时或被拒。需要配置 Docker daemon 使用国内镜像站，**一次配置，所有镜像自动加速**：
+
+### Docker Desktop (macOS / Windows)
+
+1. 打开 Docker Desktop → **Settings** → **Docker Engine**
+2. 将项目根目录下 `docker-daemon.json` 的内容合并进去（如果已有配置，只需加 `registry-mirrors` 字段）：
+
+```json
+{
+  "registry-mirrors": [
+    "https://docker.m.daocloud.io",
+    "https://docker.1panel.live",
+    "https://hub.rat.dev",
+    "https://docker.1ms.run"
+  ]
+}
+```
+
+3. 点击 **Apply & Restart**
+4. 验证生效：
+```bash
+docker info | grep -A 5 "Registry Mirrors"
+```
+
+### Linux 服务器
+
+```bash
+sudo mkdir -p /etc/docker
+sudo cp docker-daemon.json /etc/docker/daemon.json
+sudo systemctl restart docker
+```
+
+> 配置好后，Dockerfile 中使用标准镜像名（如 `eclipse-temurin:8-jre-alpine`）即可，Docker 会自动从镜像站拉取，无需在镜像名前加前缀。
+
 ## 快速开始
 
 ```bash
@@ -174,3 +210,5 @@ docker compose down -v && docker compose up -d --build
 | 前端构建慢 | npm 源慢 | Dockerfile 已使用 npmmirror 镜像源 |
 | 数据表不存在 | init.sql 未执行 | `docker compose down -v && docker compose up -d` 重建 |
 | 端口冲突 | 80 / 3306 / 6379 / 8080 被占用 | 修改 `docker-compose.yml` 中的 `ports` 映射 |
+| 镜像拉取 403 / timeout | Docker Hub 被墙或镜像站限制 | 按上方「Docker 镜像加速配置」配置 registry-mirrors，换一个可用的镜像站 |
+| `openjdk` 镜像不存在 (403) | openjdk 镜像已废弃 | 已改用 `eclipse-temurin`，确保拉取的是最新代码 |

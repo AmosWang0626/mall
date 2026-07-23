@@ -1,5 +1,5 @@
-# 使用 DaoCloud 镜像加速 Docker Hub 拉取
-FROM docker.m.daocloud.io/library/maven:3.8-openjdk-8-slim AS build
+# ===== 构建阶段 =====
+FROM maven:3.9-eclipse-temurin-8 AS build
 
 WORKDIR /app
 
@@ -13,8 +13,8 @@ RUN mvn dependency:go-offline -B -q
 COPY src ./src
 RUN mvn clean package -DskipTests -B -q
 
-# 运行阶段
-FROM docker.m.daocloud.io/library/openjdk:8-jre-slim
+# ===== 运行阶段 =====
+FROM eclipse-temurin:8-jre-alpine
 
 WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
