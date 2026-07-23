@@ -1,0 +1,104 @@
+version: "3.8"
+
+services:
+  # ========== MySQL 8.0 ==========
+  mysql:
+    image: mysql:8.0
+    container_name: mall-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: mini_mall
+      TZ: Asia/Shanghai
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+      # 首次启动自动执行初始化脚本
+      - ./mall-backend/src/main/resources/sql/init.sql:/docker-entrypoint-initdb.d/01-init.sql
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --default-time-zone=+08:00
+      - --max_allowed_packet=64M
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    networks:
+      - mall-net
+
+  # ========== Redis 7 ==========
+  redis:
+    image: redis:7-alpine
+    container_name: mall-redis
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    networks:
+      - mall-net
+
+  # ========== SpringBoot 后端 ==========
+  backend:
+    build:
+      context: ./mall-backend
+      dockerfile: Dockerfile
+    image: mall-backend:1.0.0
+    container_name: mall-backend
+    restart: unless-stopped
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      TZ: Asia/Shanghai
+    ports:
+      - "8080:8080"
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8080/api/public/product/list?pageNum=1&pageSize=1"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 60s
+    networks:
+      - mall-net
+
+  # ========== React 前端 (Nginx) ==========
+  frontend:
+    build:
+      context: ./mall-admin
+      dockerfile: Dockerfile
+    image: mall-frontend:1.0.0
+    container_name: mall-frontend
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - mall-net
+
+# ========== 数据卷 ==========
+volumes:
+  mysql-data:
+    driver: local
+  redis-data:
+    driver: local
+
+# ========== 网络 ==========
+networks:
+  mall-net:
+    driver: bridge

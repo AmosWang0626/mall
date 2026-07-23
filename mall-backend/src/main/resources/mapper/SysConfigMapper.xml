@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mall.module.system.mapper.SysConfigMapper">
+    <resultMap id="BaseResultMap" type="com.mall.module.system.entity.SysConfig">
+        <id column="id" property="id"/><result column="config_key" property="configKey"/><result column="config_value" property="configValue"/>
+        <result column="config_type" property="configType"/><result column="name" property="name"/><result column="description" property="description"/>
+        <result column="is_system" property="isSystem"/><result column="create_time" property="createTime"/><result column="update_time" property="updateTime"/>
+    </resultMap>
+    <sql id="cols">id,config_key,config_value,config_type,name,description,is_system,create_time,update_time</sql>
+    <insert id="insert" parameterType="com.mall.module.system.entity.SysConfig" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO sys_config(config_key,config_value,config_type,name,description,is_system) VALUES(#{configKey},#{configValue},#{configType},#{name},#{description},#{isSystem})
+    </insert>
+    <update id="updateById" parameterType="com.mall.module.system.entity.SysConfig">
+        UPDATE sys_config<set><if test="configKey!=null">config_key=#{configKey},</if><if test="configValue!=null">config_value=#{configValue},</if>
+        <if test="configType!=null">config_type=#{configType},</if><if test="name!=null">name=#{name},</if><if test="description!=null">description=#{description},</if></set>WHERE id=#{id}
+    </update>
+    <delete id="deleteById">DELETE FROM sys_config WHERE id=#{id} AND is_system=0</delete>
+    <select id="selectById" resultMap="BaseResultMap">SELECT <include refid="cols"/> FROM sys_config WHERE id=#{id}</select>
+    <select id="selectByKey" resultMap="BaseResultMap">SELECT <include refid="cols"/> FROM sys_config WHERE config_key=#{key}</select>
+    <select id="selectList" resultMap="BaseResultMap">SELECT <include refid="cols"/> FROM sys_config WHERE 1=1<if test="keyword!=null and keyword!=''">AND(config_key LIKE CONCAT('%',#{keyword},'%') OR name LIKE CONCAT('%',#{keyword},'%'))</if>ORDER BY create_time DESC LIMIT #{offset},#{limit}</select>
+    <select id="count" resultType="long">SELECT COUNT(*) FROM sys_config WHERE 1=1<if test="keyword!=null and keyword!=''">AND(config_key LIKE CONCAT('%',#{keyword},'%') OR name LIKE CONCAT('%',#{keyword},'%'))</if></select>
+    <select id="selectAll" resultMap="BaseResultMap">SELECT <include refid="cols"/> FROM sys_config</select>
+</mapper>

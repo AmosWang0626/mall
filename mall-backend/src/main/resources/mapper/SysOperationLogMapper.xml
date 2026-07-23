@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mall.module.system.mapper.SysOperationLogMapper">
+    <resultMap id="BaseResultMap" type="com.mall.module.system.entity.SysOperationLog">
+        <id column="id" property="id"/><result column="admin_id" property="adminId"/><result column="admin_name" property="adminName"/>
+        <result column="module" property="module"/><result column="operation" property="operation"/><result column="method" property="method"/>
+        <result column="request_url" property="requestUrl"/><result column="request_param" property="requestParam"/><result column="ip" property="ip"/>
+        <result column="cost_time" property="costTime"/><result column="create_time" property="createTime"/>
+    </resultMap>
+    <insert id="insert" parameterType="com.mall.module.system.entity.SysOperationLog" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO sys_operation_log(admin_id,admin_name,module,operation,method,request_url,request_param,ip,cost_time) VALUES(#{adminId},#{adminName},#{module},#{operation},#{method},#{requestUrl},#{requestParam},#{ip},#{costTime})
+    </insert>
+    <select id="selectList" resultMap="BaseResultMap">SELECT * FROM sys_operation_log WHERE 1=1<if test="module!=null and module!=''">AND module=#{module}</if>ORDER BY create_time DESC LIMIT #{offset},#{limit}</select>
+    <select id="count" resultType="long">SELECT COUNT(*) FROM sys_operation_log WHERE 1=1<if test="module!=null and module!=''">AND module=#{module}</if></select>
+    <delete id="deleteById">DELETE FROM sys_operation_log WHERE id=#{id}</delete>
+</mapper>

@@ -1,0 +1,59 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+
+spring:
+  application:
+    name: mini-mall
+  datasource:
+    url: jdbc:mysql://localhost:3306/mini_mall?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  redis:
+    host: localhost
+    port: 6379
+    database: 0
+    timeout: 5000ms
+  jackson:
+    default-property-inclusion: non_null
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: Asia/Shanghai
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 50MB
+
+mybatis:
+  mapper-locations: classpath:mapper/**/*.xml
+  type-aliases-package: com.mall.module.*.entity
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+
+# JWT 配置
+jwt:
+  secret: mini-mall-secret-key-2024-please-change-in-production-environment
+  expiration: 86400000  # 24小时 (毫秒)
+  header: Authorization
+  prefix: "Bearer "
+
+# 业务配置
+mall:
+  # 积分兑换比例: 1元 = N积分
+  points-rate: 1
+  # 订单超时自动取消时间 (分钟)
+  order-timeout: 30
+  # 优惠券每页默认条数
+  page-size: 10
+
+logging:
+  level:
+    com.mall: debug
+    org.mybatis: debug

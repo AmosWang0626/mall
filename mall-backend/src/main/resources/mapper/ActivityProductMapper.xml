@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mall.module.marketing.mapper.ActivityProductMapper">
+    <resultMap id="BaseResultMap" type="com.mall.module.marketing.entity.ActivityProduct">
+        <id column="id" property="id"/>
+        <result column="activity_id" property="activityId"/>
+        <result column="product_id" property="productId"/>
+        <result column="sku_id" property="skuId"/>
+        <result column="activity_price" property="activityPrice"/>
+        <result column="activity_stock" property="activityStock"/>
+        <result column="limit_per_user" property="limitPerUser"/>
+        <result column="sort" property="sort"/>
+        <result column="create_time" property="createTime"/>
+        <result column="product_name" property="productName"/>
+        <result column="product_image" property="productImage"/>
+    </resultMap>
+    <insert id="insert" parameterType="com.mall.module.marketing.entity.ActivityProduct" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO activity_product(activity_id,product_id,sku_id,activity_price,activity_stock,limit_per_user,sort)
+        VALUES(#{activityId},#{productId},#{skuId},#{activityPrice},#{activityStock},#{limitPerUser},#{sort})
+    </insert>
+    <insert id="batchInsert">
+        INSERT INTO activity_product(activity_id,product_id,sku_id,activity_price,activity_stock,limit_per_user,sort) VALUES
+        <foreach collection="list" item="item" separator=",">(#{item.activityId},#{item.productId},#{item.skuId},#{item.activityPrice},#{item.activityStock},#{item.limitPerUser},#{item.sort})</foreach>
+    </insert>
+    <delete id="deleteByActivityId">DELETE FROM activity_product WHERE activity_id=#{activityId}</delete>
+    <select id="selectByActivityId" resultMap="BaseResultMap">
+        SELECT ap.*,p.name AS product_name,p.main_image AS product_image
+        FROM activity_product ap LEFT JOIN product p ON ap.product_id=p.id
+        WHERE ap.activity_id=#{activityId} ORDER BY ap.sort
+    </select>
+    <select id="selectByProductId" resultMap="BaseResultMap">
+        SELECT ap.*,p.name AS product_name,p.main_image AS product_image
+        FROM activity_product ap LEFT JOIN product p ON ap.product_id=p.id
+        WHERE ap.product_id=#{productId}
+    </select>
+</mapper>

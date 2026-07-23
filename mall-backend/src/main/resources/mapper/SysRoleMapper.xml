@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mall.module.system.mapper.SysRoleMapper">
+    <resultMap id="BaseResultMap" type="com.mall.module.system.entity.SysRole">
+        <id column="id" property="id"/><result column="name" property="name"/><result column="code" property="code"/>
+        <result column="description" property="description"/><result column="sort" property="sort"/>
+        <result column="status" property="status"/><result column="data_scope" property="dataScope"/>
+        <result column="create_time" property="createTime"/><result column="update_time" property="updateTime"/><result column="deleted" property="deleted"/>
+    </resultMap>
+    <sql id="cols">id,name,code,description,sort,status,data_scope,create_time,update_time,deleted</sql>
+    <insert id="insert" parameterType="com.mall.module.system.entity.SysRole" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO sys_role(name,code,description,sort,status,data_scope) VALUES(#{name},#{code},#{description},#{sort},#{status},#{dataScope})
+    </insert>
+    <update id="updateById" parameterType="com.mall.module.system.entity.SysRole">
+        UPDATE sys_role<set><if test="name!=null">name=#{name},</if><if test="code!=null">code=#{code},</if>
+        <if test="description!=null">description=#{description},</if><if test="sort!=null">sort=#{sort},</if>
+        <if test="status!=null">status=#{status},</if><if test="dataScope!=null">data_scope=#{dataScope},</if></set>WHERE id=#{id} AND deleted=0
+    </update>
+    <update id="deleteById">UPDATE sys_role SET deleted=1 WHERE id=#{id}</update>
+    <select id="selectById" resultMap="BaseResultMap">SELECT <include refid="cols"/> FROM sys_role WHERE id=#{id} AND deleted=0</select>
+    <select id="selectByCode" resultMap="BaseResultMap">SELECT <include refid="cols"/> FROM sys_role WHERE code=#{code} AND deleted=0</select>
+    <select id="selectList" resultMap="BaseResultMap">SELECT <include refid="cols"/> FROM sys_role WHERE deleted=0<if test="keyword!=null and keyword!=''">AND(name LIKE CONCAT('%',#{keyword},'%') OR code LIKE CONCAT('%',#{keyword},'%'))</if>ORDER BY sort LIMIT #{offset},#{limit}</select>
+    <select id="count" resultType="long">SELECT COUNT(*) FROM sys_role WHERE deleted=0<if test="keyword!=null and keyword!=''">AND(name LIKE CONCAT('%',#{keyword},'%') OR code LIKE CONCAT('%',#{keyword},'%'))</if></select>
+    <select id="selectAll" resultMap="BaseResultMap">SELECT <include refid="cols"/> FROM sys_role WHERE deleted=0 AND status=1 ORDER BY sort</select>
+    <update id="updateStatus">UPDATE sys_role SET status=#{status} WHERE id=#{id} AND deleted=0</update>
+    <insert id="insertRolePermission">INSERT INTO sys_role_permission(role_id,permission_id) VALUES(#{roleId},#{permissionId})</insert>
+    <delete id="deleteRolePermissions">DELETE FROM sys_role_permission WHERE role_id=#{roleId}</delete>
+    <select id="selectPermissionIds" resultType="long">SELECT permission_id FROM sys_role_permission WHERE role_id=#{roleId}</select>
+    <select id="selectByAdminId" resultMap="BaseResultMap">SELECT r.* FROM sys_role r JOIN sys_admin_role ar ON r.id=ar.role_id WHERE ar.admin_id=#{adminId} AND r.deleted=0</select>
+    <insert id="insertAdminRole">INSERT INTO sys_admin_role(admin_id,role_id) VALUES(#{adminId},#{roleId})</insert>
+    <delete id="deleteAdminRoles">DELETE FROM sys_admin_role WHERE admin_id=#{adminId}</delete>
+    <select id="selectRoleIdsByAdminId" resultType="long">SELECT role_id FROM sys_admin_role WHERE admin_id=#{adminId}</select>
+</mapper>

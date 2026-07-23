@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mall.module.cart.mapper.CartItemMapper">
+    <resultMap id="BaseResultMap" type="com.mall.module.cart.entity.CartItem">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="product_id" property="productId"/>
+        <result column="sku_id" property="skuId"/>
+        <result column="product_name" property="productName"/>
+        <result column="product_image" property="productImage"/>
+        <result column="sku_name" property="skuName"/>
+        <result column="price" property="price"/>
+        <result column="quantity" property="quantity"/>
+        <result column="selected" property="selected"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+    <sql id="cols">id,user_id,product_id,sku_id,product_name,product_image,sku_name,price,quantity,selected,create_time,update_time</sql>
+
+    <insert id="insert" parameterType="com.mall.module.cart.entity.CartItem" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO cart_item(user_id,product_id,sku_id,product_name,product_image,sku_name,price,quantity,selected)
+        VALUES(#{userId},#{productId},#{skuId},#{productName},#{productImage},#{skuName},#{price},#{quantity},#{selected})
+    </insert>
+    <update id="updateById" parameterType="com.mall.module.cart.entity.CartItem">
+        UPDATE cart_item<set>
+            <if test="quantity!=null">quantity=#{quantity},</if>
+            <if test="selected!=null">selected=#{selected},</if>
+            <if test="price!=null">price=#{price},</if>
+        </set>WHERE id=#{id}
+    </update>
+    <delete id="deleteById">DELETE FROM cart_item WHERE id=#{id}</delete>
+    <delete id="deleteByUserIdAndProduct">DELETE FROM cart_item WHERE user_id=#{userId} AND product_id=#{productId} AND (sku_id=#{skuId} OR (#{skuId} IS NULL AND sku_id IS NULL))</delete>
+    <select id="selectById" resultMap="BaseResultMap">SELECT <include refid="cols"/> FROM cart_item WHERE id=#{id}</select>
+    <select id="selectByUserAndProduct" resultMap="BaseResultMap">SELECT <include refid="cols"/> FROM cart_item WHERE user_id=#{userId} AND product_id=#{productId} AND (sku_id=#{skuId} OR (#{skuId} IS NULL AND sku_id IS NULL))</select>
+    <select id="selectByUserId" resultMap="BaseResultMap">SELECT <include refid="cols"/> FROM cart_item WHERE user_id=#{userId} ORDER BY update_time DESC</select>
+    <select id="selectSelectedByUserId" resultMap="BaseResultMap">SELECT <include refid="cols"/> FROM cart_item WHERE user_id=#{userId} AND selected=1 ORDER BY update_time DESC</select>
+    <update id="updateQuantity">UPDATE cart_item SET quantity=#{quantity} WHERE id=#{id}</update>
+    <update id="updateSelected">UPDATE cart_item SET selected=#{selected} WHERE user_id=#{userId}</update>
+    <delete id="clearByUserId">DELETE FROM cart_item WHERE user_id=#{userId}</delete>
+    <select id="countByUserId" resultType="int">SELECT COUNT(*) FROM cart_item WHERE user_id=#{userId}</select>
+</mapper>

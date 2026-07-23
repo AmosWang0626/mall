@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mall.module.points.mapper.PointsLogMapper">
+    <resultMap id="BaseResultMap" type="com.mall.module.points.entity.PointsLog">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="change_type" property="changeType"/>
+        <result column="points" property="points"/>
+        <result column="balance_after" property="balanceAfter"/>
+        <result column="source" property="source"/>
+        <result column="ref_id" property="refId"/>
+        <result column="remark" property="remark"/>
+        <result column="create_time" property="createTime"/>
+    </resultMap>
+    <insert id="insert" parameterType="com.mall.module.points.entity.PointsLog" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO points_log(user_id,change_type,points,balance_after,source,ref_id,remark) VALUES(#{userId},#{changeType},#{points},#{balanceAfter},#{source},#{refId},#{remark})
+    </insert>
+    <select id="selectByUserId" resultMap="BaseResultMap">SELECT * FROM points_log WHERE user_id=#{userId}<if test="source!=null and source!=''">AND source=#{source}</if>ORDER BY create_time DESC LIMIT #{offset},#{limit}</select>
+    <select id="countByUserId" resultType="long">SELECT COUNT(*) FROM points_log WHERE user_id=#{userId}<if test="source!=null and source!=''">AND source=#{source}</if></select>
+</mapper>

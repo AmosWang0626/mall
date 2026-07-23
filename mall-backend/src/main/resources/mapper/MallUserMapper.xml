@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mall.module.user.mapper.MallUserMapper">
+
+    <resultMap id="BaseResultMap" type="com.mall.module.user.entity.MallUser">
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="password" property="password"/>
+        <result column="nickname" property="nickname"/>
+        <result column="phone" property="phone"/>
+        <result column="email" property="email"/>
+        <result column="avatar" property="avatar"/>
+        <result column="gender" property="gender"/>
+        <result column="status" property="status"/>
+        <result column="register_ip" property="registerIp"/>
+        <result column="last_login" property="lastLogin"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="deleted" property="deleted"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, username, password, nickname, phone, email, avatar, gender, status,
+        register_ip, last_login, create_time, update_time, deleted
+    </sql>
+
+    <insert id="insert" parameterType="com.mall.module.user.entity.MallUser" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO mall_user (username, password, nickname, phone, email, avatar, gender, status, register_ip)
+        VALUES (#{username}, #{password}, #{nickname}, #{phone}, #{email}, #{avatar}, #{gender}, #{status}, #{registerIp})
+    </insert>
+
+    <update id="updateById" parameterType="com.mall.module.user.entity.MallUser">
+        UPDATE mall_user
+        <set>
+            <if test="nickname != null">nickname = #{nickname},</if>
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="email != null">email = #{email},</if>
+            <if test="avatar != null">avatar = #{avatar},</if>
+            <if test="gender != null">gender = #{gender},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="password != null">password = #{password},</if>
+            <if test="lastLogin != null">last_login = #{lastLogin},</if>
+        </set>
+        WHERE id = #{id} AND deleted = 0
+    </update>
+
+    <update id="deleteById">
+        UPDATE mall_user SET deleted = 1 WHERE id = #{id}
+    </update>
+
+    <select id="selectById" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/> FROM mall_user WHERE id = #{id} AND deleted = 0
+    </select>
+
+    <select id="selectByUsername" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/> FROM mall_user WHERE username = #{username} AND deleted = 0
+    </select>
+
+    <select id="selectList" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/> FROM mall_user WHERE deleted = 0
+        <if test="keyword != null and keyword != ''">
+            AND (username LIKE CONCAT('%', #{keyword}, '%') OR nickname LIKE CONCAT('%', #{keyword}, '%') OR phone LIKE CONCAT('%', #{keyword}, '%'))
+        </if>
+        <if test="status != null">
+            AND status = #{status}
+        </if>
+        ORDER BY create_time DESC
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <select id="count" resultType="long">
+        SELECT COUNT(*) FROM mall_user WHERE deleted = 0
+        <if test="keyword != null and keyword != ''">
+            AND (username LIKE CONCAT('%', #{keyword}, '%') OR nickname LIKE CONCAT('%', #{keyword}, '%') OR phone LIKE CONCAT('%', #{keyword}, '%'))
+        </if>
+        <if test="status != null">
+            AND status = #{status}
+        </if>
+    </select>
+
+    <update id="updateStatus">
+        UPDATE mall_user SET status = #{status} WHERE id = #{id} AND deleted = 0
+    </update>
+
+    <update id="updateLastLogin">
+        UPDATE mall_user SET last_login = NOW() WHERE id = #{id}
+    </update>
+</mapper>

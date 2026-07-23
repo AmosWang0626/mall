@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mall.module.points.mapper.PointsAccountMapper">
+    <resultMap id="BaseResultMap" type="com.mall.module.points.entity.PointsAccount">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="balance" property="balance"/>
+        <result column="frozen" property="frozen"/>
+        <result column="total_earned" property="totalEarned"/>
+        <result column="total_used" property="totalUsed"/>
+        <result column="version" property="version"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+    <insert id="insert" parameterType="com.mall.module.points.entity.PointsAccount" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO points_account(user_id,balance,frozen,total_earned,total_used,version) VALUES(#{userId},#{balance},#{frozen},#{totalEarned},#{totalUsed},#{version})
+    </insert>
+    <update id="updateById" parameterType="com.mall.module.points.entity.PointsAccount">
+        UPDATE points_account<set>
+            <if test="balance!=null">balance=#{balance},</if>
+            <if test="frozen!=null">frozen=#{frozen},</if>
+            <if test="totalEarned!=null">total_earned=#{totalEarned},</if>
+            <if test="totalUsed!=null">total_used=#{totalUsed},</if>
+            version=version+1,
+        </set>WHERE id=#{id} AND version=#{version}
+    </update>
+    <select id="selectByUserId" resultMap="BaseResultMap">SELECT * FROM points_account WHERE user_id=#{userId}</select>
+    <update id="addPoints">UPDATE points_account SET balance=balance+#{points},total_earned=total_earned+#{points} WHERE user_id=#{userId}</update>
+    <update id="deductPoints">UPDATE points_account SET balance=balance-#{points},total_used=total_used+#{points} WHERE user_id=#{userId} AND balance>=#{points}</update>
+</mapper>

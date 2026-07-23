@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mall.module.order.mapper.MallOrderMapper">
+    <resultMap id="BaseResultMap" type="com.mall.module.order.entity.MallOrder">
+        <id column="id" property="id"/>
+        <result column="order_no" property="orderNo"/>
+        <result column="user_id" property="userId"/>
+        <result column="total_amount" property="totalAmount"/>
+        <result column="discount_amount" property="discountAmount"/>
+        <result column="points_amount" property="pointsAmount"/>
+        <result column="pay_amount" property="payAmount"/>
+        <result column="points_used" property="pointsUsed"/>
+        <result column="points_earned" property="pointsEarned"/>
+        <result column="coupon_id" property="couponId"/>
+        <result column="status" property="status"/>
+        <result column="pay_type" property="payType"/>
+        <result column="pay_time" property="payTime"/>
+        <result column="ship_time" property="shipTime"/>
+        <result column="receive_time" property="receiveTime"/>
+        <result column="close_time" property="closeTime"/>
+        <result column="receiver" property="receiver"/>
+        <result column="receiver_phone" property="receiverPhone"/>
+        <result column="receiver_address" property="receiverAddress"/>
+        <result column="ship_company" property="shipCompany"/>
+        <result column="ship_no" property="shipNo"/>
+        <result column="remark" property="remark"/>
+        <result column="expire_time" property="expireTime"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="deleted" property="deleted"/>
+    </resultMap>
+    <sql id="cols">id,order_no,user_id,total_amount,discount_amount,points_amount,pay_amount,points_used,points_earned,coupon_id,status,pay_type,pay_time,ship_time,receive_time,close_time,receiver,receiver_phone,receiver_address,ship_company,ship_no,remark,expire_time,create_time,update_time,deleted</sql>
+
+    <insert id="insert" parameterType="com.mall.module.order.entity.MallOrder" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO mall_order(order_no,user_id,total_amount,discount_amount,points_amount,pay_amount,points_used,points_earned,coupon_id,status,pay_type,receiver,receiver_phone,receiver_address,remark,expire_time)
+        VALUES(#{orderNo},#{userId},#{totalAmount},#{discountAmount},#{pointsAmount},#{payAmount},#{pointsUsed},#{pointsEarned},#{couponId},#{status},#{payType},#{receiver},#{receiverPhone},#{receiverAddress},#{remark},#{expireTime})
+    </insert>
+    <update id="updateById" parameterType="com.mall.module.order.entity.MallOrder">
+        UPDATE mall_order<set>
+            <if test="status!=null">status=#{status},</if>
+            <if test="payType!=null">pay_type=#{payType},</if>
+            <if test="payTime!=null">pay_time=#{payTime},</if>
+            <if test="shipTime!=null">ship_time=#{shipTime},</if>
+            <if test="receiveTime!=null">receive_time=#{receiveTime},</if>
+            <if test="closeTime!=null">close_time=#{closeTime},</if>
+            <if test="shipCompany!=null">ship_company=#{shipCompany},</if>
+            <if test="shipNo!=null">ship_no=#{shipNo},</if>
+            <if test="couponId!=null">coupon_id=#{couponId},</if>
+        </set>WHERE id=#{id} AND deleted=0
+    </update>
+    <select id="selectById" resultMap="BaseResultMap">SELECT <include refid="cols"/> FROM mall_order WHERE id=#{id} AND deleted=0</select>
+    <select id="selectByOrderNo" resultMap="BaseResultMap">SELECT <include refid="cols"/> FROM mall_order WHERE order_no=#{orderNo} AND deleted=0</select>
+    <select id="selectByUserId" resultMap="BaseResultMap">SELECT <include refid="cols"/> FROM mall_order WHERE user_id=#{userId} AND deleted=0<if test="status!=null">AND status=#{status}</if>ORDER BY create_time DESC LIMIT #{offset},#{limit}</select>
+    <select id="countByUserId" resultType="long">SELECT COUNT(*) FROM mall_order WHERE user_id=#{userId} AND deleted=0<if test="status!=null">AND status=#{status}</if></select>
+    <select id="selectList" resultMap="BaseResultMap">SELECT <include refid="cols"/> FROM mall_order WHERE deleted=0<if test="orderNo!=null and orderNo!=''">AND order_no LIKE CONCAT('%',#{orderNo},'%')</if><if test="status!=null">AND status=#{status}</if><if test="userId!=null">AND user_id=#{userId}</if>ORDER BY create_time DESC LIMIT #{offset},#{limit}</select>
+    <select id="count" resultType="long">SELECT COUNT(*) FROM mall_order WHERE deleted=0<if test="orderNo!=null and orderNo!=''">AND order_no LIKE CONCAT('%',#{orderNo},'%')</if><if test="status!=null">AND status=#{status}</if><if test="userId!=null">AND user_id=#{userId}</if></select>
+    <update id="updateStatus">UPDATE mall_order SET status=#{status} WHERE id=#{id} AND deleted=0</update>
+    <update id="updateShip">UPDATE mall_order SET ship_company=#{shipCompany},ship_no=#{shipNo},ship_time=NOW(),status=2 WHERE id=#{id} AND deleted=0</update>
+</mapper>

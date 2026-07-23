@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mall.module.order.mapper.OrderItemMapper">
+    <resultMap id="BaseResultMap" type="com.mall.module.order.entity.OrderItem">
+        <id column="id" property="id"/>
+        <result column="order_id" property="orderId"/>
+        <result column="order_no" property="orderNo"/>
+        <result column="product_id" property="productId"/>
+        <result column="sku_id" property="skuId"/>
+        <result column="product_name" property="productName"/>
+        <result column="product_image" property="productImage"/>
+        <result column="sku_name" property="skuName"/>
+        <result column="price" property="price"/>
+        <result column="quantity" property="quantity"/>
+        <result column="total_amount" property="totalAmount"/>
+        <result column="create_time" property="createTime"/>
+    </resultMap>
+    <insert id="batchInsert">
+        INSERT INTO order_item(order_id,order_no,product_id,sku_id,product_name,product_image,sku_name,price,quantity,total_amount)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.orderId},#{item.orderNo},#{item.productId},#{item.skuId},#{item.productName},#{item.productImage},#{item.skuName},#{item.price},#{item.quantity},#{item.totalAmount})
+        </foreach>
+    </insert>
+    <select id="selectByOrderId" resultMap="BaseResultMap">SELECT * FROM order_item WHERE order_id=#{orderId}</select>
+    <select id="selectByOrderIds" resultMap="BaseResultMap">SELECT * FROM order_item WHERE order_id IN<foreach collection="orderIds" item="id" open="(" separator="," close=")">#{id}</foreach></select>
+</mapper>

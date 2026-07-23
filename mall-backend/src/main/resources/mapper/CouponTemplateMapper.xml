@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mall.module.coupon.mapper.CouponTemplateMapper">
+    <resultMap id="BaseResultMap" type="com.mall.module.coupon.entity.CouponTemplate">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="type" property="type"/>
+        <result column="face_value" property="faceValue"/>
+        <result column="discount" property="discount"/>
+        <result column="min_spend" property="minSpend"/>
+        <result column="category_limit" property="categoryLimit"/>
+        <result column="total_count" property="totalCount"/>
+        <result column="issued_count" property="issuedCount"/>
+        <result column="per_limit" property="perLimit"/>
+        <result column="valid_type" property="validType"/>
+        <result column="valid_start" property="validStart"/>
+        <result column="valid_end" property="validEnd"/>
+        <result column="valid_days" property="validDays"/>
+        <result column="status" property="status"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="deleted" property="deleted"/>
+    </resultMap>
+    <sql id="cols">id,name,type,face_value,discount,min_spend,category_limit,total_count,issued_count,per_limit,valid_type,valid_start,valid_end,valid_days,status,create_time,update_time,deleted</sql>
+    <insert id="insert" parameterType="com.mall.module.coupon.entity.CouponTemplate" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO coupon_template(name,type,face_value,discount,min_spend,category_limit,total_count,per_limit,valid_type,valid_start,valid_end,valid_days,status)
+        VALUES(#{name},#{type},#{faceValue},#{discount},#{minSpend},#{categoryLimit},#{totalCount},#{perLimit},#{validType},#{validStart},#{validEnd},#{validDays},#{status})
+    </insert>
+    <update id="updateById" parameterType="com.mall.module.coupon.entity.CouponTemplate">
+        UPDATE coupon_template<set>
+            <if test="name!=null">name=#{name},</if>
+            <if test="type!=null">type=#{type},</if>
+            <if test="faceValue!=null">face_value=#{faceValue},</if>
+            <if test="discount!=null">discount=#{discount},</if>
+            <if test="minSpend!=null">min_spend=#{minSpend},</if>
+            <if test="totalCount!=null">total_count=#{totalCount},</if>
+            <if test="perLimit!=null">per_limit=#{perLimit},</if>
+            <if test="validType!=null">valid_type=#{validType},</if>
+            <if test="validStart!=null">valid_start=#{validStart},</if>
+            <if test="validEnd!=null">valid_end=#{validEnd},</if>
+            <if test="validDays!=null">valid_days=#{validDays},</if>
+            <if test="status!=null">status=#{status},</if>
+        </set>WHERE id=#{id} AND deleted=0
+    </update>
+    <update id="deleteById">UPDATE coupon_template SET deleted=1 WHERE id=#{id}</update>
+    <select id="selectById" resultMap="BaseResultMap">SELECT <include refid="cols"/> FROM coupon_template WHERE id=#{id} AND deleted=0</select>
+    <select id="selectList" resultMap="BaseResultMap">SELECT <include refid="cols"/> FROM coupon_template WHERE deleted=0<if test="name!=null and name!=''">AND name LIKE CONCAT('%',#{name},'%')</if><if test="status!=null">AND status=#{status}</if>ORDER BY create_time DESC LIMIT #{offset},#{limit}</select>
+    <select id="count" resultType="long">SELECT COUNT(*) FROM coupon_template WHERE deleted=0<if test="name!=null and name!=''">AND name LIKE CONCAT('%',#{name},'%')</if><if test="status!=null">AND status=#{status}</if></select>
+    <update id="updateStatus">UPDATE coupon_template SET status=#{status} WHERE id=#{id} AND deleted=0</update>
+    <update id="incrementIssued">UPDATE coupon_template SET issued_count=issued_count+1 WHERE id=#{id} AND(total_count=-1 OR issued_count<total_count)</update>
+    <select id="selectAvailable" resultMap="BaseResultMap">SELECT <include refid="cols"/> FROM coupon_template WHERE deleted=0 AND status=1 AND(total_count=-1 OR issued_count<total_count)ORDER BY create_time DESC</select>
+</mapper>
