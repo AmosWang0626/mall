@@ -63,9 +63,9 @@ public class SysAdminService {
 
     @Transactional
     public void assignRoles(Long adminId, List<Long> roleIds) {
-        adminMapper.deleteAdminRoles(adminId);
+        roleMapper.deleteAdminRoles(adminId);
         if (roleIds != null) {
-            for (Long roleId : roleIds) adminMapper.insertAdminRole(adminId, roleId);
+            for (Long roleId : roleIds) roleMapper.insertAdminRole(adminId, roleId);
         }
     }
 

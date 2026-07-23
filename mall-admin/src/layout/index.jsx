@@ -3,7 +3,7 @@ import { Layout as AntLayout, Menu, Avatar, Dropdown, message } from 'antd'
 import { useNavigate, useLocation, Outlet } from 'react-router-dom'
 import {
   DashboardOutlined, ShoppingOutlined, FileTextOutlined, UserOutlined,
-  GiftOutlined, TicketOutlined, ThunderboltOutlined, SettingOutlined,
+  GiftOutlined, TagOutlined, ThunderboltOutlined, SettingOutlined,
   LogoutOutlined, MenuFoldOutlined, MenuUnfoldOutlined
 } from '@ant-design/icons'
 import { useAuthStore } from '../store'
@@ -27,7 +27,7 @@ const menuItems = [
     { key: '/points/account', label: '积分账户' },
     { key: '/points/log', label: '积分流水' }
   ]},
-  { key: '/coupon', icon: <TicketOutlined />, label: '优惠券管理', children: [
+  { key: '/coupon', icon: <TagOutlined />, label: '优惠券管理', children: [
     { key: '/coupon/template', label: '优惠券模板' },
     { key: '/coupon/record', label: '领取记录' }
   ]},

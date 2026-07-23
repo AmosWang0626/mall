@@ -47,6 +47,6 @@
     <select id="selectList" resultMap="BaseResultMap">SELECT <include refid="cols"/> FROM coupon_template WHERE deleted=0<if test="name!=null and name!=''">AND name LIKE CONCAT('%',#{name},'%')</if><if test="status!=null">AND status=#{status}</if>ORDER BY create_time DESC LIMIT #{offset},#{limit}</select>
     <select id="count" resultType="long">SELECT COUNT(*) FROM coupon_template WHERE deleted=0<if test="name!=null and name!=''">AND name LIKE CONCAT('%',#{name},'%')</if><if test="status!=null">AND status=#{status}</if></select>
     <update id="updateStatus">UPDATE coupon_template SET status=#{status} WHERE id=#{id} AND deleted=0</update>
-    <update id="incrementIssued">UPDATE coupon_template SET issued_count=issued_count+1 WHERE id=#{id} AND(total_count=-1 OR issued_count<total_count)</update>
-    <select id="selectAvailable" resultMap="BaseResultMap">SELECT <include refid="cols"/> FROM coupon_template WHERE deleted=0 AND status=1 AND(total_count=-1 OR issued_count<total_count)ORDER BY create_time DESC</select>
+    <update id="incrementIssued">UPDATE coupon_template SET issued_count=issued_count+1 WHERE id=#{id} AND(total_count=-1 OR issued_count &lt; total_count)</update>
+    <select id="selectAvailable" resultMap="BaseResultMap">SELECT <include refid="cols"/> FROM coupon_template WHERE deleted=0 AND status=1 AND(total_count=-1 OR issued_count &lt; total_count)ORDER BY create_time DESC</select>
 </mapper>

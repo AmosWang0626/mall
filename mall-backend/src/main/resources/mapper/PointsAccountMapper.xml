@@ -26,5 +26,5 @@
     </update>
     <select id="selectByUserId" resultMap="BaseResultMap">SELECT * FROM points_account WHERE user_id=#{userId}</select>
     <update id="addPoints">UPDATE points_account SET balance=balance+#{points},total_earned=total_earned+#{points} WHERE user_id=#{userId}</update>
-    <update id="deductPoints">UPDATE points_account SET balance=balance-#{points},total_used=total_used+#{points} WHERE user_id=#{userId} AND balance>=#{points}</update>
+    <update id="deductPoints">UPDATE points_account SET balance=balance-#{points},total_used=total_used+#{points} WHERE user_id=#{userId} AND balance &gt;= #{points}</update>
 </mapper>

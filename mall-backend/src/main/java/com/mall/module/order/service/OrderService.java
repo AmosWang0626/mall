@@ -46,7 +46,7 @@ public class OrderService {
             Set<Long> idSet = new HashSet<>(dto.getCartItemIds());
             selected = allCart.stream().filter(c -> idSet.contains(c.getId())).collect(Collectors.toList());
         } else {
-            selected = allCart.stream().filter(CartItem::getSelected).filter(c -> c.getSelected() == 1).collect(Collectors.toList());
+            selected = allCart.stream().filter(c -> c.getSelected() != null && c.getSelected() == 1).collect(Collectors.toList());
         }
         if (selected.isEmpty()) throw BusinessException.of("购物车中没有选中的商品");
 

@@ -33,7 +33,7 @@
     <select id="selectById" resultMap="BaseResultMap">SELECT * FROM user_coupon WHERE id=#{id}</select>
     <select id="selectByUserId" resultMap="BaseResultMap">SELECT * FROM user_coupon WHERE user_id=#{userId}<if test="status!=null">AND status=#{status}</if>ORDER BY receive_time DESC</select>
     <select id="countByUserAndCoupon" resultType="int">SELECT COUNT(*) FROM user_coupon WHERE user_id=#{userId} AND coupon_id=#{couponId}</select>
-    <select id="selectAvailableByUserAndCoupon" resultMap="BaseResultMap">SELECT * FROM user_coupon WHERE user_id=#{userId} AND coupon_id=#{couponId} AND status=0 AND valid_end>=NOW() LIMIT 1</select>
+    <select id="selectAvailableByUserAndCoupon" resultMap="BaseResultMap">SELECT * FROM user_coupon WHERE user_id=#{userId} AND coupon_id=#{couponId} AND status=0 AND valid_end &gt;= NOW() LIMIT 1</select>
     <update id="updateUsed">UPDATE user_coupon SET status=1,order_id=#{orderId},use_time=NOW() WHERE id=#{id} AND status=0</update>
     <select id="selectByUserIdWithDetail" resultMap="DetailResultMap">
         SELECT uc.*,c.id AS c_id,c.name AS c_name,c.type AS c_type,c.face_value AS c_face_value,c.discount AS c_discount,c.min_spend AS c_min_spend

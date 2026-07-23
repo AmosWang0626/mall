@@ -450,7 +450,7 @@ CREATE TABLE `sys_operation_log` (
 
 -- 默认管理员 (密码: admin123, BCrypt加密)
 INSERT INTO `sys_admin` (`username`, `password`, `nickname`, `status`) VALUES
-('admin', '$2a$10$N.ZOn9G6/YLFixAOPMg/h.z7pCu6v2XyFDtC4q.jeeGm/TEZyj3C6', '超级管理员', 1);
+('admin', '$2a$10$GJ0.jc.y9culuivwtj6XjerBh9ZlsyKhdybRMcO9xPfDN5P66EiWy', '超级管理员', 1);
 
 -- 默认角色
 INSERT INTO `sys_role` (`name`, `code`, `description`, `sort`, `status`, `data_scope`) VALUES

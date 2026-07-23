@@ -37,5 +37,5 @@
     <select id="selectList" resultMap="BaseResultMap">SELECT <include refid="cols"/> FROM marketing_activity WHERE deleted=0<if test="name!=null and name!=''">AND name LIKE CONCAT('%',#{name},'%')</if><if test="type!=null and type!=''">AND type=#{type}</if><if test="status!=null">AND status=#{status}</if>ORDER BY create_time DESC LIMIT #{offset},#{limit}</select>
     <select id="count" resultType="long">SELECT COUNT(*) FROM marketing_activity WHERE deleted=0<if test="name!=null and name!=''">AND name LIKE CONCAT('%',#{name},'%')</if><if test="type!=null and type!=''">AND type=#{type}</if><if test="status!=null">AND status=#{status}</if></select>
     <update id="updateStatus">UPDATE marketing_activity SET status=#{status} WHERE id=#{id} AND deleted=0</update>
-    <select id="selectActive" resultMap="BaseResultMap">SELECT <include refid="cols"/> FROM marketing_activity WHERE deleted=0 AND enabled=1 AND status=1 AND start_time<=NOW() AND end_time>=NOW()<if test="type!=null and type!=''">AND type=#{type}</if>ORDER BY start_time ASC</select>
+    <select id="selectActive" resultMap="BaseResultMap">SELECT <include refid="cols"/> FROM marketing_activity WHERE deleted=0 AND enabled=1 AND status=1 AND start_time &lt;= NOW() AND end_time &gt;= NOW()<if test="type!=null and type!=''">AND type=#{type}</if>ORDER BY start_time ASC</select>
 </mapper>

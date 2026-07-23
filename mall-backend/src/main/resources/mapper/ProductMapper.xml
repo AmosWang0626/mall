@@ -116,7 +116,7 @@
     <update id="reduceStock">
         UPDATE product
         SET stock = stock - #{quantity}
-        WHERE id = #{id} AND deleted = 0 AND stock >= #{quantity}
+        WHERE id = #{id} AND deleted = 0 AND stock &gt;= #{quantity}
     </update>
 
     <update id="restoreStock">
