@@ -73,7 +73,7 @@ services:
     networks:
       - mall-net
 
-  # ========== React 前端 (Nginx) ==========
+  # ========== React 前端 - 管理后台 (Nginx) ==========
   frontend:
     build:
       context: ./mall-admin
@@ -83,6 +83,22 @@ services:
     restart: unless-stopped
     ports:
       - "80:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - mall-net
+
+  # ========== React H5 - C端商城 (Nginx) ==========
+  h5:
+    build:
+      context: ./mall-h5
+      dockerfile: Dockerfile
+    image: mall-h5:1.0.0
+    container_name: mall-h5
+    restart: unless-stopped
+    ports:
+      - "81:80"
     depends_on:
       backend:
         condition: service_healthy

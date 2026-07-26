@@ -1,0 +1,8 @@
+.checkout-address { padding: 16px; position: relative; }
+.checkout-address::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: repeating-linear-gradient(90deg, #ff4d4f 0, #ff4d4f 20%, #fff 20%, #fff 40%); }
+.addr-name { font-size: 16px; font-weight: 600; }
+.addr-detail { font-size: 13px; color: var(--text-secondary); margin-top: 4px; }
+.addr-empty { color: var(--text-secondary); text-align: center; padding: 8px; }
+.checkout-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 14px; }
+.pay-option { padding: 8px 0; }
+.checkout-bottom { position: fixed; bottom: 0; left: 0; right: 0; display: flex; align-items: center; justify-content: space-between; padding: 10px 16px; background: #fff; border-top: 1px solid #f0f0f0; z-index: 100; }

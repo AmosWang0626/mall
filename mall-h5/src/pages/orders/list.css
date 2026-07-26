@@ -1,0 +1,12 @@
+.order-card-header { display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border-bottom: 1px solid var(--border); }
+.order-status { font-size: 13px; font-weight: 500; }
+.status-0 { color: #ff4d4f; }
+.status-1 { color: #faad14; }
+.status-2 { color: #1890ff; }
+.status-3 { color: #52c41a; }
+.status-4, .status-5, .status-6 { color: #999; }
+.order-item { display: flex; gap: 10px; padding: 10px 12px; border-bottom: 1px solid var(--border); align-items: center; }
+.order-item img { width: 60px; height: 60px; border-radius: 6px; object-fit: cover; }
+.order-item-name { font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.order-card-footer { display: flex; align-items: center; justify-content: flex-end; gap: 8px; padding: 10px 12px; font-size: 13px; flex-wrap: wrap; }
+.order-actions { display: flex; gap: 6px; margin-left: auto; }
