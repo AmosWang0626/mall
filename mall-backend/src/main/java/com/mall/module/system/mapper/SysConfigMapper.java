@@ -12,7 +12,7 @@ public interface SysConfigMapper {
     int deleteById(Long id);
     SysConfig selectById(Long id);
     SysConfig selectByKey(@Param("key") String key);
-    List<SysConfig> selectList(@Param("keyword") String keyword, @Param("offset") int offset, @Param("limit") int limit);
+    List<SysConfig> selectList(@Param("keyword") String keyword);
     long count(@Param("keyword") String keyword);
     List<SysConfig> selectAll();
 }

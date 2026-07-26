@@ -18,7 +18,7 @@ public interface SysAdminMapper {
 
     SysAdmin selectByUsername(@Param("username") String username);
 
-    List<SysAdmin> selectList(@Param("keyword") String keyword, @Param("offset") int offset, @Param("limit") int limit);
+    List<SysAdmin> selectList(@Param("keyword") String keyword);
 
     long count(@Param("keyword") String keyword);
 

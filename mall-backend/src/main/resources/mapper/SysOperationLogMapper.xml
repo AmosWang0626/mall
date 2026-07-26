@@ -10,7 +10,7 @@
     <insert id="insert" parameterType="com.mall.module.system.entity.SysOperationLog" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO sys_operation_log(admin_id,admin_name,module,operation,method,request_url,request_param,ip,cost_time) VALUES(#{adminId},#{adminName},#{module},#{operation},#{method},#{requestUrl},#{requestParam},#{ip},#{costTime})
     </insert>
-    <select id="selectList" resultMap="BaseResultMap">SELECT * FROM sys_operation_log WHERE 1=1<if test="module!=null and module!=''">AND module=#{module}</if>ORDER BY create_time DESC LIMIT #{offset},#{limit}</select>
+    <select id="selectList" resultMap="BaseResultMap">SELECT * FROM sys_operation_log WHERE 1=1<if test="module!=null and module!=''">AND module=#{module}</if>ORDER BY create_time DESC</select>
     <select id="count" resultType="long">SELECT COUNT(*) FROM sys_operation_log WHERE 1=1<if test="module!=null and module!=''">AND module=#{module}</if></select>
     <delete id="deleteById">DELETE FROM sys_operation_log WHERE id=#{id}</delete>
 </mapper>

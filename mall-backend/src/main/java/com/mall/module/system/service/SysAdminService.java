@@ -22,7 +22,7 @@ public class SysAdminService {
 
     public PageResult<SysAdmin> list(String keyword, int pageNum, int pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-        List<SysAdmin> list = adminMapper.selectList(keyword, (pageNum-1)*pageSize, pageSize);
+        List<SysAdmin> list = adminMapper.selectList(keyword);
         list.forEach(a -> a.setPassword(null));
         PageInfo<SysAdmin> info = new PageInfo<>(list);
         return PageResult.of(info.getList(), info.getTotal(), pageNum, pageSize);

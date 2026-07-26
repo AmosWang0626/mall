@@ -65,7 +65,6 @@
             AND status = #{status}
         </if>
         ORDER BY create_time DESC
-        LIMIT #{offset}, #{limit}
     </select>
 
     <select id="count" resultType="long">

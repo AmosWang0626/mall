@@ -1,6 +1,8 @@
 package com.mall.module.marketing.service;
 
 import com.mall.common.PageResult;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.mall.common.exception.BusinessException;
 import com.mall.module.marketing.entity.ActivityProduct;
 import com.mall.module.marketing.entity.MarketingActivity;
@@ -18,9 +20,9 @@ public class MarketingService {
     @Autowired private ActivityProductMapper apMapper;
 
     public PageResult<MarketingActivity> list(String name, String type, Integer status, int pageNum, int pageSize) {
-        List<MarketingActivity> list = activityMapper.selectList(name, type, status, (pageNum-1)*pageSize, pageSize);
-        long total = activityMapper.count(name, type, status);
-        return PageResult.of(list, total, pageNum, pageSize);
+        PageHelper.startPage(pageNum, pageSize);
+        PageInfo<MarketingActivity> info = new PageInfo<>(activityMapper.selectList(name, type, status));
+        return PageResult.of(info.getList(), info.getTotal(), pageNum, pageSize);
     }
 
     public MarketingActivity getById(Long id) {

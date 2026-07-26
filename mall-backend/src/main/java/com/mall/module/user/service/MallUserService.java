@@ -28,7 +28,7 @@ public class MallUserService {
 
     public PageResult<MallUser> list(String keyword, Integer status, int pageNum, int pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-        PageInfo<MallUser> pageInfo = new PageInfo<>(userMapper.selectList(keyword, status, (pageNum - 1) * pageSize, pageSize));
+        PageInfo<MallUser> pageInfo = new PageInfo<>(userMapper.selectList(keyword, status));
         pageInfo.getList().forEach(u -> u.setPassword(null));
         return PageResult.of(pageInfo.getList(), pageInfo.getTotal(), pageNum, pageSize);
     }

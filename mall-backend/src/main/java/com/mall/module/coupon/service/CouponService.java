@@ -1,6 +1,8 @@
 package com.mall.module.coupon.service;
 
 import com.mall.common.PageResult;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.mall.common.exception.BusinessException;
 import com.mall.module.coupon.entity.CouponTemplate;
 import com.mall.module.coupon.entity.UserCoupon;
@@ -23,9 +25,9 @@ public class CouponService {
 
     // ===== Template CRUD =====
     public PageResult<CouponTemplate> list(String name, Integer status, int pageNum, int pageSize) {
-        List<CouponTemplate> list = templateMapper.selectList(name, status, (pageNum-1)*pageSize, pageSize);
-        long total = templateMapper.count(name, status);
-        return PageResult.of(list, total, pageNum, pageSize);
+        PageHelper.startPage(pageNum, pageSize);
+        PageInfo<CouponTemplate> info = new PageInfo<>(templateMapper.selectList(name, status));
+        return PageResult.of(info.getList(), info.getTotal(), pageNum, pageSize);
     }
 
     public CouponTemplate getById(Long id) { return templateMapper.selectById(id); }

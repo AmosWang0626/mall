@@ -20,7 +20,7 @@ public class SysConfigService {
 
     public PageResult<SysConfig> list(String keyword, int pageNum, int pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-        PageInfo<SysConfig> info = new PageInfo<>(configMapper.selectList(keyword, (pageNum-1)*pageSize, pageSize));
+        PageInfo<SysConfig> info = new PageInfo<>(configMapper.selectList(keyword));
         return PageResult.of(info.getList(), info.getTotal(), pageNum, pageSize);
     }
 

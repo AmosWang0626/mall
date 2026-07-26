@@ -19,7 +19,7 @@
     <update id="deleteById">UPDATE sys_role SET deleted=1 WHERE id=#{id}</update>
     <select id="selectById" resultMap="BaseResultMap">SELECT <include refid="cols"/> FROM sys_role WHERE id=#{id} AND deleted=0</select>
     <select id="selectByCode" resultMap="BaseResultMap">SELECT <include refid="cols"/> FROM sys_role WHERE code=#{code} AND deleted=0</select>
-    <select id="selectList" resultMap="BaseResultMap">SELECT <include refid="cols"/> FROM sys_role WHERE deleted=0<if test="keyword!=null and keyword!=''">AND(name LIKE CONCAT('%',#{keyword},'%') OR code LIKE CONCAT('%',#{keyword},'%'))</if>ORDER BY sort LIMIT #{offset},#{limit}</select>
+    <select id="selectList" resultMap="BaseResultMap">SELECT <include refid="cols"/> FROM sys_role WHERE deleted=0<if test="keyword!=null and keyword!=''">AND(name LIKE CONCAT('%',#{keyword},'%') OR code LIKE CONCAT('%',#{keyword},'%'))</if>ORDER BY sort</select>
     <select id="count" resultType="long">SELECT COUNT(*) FROM sys_role WHERE deleted=0<if test="keyword!=null and keyword!=''">AND(name LIKE CONCAT('%',#{keyword},'%') OR code LIKE CONCAT('%',#{keyword},'%'))</if></select>
     <select id="selectAll" resultMap="BaseResultMap">SELECT <include refid="cols"/> FROM sys_role WHERE deleted=0 AND status=1 ORDER BY sort</select>
     <update id="updateStatus">UPDATE sys_role SET status=#{status} WHERE id=#{id} AND deleted=0</update>

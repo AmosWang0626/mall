@@ -8,6 +8,6 @@ import java.util.List;
 @Mapper
 public interface PointsLogMapper {
     int insert(PointsLog log);
-    List<PointsLog> selectByUserId(@Param("userId") Long userId, @Param("source") String source, @Param("offset") int offset, @Param("limit") int limit);
+    List<PointsLog> selectByUserId(@Param("userId") Long userId, @Param("source") String source);
     long countByUserId(@Param("userId") Long userId, @Param("source") String source);
 }

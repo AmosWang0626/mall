@@ -8,7 +8,7 @@ import java.util.List;
 @Mapper
 public interface SysOperationLogMapper {
     int insert(SysOperationLog log);
-    List<SysOperationLog> selectList(@Param("module") String module, @Param("offset") int offset, @Param("limit") int limit);
+    List<SysOperationLog> selectList(@Param("module") String module);
     long count(@Param("module") String module);
     int deleteById(Long id);
 }

@@ -1,6 +1,8 @@
 package com.mall.module.points.service;
 
 import com.mall.common.PageResult;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.mall.common.exception.BusinessException;
 import com.mall.module.points.entity.PointsAccount;
 import com.mall.module.points.entity.PointsLog;
@@ -96,14 +98,14 @@ public class PointsService {
 
     public PageResult<PointsLog> myLogs(String source, int pageNum, int pageSize) {
         Long userId = UserContext.require().getUserId();
-        List<PointsLog> logs = logMapper.selectByUserId(userId, source, (pageNum-1)*pageSize, pageSize);
-        long total = logMapper.countByUserId(userId, source);
-        return PageResult.of(logs, total, pageNum, pageSize);
+        PageHelper.startPage(pageNum, pageSize);
+        PageInfo<PointsLog> info = new PageInfo<>(logMapper.selectByUserId(userId, source));
+        return PageResult.of(info.getList(), info.getTotal(), pageNum, pageSize);
     }
 
     public PageResult<PointsLog> adminLogs(Long userId, String source, int pageNum, int pageSize) {
-        List<PointsLog> logs = logMapper.selectByUserId(userId, source, (pageNum-1)*pageSize, pageSize);
-        long total = logMapper.countByUserId(userId, source);
-        return PageResult.of(logs, total, pageNum, pageSize);
+        PageHelper.startPage(pageNum, pageSize);
+        PageInfo<PointsLog> info = new PageInfo<>(logMapper.selectByUserId(userId, source));
+        return PageResult.of(info.getList(), info.getTotal(), pageNum, pageSize);
     }
 }

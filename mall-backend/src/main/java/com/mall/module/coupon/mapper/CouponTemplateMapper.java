@@ -11,7 +11,7 @@ public interface CouponTemplateMapper {
     int updateById(CouponTemplate coupon);
     int deleteById(Long id);
     CouponTemplate selectById(Long id);
-    List<CouponTemplate> selectList(@Param("name") String name, @Param("status") Integer status, @Param("offset") int offset, @Param("limit") int limit);
+    List<CouponTemplate> selectList(@Param("name") String name, @Param("status") Integer status);
     long count(@Param("name") String name, @Param("status") Integer status);
     int updateStatus(@Param("id") Long id, @Param("status") int status);
     int incrementIssued(@Param("id") Long id);

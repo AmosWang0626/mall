@@ -50,9 +50,9 @@
     </update>
     <select id="selectById" resultMap="BaseResultMap">SELECT <include refid="cols"/> FROM mall_order WHERE id=#{id} AND deleted=0</select>
     <select id="selectByOrderNo" resultMap="BaseResultMap">SELECT <include refid="cols"/> FROM mall_order WHERE order_no=#{orderNo} AND deleted=0</select>
-    <select id="selectByUserId" resultMap="BaseResultMap">SELECT <include refid="cols"/> FROM mall_order WHERE user_id=#{userId} AND deleted=0<if test="status!=null">AND status=#{status}</if>ORDER BY create_time DESC LIMIT #{offset},#{limit}</select>
+    <select id="selectByUserId" resultMap="BaseResultMap">SELECT <include refid="cols"/> FROM mall_order WHERE user_id=#{userId} AND deleted=0<if test="status!=null">AND status=#{status}</if>ORDER BY create_time DESC</select>
     <select id="countByUserId" resultType="long">SELECT COUNT(*) FROM mall_order WHERE user_id=#{userId} AND deleted=0<if test="status!=null">AND status=#{status}</if></select>
-    <select id="selectList" resultMap="BaseResultMap">SELECT <include refid="cols"/> FROM mall_order WHERE deleted=0<if test="orderNo!=null and orderNo!=''">AND order_no LIKE CONCAT('%',#{orderNo},'%')</if><if test="status!=null">AND status=#{status}</if><if test="userId!=null">AND user_id=#{userId}</if>ORDER BY create_time DESC LIMIT #{offset},#{limit}</select>
+    <select id="selectList" resultMap="BaseResultMap">SELECT <include refid="cols"/> FROM mall_order WHERE deleted=0<if test="orderNo!=null and orderNo!=''">AND order_no LIKE CONCAT('%',#{orderNo},'%')</if><if test="status!=null">AND status=#{status}</if><if test="userId!=null">AND user_id=#{userId}</if>ORDER BY create_time DESC</select>
     <select id="count" resultType="long">SELECT COUNT(*) FROM mall_order WHERE deleted=0<if test="orderNo!=null and orderNo!=''">AND order_no LIKE CONCAT('%',#{orderNo},'%')</if><if test="status!=null">AND status=#{status}</if><if test="userId!=null">AND user_id=#{userId}</if></select>
     <update id="updateStatus">UPDATE mall_order SET status=#{status} WHERE id=#{id} AND deleted=0</update>
     <update id="updateShip">UPDATE mall_order SET ship_company=#{shipCompany},ship_no=#{shipNo},ship_time=NOW(),status=2 WHERE id=#{id} AND deleted=0</update>

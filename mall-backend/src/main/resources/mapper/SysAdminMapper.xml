@@ -58,7 +58,7 @@
         <if test="keyword != null and keyword != ''">
             AND (username LIKE CONCAT('%', #{keyword}, '%') OR nickname LIKE CONCAT('%', #{keyword}, '%'))
         </if>
-        ORDER BY create_time DESC LIMIT #{offset}, #{limit}
+        ORDER BY create_time DESC
     </select>
 
     <select id="count" resultType="long">

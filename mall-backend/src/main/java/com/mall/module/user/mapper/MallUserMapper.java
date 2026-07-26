@@ -19,9 +19,7 @@ public interface MallUserMapper {
     MallUser selectByUsername(@Param("username") String username);
 
     List<MallUser> selectList(@Param("keyword") String keyword,
-                              @Param("status") Integer status,
-                              @Param("offset") int offset,
-                              @Param("limit") int limit);
+                              @Param("status") Integer status);
 
     long count(@Param("keyword") String keyword, @Param("status") Integer status);
 

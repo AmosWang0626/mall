@@ -11,9 +11,9 @@ public interface MallOrderMapper {
     int updateById(MallOrder order);
     MallOrder selectById(Long id);
     MallOrder selectByOrderNo(@Param("orderNo") String orderNo);
-    List<MallOrder> selectByUserId(@Param("userId") Long userId, @Param("status") Integer status, @Param("offset") int offset, @Param("limit") int limit);
+    List<MallOrder> selectByUserId(@Param("userId") Long userId, @Param("status") Integer status);
     long countByUserId(@Param("userId") Long userId, @Param("status") Integer status);
-    List<MallOrder> selectList(@Param("orderNo") String orderNo, @Param("status") Integer status, @Param("userId") Long userId, @Param("offset") int offset, @Param("limit") int limit);
+    List<MallOrder> selectList(@Param("orderNo") String orderNo, @Param("status") Integer status, @Param("userId") Long userId);
     long count(@Param("orderNo") String orderNo, @Param("status") Integer status, @Param("userId") Long userId);
     int updateStatus(@Param("id") Long id, @Param("status") int status);
     int updateShip(@Param("id") Long id, @Param("shipCompany") String shipCompany, @Param("shipNo") String shipNo);

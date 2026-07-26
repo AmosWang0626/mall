@@ -11,7 +11,7 @@ public interface MarketingActivityMapper {
     int updateById(MarketingActivity activity);
     int deleteById(Long id);
     MarketingActivity selectById(Long id);
-    List<MarketingActivity> selectList(@Param("name") String name, @Param("type") String type, @Param("status") Integer status, @Param("offset") int offset, @Param("limit") int limit);
+    List<MarketingActivity> selectList(@Param("name") String name, @Param("type") String type, @Param("status") Integer status);
     long count(@Param("name") String name, @Param("type") String type, @Param("status") Integer status);
     int updateStatus(@Param("id") Long id, @Param("status") int status);
     List<MarketingActivity> selectActive(@Param("type") String type);

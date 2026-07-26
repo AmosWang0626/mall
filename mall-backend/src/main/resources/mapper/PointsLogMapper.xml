@@ -15,6 +15,6 @@
     <insert id="insert" parameterType="com.mall.module.points.entity.PointsLog" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO points_log(user_id,change_type,points,balance_after,source,ref_id,remark) VALUES(#{userId},#{changeType},#{points},#{balanceAfter},#{source},#{refId},#{remark})
     </insert>
-    <select id="selectByUserId" resultMap="BaseResultMap">SELECT * FROM points_log WHERE user_id=#{userId}<if test="source!=null and source!=''">AND source=#{source}</if>ORDER BY create_time DESC LIMIT #{offset},#{limit}</select>
+    <select id="selectByUserId" resultMap="BaseResultMap">SELECT * FROM points_log WHERE user_id=#{userId}<if test="source!=null and source!=''">AND source=#{source}</if>ORDER BY create_time DESC</select>
     <select id="countByUserId" resultType="long">SELECT COUNT(*) FROM points_log WHERE user_id=#{userId}<if test="source!=null and source!=''">AND source=#{source}</if></select>
 </mapper>

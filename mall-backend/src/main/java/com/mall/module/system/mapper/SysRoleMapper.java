@@ -12,7 +12,7 @@ public interface SysRoleMapper {
     int deleteById(Long id);
     SysRole selectById(Long id);
     SysRole selectByCode(@Param("code") String code);
-    List<SysRole> selectList(@Param("keyword") String keyword, @Param("offset") int offset, @Param("limit") int limit);
+    List<SysRole> selectList(@Param("keyword") String keyword);
     long count(@Param("keyword") String keyword);
     List<SysRole> selectAll();
     int updateStatus(@Param("id") Long id, @Param("status") int status);

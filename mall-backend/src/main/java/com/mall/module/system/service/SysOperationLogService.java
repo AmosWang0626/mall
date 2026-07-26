@@ -15,7 +15,7 @@ public class SysOperationLogService {
 
     public PageResult<SysOperationLog> list(String module, int pageNum, int pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-        PageInfo<SysOperationLog> info = new PageInfo<>(logMapper.selectList(module, (pageNum-1)*pageSize, pageSize));
+        PageInfo<SysOperationLog> info = new PageInfo<>(logMapper.selectList(module));
         return PageResult.of(info.getList(), info.getTotal(), pageNum, pageSize);
     }
 

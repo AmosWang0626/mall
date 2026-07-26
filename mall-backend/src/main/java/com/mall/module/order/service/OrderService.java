@@ -1,6 +1,8 @@
 package com.mall.module.order.service;
 
 import com.mall.common.PageResult;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.mall.common.exception.BusinessException;
 import com.mall.module.cart.entity.CartItem;
 import com.mall.module.cart.mapper.CartItemMapper;
@@ -168,17 +170,17 @@ public class OrderService {
 
     public PageResult<MallOrder> myList(Integer status, int pageNum, int pageSize) {
         Long userId = UserContext.require().getUserId();
-        List<MallOrder> orders = orderMapper.selectByUserId(userId, status, (pageNum-1)*pageSize, pageSize);
-        long total = orderMapper.countByUserId(userId, status);
-        for (MallOrder o : orders) o.setItems(itemMapper.selectByOrderId(o.getId()));
-        return PageResult.of(orders, total, pageNum, pageSize);
+        PageHelper.startPage(pageNum, pageSize);
+        PageInfo<MallOrder> info = new PageInfo<>(orderMapper.selectByUserId(userId, status));
+        for (MallOrder o : info.getList()) o.setItems(itemMapper.selectByOrderId(o.getId()));
+        return PageResult.of(info.getList(), info.getTotal(), pageNum, pageSize);
     }
 
     public PageResult<MallOrder> adminList(String orderNo, Integer status, Long userId, int pageNum, int pageSize) {
-        List<MallOrder> orders = orderMapper.selectList(orderNo, status, userId, (pageNum-1)*pageSize, pageSize);
-        long total = orderMapper.count(orderNo, status, userId);
-        for (MallOrder o : orders) o.setItems(itemMapper.selectByOrderId(o.getId()));
-        return PageResult.of(orders, total, pageNum, pageSize);
+        PageHelper.startPage(pageNum, pageSize);
+        PageInfo<MallOrder> info = new PageInfo<>(orderMapper.selectList(orderNo, status, userId));
+        for (MallOrder o : info.getList()) o.setItems(itemMapper.selectByOrderId(o.getId()));
+        return PageResult.of(info.getList(), info.getTotal(), pageNum, pageSize);
     }
 
     @Transactional
