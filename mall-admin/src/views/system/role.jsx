@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Card, Table, Button, Input, Space, Modal, Form, Tag, Tree, message } from 'antd'
+import { Card, Table, Button, Input, InputNumber, Select, Space, Modal, Form, Tag, Tree, message } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
 import { sysRoleApi, sysPermissionApi } from '../../api'
 
@@ -69,9 +69,13 @@ export default function SysRole() {
           <Form.Item name="name" label="角色名称" rules={[{ required: true }]}><Input /></Form.Item>
           <Form.Item name="code" label="角色编码" rules={[{ required: true }]}><Input /></Form.Item>
           <Form.Item name="description" label="描述"><Input.TextArea rows={2} /></Form.Item>
-          <Form.Item name="sort" label="排序"><InputNumber /></Form.Item>
-          <Form.Item name="dataScope" label="数据权限范围"><InputNumber /></Form.Item>
-          <Form.Item name="status" label="状态"><InputNumber /></Form.Item>
+          <Form.Item name="sort" label="排序"><InputNumber style={{ width: '100%' }} /></Form.Item>
+          <Form.Item name="dataScope" label="数据权限范围">
+            <Select options={[{ label: '全部数据', value: 1 }, { label: '自定义数据', value: 2 }, { label: '本部门数据', value: 3 }, { label: '本部门及以下', value: 4 }]} />
+          </Form.Item>
+          <Form.Item name="status" label="状态">
+            <Select options={[{ label: '正常', value: 1 }, { label: '禁用', value: 0 }]} />
+          </Form.Item>
         </Form>
       </Modal>
       <Modal title="分配权限" open={permModal.open} onOk={handleAssignPerms} onCancel={() => setPermModal({ open: false, id: null })} width={500}>
