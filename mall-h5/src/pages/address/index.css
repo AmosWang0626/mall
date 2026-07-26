@@ -1,0 +1,45 @@
+.page {
+  min-height: 100vh;
+  background: #f5f5f5;
+}
+
+.addr-item {
+  padding: 4px 0;
+}
+
+.addr-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.addr-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+}
+
+.addr-phone {
+  font-size: 14px;
+  color: #666;
+}
+
+.addr-default {
+  font-size: 11px;
+  color: #ff4d4f;
+  border: 1px solid #ff4d4f;
+  border-radius: 3px;
+  padding: 0 4px;
+  line-height: 16px;
+}
+
+.addr-detail {
+  font-size: 13px;
+  color: #999;
+  line-height: 1.5;
+}
+
+.addr-add-btn {
+  padding: 20px 16px;
+}

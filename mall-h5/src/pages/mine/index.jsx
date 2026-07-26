@@ -30,8 +30,8 @@ export default function Mine() {
       { icon: '\u{1F4AF}', label: '我的积分', path: '/points' },
     ],
     [
-      { icon: '\u{1F4CD}', label: '收货地址', path: '/mine' },
-      { icon: '\u{1F510}', label: '修改密码', path: '/mine' },
+      { icon: '\u{1F4CD}', label: '收货地址', path: '/address' },
+      { icon: '\u{1F510}', label: '修改密码', path: '/change-password' },
     ]
   ]
 

@@ -14,6 +14,8 @@ import OrderList from './pages/orders/list'
 import OrderDetail from './pages/orders/detail'
 import Points from './pages/points'
 import Coupons from './pages/coupons'
+import Address from './pages/address'
+import ChangePassword from './pages/password'
 
 const tabs = [
   { key: '/', title: '首页', icon: <AppOutline /> },
@@ -46,6 +48,8 @@ function MainLayout() {
         <Route path="/order/:id" element={<OrderDetail />} />
         <Route path="/points" element={<Points />} />
         <Route path="/coupons" element={<Coupons />} />
+        <Route path="/address" element={<Address />} />
+        <Route path="/change-password" element={<ChangePassword />} />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
       {showTabBar && (
