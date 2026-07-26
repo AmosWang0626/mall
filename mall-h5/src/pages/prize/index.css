@@ -1,0 +1,151 @@
+.prize-page { background: #f5f5f5; min-height: 100vh; }
+
+.prize-list { padding: 8px 12px; }
+
+/* 奖池卡片 */
+.prize-card {
+  display: flex;
+  background: #fff;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+/* 左侧券面 */
+.prize-card-left {
+  width: 130px;
+  background: linear-gradient(135deg, #ff4d4f, #ff7a45);
+  color: #fff;
+  padding: 16px 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.coupon-type-tag {
+  font-size: 10px;
+  background: rgba(255,255,255,0.25);
+  padding: 2px 8px;
+  border-radius: 10px;
+  margin-bottom: 8px;
+}
+.coupon-value-num {
+  font-size: 28px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+.coupon-value-unit {
+  font-size: 14px;
+  font-weight: 600;
+  margin-left: 2px;
+}
+.prize-card-condition {
+  font-size: 11px;
+  opacity: 0.9;
+  margin-top: 6px;
+  text-align: center;
+}
+
+/* 右侧信息 */
+.prize-card-right {
+  flex: 1;
+  padding: 14px 14px 14px 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 110px;
+}
+.prize-card-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 2px;
+}
+.prize-card-desc {
+  font-size: 12px;
+  color: #999;
+  line-height: 1.4;
+}
+.prize-card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin: 6px 0;
+}
+.meta-tag {
+  font-size: 10px;
+  color: #ff4d4f;
+  background: #fff1f0;
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+.prize-card-stock {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  color: #999;
+  margin-bottom: 4px;
+}
+.stock-num b { color: #ff4d4f; font-size: 13px; }
+.stock-out { color: #ccc; }
+.stock-infinite { color: #52c41a; }
+.stock-claimed { color: #999; }
+
+/* 领取按钮 */
+.prize-claim-btn {
+  align-self: flex-start;
+  padding: 5px 18px;
+  border: none;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(135deg, #ff4d4f, #ff7a45);
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+.prize-claim-btn.disabled {
+  background: #e0e0e0;
+  color: #999;
+  cursor: not-allowed;
+}
+
+/* 波浪装饰 */
+.prize-card-wave {
+  position: absolute;
+  left: 130px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 6px,
+    #f5f5f5 6px,
+    #f5f5f5 12px
+  );
+}
+
+/* 领券说明 */
+.prize-tips {
+  padding: 16px 16px 24px;
+}
+.tips-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #666;
+  margin-bottom: 8px;
+}
+.prize-tips ul {
+  padding-left: 16px;
+  margin: 0;
+}
+.prize-tips li {
+  font-size: 12px;
+  color: #aaa;
+  line-height: 1.8;
+}

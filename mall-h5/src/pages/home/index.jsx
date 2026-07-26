@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { SearchBar, InfiniteScroll, Toast } from 'antd-mobile'
-import { productApi, cartApi } from '../../api'
+import { productApi, cartApi, prizeApi } from '../../api'
 import { useAuthStore } from '../../store'
 import './index.css'
 
@@ -14,6 +14,29 @@ export default function Home() {
   const [keyword, setKeyword] = useState('')
   const [page, setPage] = useState(1)
   const [hasMore, setHasMore] = useState(true)
+  const [banners, setBanners] = useState([])
+  const bannerIdx = useRef(0)
+  const bannerTimer = useRef(null)
+
+  // 加载营销Banner
+  useEffect(() => {
+    prizeApi.banners().then(res => {
+      setBanners(res.data || [])
+      if ((res.data || []).length > 1) {
+        bannerTimer.current = setInterval(() => {
+          bannerIdx.current = (bannerIdx.current + 1) % (res.data || []).length
+          const track = document.querySelector('.banner-track')
+          if (track) track.style.transform = `translateX(-${bannerIdx.current * 100}%)`
+        }, 3500)
+      }
+    }).catch(() => {})
+    return () => { if (bannerTimer.current) clearInterval(bannerTimer.current) }
+  }, [])
+
+  const handleBannerClick = (pool) => {
+    if (!token) { navigate('/login'); return }
+    navigate('/prize')
+  }
 
   const loadMore = async () => {
     const res = await productApi.list({ pageNum: page, pageSize: 10, keyword })
@@ -59,12 +82,44 @@ export default function Home() {
           style={{ flex: 1 }}
         />
       </div>
-      <div className="banner">
-        <div className="banner-text">
-          <div style={{ fontSize: 22, fontWeight: 700 }}>欢迎光临</div>
-          <div style={{ fontSize: 13, opacity: 0.9, marginTop: 4 }}>精选好物 · 品质保证</div>
+
+      {/* 营销Banner轮播 */}
+      {banners.length > 0 ? (
+        <div className="banner-carousel">
+          <div className="banner-track">
+            {banners.map(b => (
+              <div
+                key={b.id}
+                className="banner-slide"
+                style={{ background: `linear-gradient(135deg, ${b.bannerColor || '#ff4d4f'}, ${b.bannerColorEnd || '#ff7a45'})` }}
+                onClick={() => handleBannerClick(b)}
+              >
+                <div className="banner-slide-content">
+                  <div className="banner-slide-title">{b.bannerText || b.name}</div>
+                  <div className="banner-slide-desc">{b.description || '点击立即领取'}</div>
+                  <div className="banner-slide-btn">立即领取 &rsaquo;</div>
+                </div>
+                <div className="banner-slide-icon">&#127873;</div>
+              </div>
+            ))}
+          </div>
+          {banners.length > 1 && (
+            <div className="banner-dots">
+              {banners.map((_, i) => (
+                <span key={i} className="banner-dot" />
+              ))}
+            </div>
+          )}
         </div>
-      </div>
+      ) : (
+        <div className="banner">
+          <div className="banner-text">
+            <div style={{ fontSize: 22, fontWeight: 700 }}>欢迎光临</div>
+            <div style={{ fontSize: 13, opacity: 0.9, marginTop: 4 }}>精选好物 · 品质保证</div>
+          </div>
+        </div>
+      )}
+
       <div className="product-grid">
         {list.map(item => (
           <div key={item.id} className="product-card" onClick={() => navigate(`/product/${item.id}`)}>

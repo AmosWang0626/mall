@@ -63,3 +63,10 @@ export const addressApi = {
   delete: (id) => request.delete(`/user/address/${id}`),
   getDefault: () => request.get('/user/address/default')
 }
+
+// ===== Prize Pool (奖池领券) =====
+export const prizeApi = {
+  banners: () => request.get('/public/prize/banners'),
+  list: () => request.get('/prize/list'),
+  claim: (poolId) => request.post(`/prize/claim/${poolId}`)
+}

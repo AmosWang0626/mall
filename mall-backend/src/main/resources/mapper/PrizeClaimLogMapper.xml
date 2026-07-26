@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mall.module.prize.mapper.PrizeClaimLogMapper">
+
+    <insert id="insert" parameterType="com.mall.module.prize.entity.PrizeClaimLog" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO marketing_prize_claim_log
+        (pool_id, user_id, coupon_id, claim_time)
+        VALUES
+        (#{poolId}, #{userId}, #{couponId}, #{claimTime})
+    </insert>
+
+    <select id="countByPoolAndUser" resultType="int">
+        SELECT COUNT(*) FROM marketing_prize_claim_log
+        WHERE pool_id = #{poolId} AND user_id = #{userId}
+    </select>
+
+</mapper>

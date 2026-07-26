@@ -16,6 +16,7 @@ import Points from './pages/points'
 import Coupons from './pages/coupons'
 import Address from './pages/address'
 import ChangePassword from './pages/password'
+import PrizeCenter from './pages/prize'
 
 const tabs = [
   { key: '/', title: '首页', icon: <AppOutline /> },
@@ -50,6 +51,7 @@ function MainLayout() {
         <Route path="/coupons" element={<Coupons />} />
         <Route path="/address" element={<Address />} />
         <Route path="/change-password" element={<ChangePassword />} />
+        <Route path="/prize" element={<PrizeCenter />} />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
       {showTabBar && (

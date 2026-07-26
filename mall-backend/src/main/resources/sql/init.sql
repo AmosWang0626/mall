@@ -532,14 +532,66 @@ INSERT INTO `product` (`category_id`, `name`, `subtitle`, `main_image`, `price`,
 
 -- 示例优惠券
 INSERT INTO `coupon_template` (`name`, `type`, `face_value`, `discount`, `min_spend`, `total_count`, `issued_count`, `per_limit`, `valid_type`, `valid_start`, `valid_end`, `valid_days`, `status`) VALUES
-('新人满100减20', 1, 20.00, NULL, 100.00, 1000, 0, 1, 1, '2024-01-01 00:00:00', '2025-12-31 23:59:59', NULL, 1),
-('全场9折券', 2, NULL, 0.90, 0.00, 500, 0, 1, 1, '2024-01-01 00:00:00', '2025-12-31 23:59:59', NULL, 1),
+('新人满100减20', 1, 20.00, NULL, 100.00, 1000, 0, 1, 1, '2024-01-01 00:00:00', '2027-12-31 23:59:59', NULL, 1),
+('全场9折券', 2, NULL, 0.90, 0.00, 500, 0, 1, 1, '2024-01-01 00:00:00', '2027-12-31 23:59:59', NULL, 1),
 ('无门槛10元券', 3, 10.00, NULL, 0.00, 200, 0, 1, 2, NULL, NULL, 30, 1),
-('满500减50', 1, 50.00, NULL, 500.00, 300, 0, 2, 1, '2024-01-01 00:00:00', '2025-12-31 23:59:59', NULL, 1);
+('满500减50', 1, 50.00, NULL, 500.00, 300, 0, 2, 1, '2024-01-01 00:00:00', '2027-12-31 23:59:59', NULL, 1);
 
 -- 示例营销活动
 INSERT INTO `marketing_activity` (`name`, `type`, `description`, `start_time`, `end_time`, `status`, `enabled`, `rules`) VALUES
-('限时秒杀-数码专场', 'FLASH_SALE', '精选数码产品限时秒杀', '2024-06-01 00:00:00', '2025-12-31 23:59:59', 1, 1, '{"limitPerUser":1}'),
-('满300减30', 'FULL_REDUCTION', '全场满300减30元', '2024-01-01 00:00:00', '2025-12-31 23:59:59', 1, 1, '{"threshold":300,"reduction":30}');
+('限时秒杀-数码专场', 'FLASH_SALE', '精选数码产品限时秒杀', '2024-06-01 00:00:00', '2027-12-31 23:59:59', 1, 1, '{"limitPerUser":1}'),
+('满300减30', 'FULL_REDUCTION', '全场满300减30元', '2024-01-01 00:00:00', '2027-12-31 23:59:59', 1, 1, '{"threshold":300,"reduction":30}');
+
+-- ============================================================
+-- 10. 奖池模块
+-- ============================================================
+
+-- 奖池表 (通过奖池发券，控制库存、用户频控等)
+DROP TABLE IF EXISTS `marketing_prize_pool`;
+CREATE TABLE `marketing_prize_pool` (
+    `id`                  BIGINT        NOT NULL AUTO_INCREMENT,
+    `name`                VARCHAR(100)  NOT NULL COMMENT '奖池名称',
+    `description`         VARCHAR(500)           DEFAULT NULL COMMENT '奖池描述',
+    `coupon_id`           BIGINT        NOT NULL COMMENT '关联优惠券模板ID',
+    `total_stock`         INT           NOT NULL DEFAULT -1 COMMENT '总库存(-1不限)',
+    `claimed_count`       INT           NOT NULL DEFAULT 0 COMMENT '已领取数量',
+    `per_user_limit`      INT           NOT NULL DEFAULT 1 COMMENT '每人限领总数(0不限)',
+    `per_user_daily_limit` INT          NOT NULL DEFAULT 0 COMMENT '每人每日限领(0不限)',
+    `daily_limit`         INT           NOT NULL DEFAULT 0 COMMENT '每日总限领(0不限)',
+    `start_time`          DATETIME      NOT NULL COMMENT '开始时间',
+    `end_time`            DATETIME      NOT NULL COMMENT '结束时间',
+    `status`              TINYINT       NOT NULL DEFAULT 1 COMMENT '状态: 0-禁用, 1-启用',
+    `banner_text`         VARCHAR(100)           DEFAULT NULL COMMENT 'Banner文案',
+    `banner_color`        VARCHAR(20)            DEFAULT '#ff4d4f' COMMENT 'Banner渐变起始色',
+    `banner_color_end`    VARCHAR(20)            DEFAULT '#ff7a45' COMMENT 'Banner渐变结束色',
+    `sort`                INT                    DEFAULT 0 COMMENT '排序(越大越靠前)',
+    `create_time`         DATETIME               DEFAULT CURRENT_TIMESTAMP,
+    `update_time`         DATETIME               DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    `deleted`             TINYINT                DEFAULT 0,
+    PRIMARY KEY (`id`),
+    KEY `idx_status` (`status`),
+    KEY `idx_coupon` (`coupon_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='营销奖池';
+
+-- 奖池领取记录表
+DROP TABLE IF EXISTS `marketing_prize_claim_log`;
+CREATE TABLE `marketing_prize_claim_log` (
+    `id`          BIGINT    NOT NULL AUTO_INCREMENT,
+    `pool_id`     BIGINT    NOT NULL COMMENT '奖池ID',
+    `user_id`     BIGINT    NOT NULL COMMENT '用户ID',
+    `coupon_id`   BIGINT    NOT NULL COMMENT '优惠券模板ID',
+    `claim_time`  DATETIME  NOT NULL COMMENT '领取时间',
+    `create_time` DATETIME           DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`),
+    KEY `idx_pool` (`pool_id`),
+    KEY `idx_user` (`user_id`),
+    KEY `idx_pool_user` (`pool_id`, `user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='奖池领取记录';
+
+-- 示例奖池数据
+INSERT INTO `marketing_prize_pool` (`name`, `description`, `coupon_id`, `total_stock`, `claimed_count`, `per_user_limit`, `per_user_daily_limit`, `daily_limit`, `start_time`, `end_time`, `status`, `banner_text`, `banner_color`, `banner_color_end`, `sort`) VALUES
+('新人专享礼', '新用户专享无门槛10元券', 3, 100, 0, 1, 0, 0, '2024-01-01 00:00:00', '2027-12-31 23:59:59', 1, '新人专享 · 无门槛10元券', '#ff4d4f', '#ff7a45', 100),
+('限时抢券', '满500减50大额券限时抢', 4, 50, 0, 1, 1, 20, '2024-01-01 00:00:00', '2027-12-31 23:59:59', 1, '限时抢券 · 满500减50', '#722ed1', '#1890ff', 90),
+('会员福利日', '全场9折券会员专享', 2, 200, 0, 2, 1, 0, '2024-01-01 00:00:00', '2027-12-31 23:59:59', 1, '会员福利 · 全场9折', '#13c2c2', '#52c41a', 80);
 
 SET FOREIGN_KEY_CHECKS = 1;
