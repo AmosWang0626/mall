@@ -52,7 +52,7 @@ export default function Coupons() {
       <div key={item.id} className={`coupon-item ${isUsed ? 'used' : ''}`}>
         <div className="coupon-item-left">
           <div className="coupon-item-value">
-            {cp.type === 2 ? (Number(cp.discount) * 10).toFixed(1) + '折' : '\u00A5' + formatPrice(cp.faceValue)}
+            {cp.type === 2 ? (Number(cp.discount) * 10).toFixed(1) + '折' : '¥' + formatPrice(cp.faceValue)}
           </div>
           <div className="coupon-item-type">{COUPON_TYPE[cp.type]}</div>
         </div>

@@ -72,7 +72,7 @@ export default function Home() {
             <div className="info">
               <div className="name">{item.name}</div>
               <div className="flex-between" style={{ marginTop: 6 }}>
-                <span className="price">&#165;{formatPrice(item.price)}</span>
+                <span className="price">¥{formatPrice(item.price)}</span>
                 <span
                   className="add-cart-btn"
                   onClick={(e) => handleAddCart(e, item)}

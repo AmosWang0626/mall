@@ -64,15 +64,15 @@ export default function Checkout() {
       <div className="section" style={{ padding: 16 }}>
         <div className="checkout-row">
           <span>商品总额</span>
-          <span>&#165;{formatPrice(totalAmount)}</span>
+          <span>¥{formatPrice(totalAmount)}</span>
         </div>
         <div className="checkout-row">
           <span>优惠券抵扣</span>
-          <span className="price-small">-&#165;{formatPrice(discountAmount)}</span>
+          <span className="price-small">-¥{formatPrice(discountAmount)}</span>
         </div>
         <div className="checkout-row" style={{ borderBottom: 'none' }}>
           <span style={{ fontWeight: 600 }}>实付金额</span>
-          <span className="price" style={{ fontSize: 18 }}>&#165;{formatPrice(payAmount)}</span>
+          <span className="price" style={{ fontSize: 18 }}>¥{formatPrice(payAmount)}</span>
         </div>
       </div>
 
@@ -102,7 +102,7 @@ export default function Checkout() {
       <div className="checkout-bottom">
         <div>
           <span>实付: </span>
-          <span className="price" style={{ fontSize: 20 }}>&#165;{formatPrice(payAmount)}</span>
+          <span className="price" style={{ fontSize: 20 }}>¥{formatPrice(payAmount)}</span>
         </div>
         <Button color="danger" size="large" loading={loading} onClick={handleSubmit} style={{ borderRadius: 20, minWidth: 120 }}>
           提交订单

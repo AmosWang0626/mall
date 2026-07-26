@@ -100,12 +100,12 @@ export default function OrderList() {
                     {item.skuName && <div className="muted">{item.skuName}</div>}
                     <div className="muted">x{item.quantity}</div>
                   </div>
-                  <div className="price-small">&#165;{formatPrice(item.price)}</div>
+                  <div className="price-small">¥{formatPrice(item.price)}</div>
                 </div>
               ))}
               <div className="order-card-footer">
                 <span>共{order.items?.length || 0}件 实付: </span>
-                <span className="price">&#165;{formatPrice(order.payAmount)}</span>
+                <span className="price">¥{formatPrice(order.payAmount)}</span>
                 <div className="order-actions" onClick={(e) => e.stopPropagation()}>
                   {order.status === 0 && <>
                     <Button size="mini" onClick={() => handleAction(order, 'cancel')}>取消</Button>

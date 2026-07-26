@@ -67,7 +67,7 @@ export default function OrderDetail() {
               {item.skuName && <div className="muted">{item.skuName}</div>}
               <div className="muted">x{item.quantity}</div>
             </div>
-            <div className="price-small">&#165;{formatPrice(item.price)}</div>
+            <div className="price-small">¥{formatPrice(item.price)}</div>
           </div>
         ))}
       </div>
@@ -76,23 +76,23 @@ export default function OrderDetail() {
       <div className="section" style={{ padding: 16 }}>
         <div className="checkout-row" style={{ display: 'flex', justifyContent: 'space-between', padding: '6px 0', borderBottom: '1px solid #f0f0f0' }}>
           <span>商品总额</span>
-          <span>&#165;{formatPrice(order.totalAmount)}</span>
+          <span>¥{formatPrice(order.totalAmount)}</span>
         </div>
         {Number(order.discountAmount) > 0 && (
           <div style={{ display: 'flex', justifyContent: 'space-between', padding: '6px 0', borderBottom: '1px solid #f0f0f0', fontSize: 14 }}>
             <span>优惠券抵扣</span>
-            <span className="price-small">-&#165;{formatPrice(order.discountAmount)}</span>
+            <span className="price-small">-¥{formatPrice(order.discountAmount)}</span>
           </div>
         )}
         {Number(order.pointsAmount) > 0 && (
           <div style={{ display: 'flex', justifyContent: 'space-between', padding: '6px 0', borderBottom: '1px solid #f0f0f0', fontSize: 14 }}>
             <span>积分抵扣</span>
-            <span className="price-small">-&#165;{formatPrice(order.pointsAmount)}</span>
+            <span className="price-small">-¥{formatPrice(order.pointsAmount)}</span>
           </div>
         )}
         <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', fontWeight: 600 }}>
           <span>实付金额</span>
-          <span className="price" style={{ fontSize: 18 }}>&#165;{formatPrice(order.payAmount)}</span>
+          <span className="price" style={{ fontSize: 18 }}>¥{formatPrice(order.payAmount)}</span>
         </div>
       </div>
 

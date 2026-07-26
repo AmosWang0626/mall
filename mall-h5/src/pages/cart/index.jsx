@@ -126,7 +126,7 @@ export default function Cart() {
                 <div style={{ fontSize: 14, fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{item.productName}</div>
                 {item.skuName && <div className="muted" style={{ marginTop: 2 }}>{item.skuName}</div>}
                 <div className="flex-between" style={{ marginTop: 8 }}>
-                  <span className="price">&#165;{formatPrice(item.price)}</span>
+                  <span className="price">¥{formatPrice(item.price)}</span>
                   <Stepper
                     value={item.quantity}
                     onChange={(v) => handleQuantity(item, v)}
@@ -145,7 +145,7 @@ export default function Cart() {
             <span>优惠券</span>
             <span className={selectedCoupon ? 'price-small' : 'muted'}>
               {selectedCoupon
-                ? `已选: ${(selectedCoupon.coupon || selectedCoupon).name} (-&#165;${formatPrice(discountAmount)})`
+                ? `已选: ${(selectedCoupon.coupon || selectedCoupon).name} (-¥${formatPrice(discountAmount)})`
                 : usableCoupons.length > 0
                   ? `${usableCoupons.length}张可用`
                   : '暂无可用'}
@@ -170,14 +170,14 @@ export default function Cart() {
                         <Radio checked={selectedCouponId === c.id}>
                           <div className="coupon-card-h5">
                             <div className="coupon-left">
-                              <span className="coupon-value">&#165;{cp.type === 2 ? (Number(cp.discount) * 10).toFixed(1) + '折' : formatPrice(cp.faceValue)}</span>
+                              <span className="coupon-value">{cp.type === 2 ? (Number(cp.discount) * 10).toFixed(1) + '折' : '¥' + formatPrice(cp.faceValue)}</span>
                               <span className="coupon-type">{COUPON_TYPE[cp.type]}</span>
                             </div>
                             <div className="coupon-right">
                               <div className="coupon-name">{cp.name}</div>
                               <div className="muted">
                                 {cp.type === 1 ? `满${formatPrice(cp.minSpend)}可用` : cp.type === 2 ? `满${formatPrice(cp.minSpend)}可用` : '无门槛'}
-                                {' · '}优惠 &#165;{formatPrice(discount)}
+                                {' · '}优惠 ¥{formatPrice(discount)}
                               </div>
                             </div>
                           </div>
@@ -198,8 +198,8 @@ export default function Cart() {
           <Checkbox checked={allSelected} onChange={handleSelectAll}>全选</Checkbox>
           <div className="cart-total">
             <span>合计: </span>
-            <span className="price" style={{ fontSize: 18 }}>&#165;{formatPrice(payAmount)}</span>
-            {discountAmount > 0 && <span className="muted" style={{ marginLeft: 6 }}>已优惠 &#165;{formatPrice(discountAmount)}</span>}
+            <span className="price" style={{ fontSize: 18 }}>¥{formatPrice(payAmount)}</span>
+            {discountAmount > 0 && <span className="muted" style={{ marginLeft: 6 }}>已优惠 ¥{formatPrice(discountAmount)}</span>}
           </div>
           <Button color="danger" size="large" onClick={handleCheckout} style={{ borderRadius: 20, minWidth: 100 }}>
             结算({selectedItems.length})

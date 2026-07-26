@@ -60,7 +60,7 @@ export default function ProductDetail() {
       <NavBar onBack={() => navigate(-1)}>{product.name}</NavBar>
       <img src={product.mainImage || 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400"><rect fill="%23f5f5f5" width="400" height="400"/></svg>'} alt={product.name} style={{ width: '100%', aspectRatio: 1, objectFit: 'cover' }} />
       <div className="detail-info">
-        <div className="detail-price">&#165;{formatPrice(currentPrice)}</div>
+        <div className="detail-price">¥{formatPrice(currentPrice)}</div>
         <div className="detail-name">{product.name}</div>
         {product.subtitle && <div className="detail-subtitle">{product.subtitle}</div>}
         <div className="detail-stats">
