@@ -97,9 +97,9 @@ export default function Home() {
                 <div className="banner-slide-content">
                   <div className="banner-slide-title">{b.bannerText || b.name}</div>
                   <div className="banner-slide-desc">{b.description || '点击立即领取'}</div>
-                  <div className="banner-slide-btn">立即领取 &rsaquo;</div>
+                  <div className="banner-slide-btn">立即领取 ›</div>
                 </div>
-                <div className="banner-slide-icon">&#127873;</div>
+                <div className="banner-slide-icon">🎁</div>
               </div>
             ))}
           </div>

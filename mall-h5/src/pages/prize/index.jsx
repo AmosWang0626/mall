@@ -63,7 +63,7 @@ export default function PrizeCenter() {
         title: '领取成功',
         content: (
           <div style={{ textAlign: 'center', padding: '12px 0' }}>
-            <div style={{ fontSize: 40, marginBottom: 8 }}>&#127881;</div>
+            <div style={{ fontSize: 40, marginBottom: 8 }}>🎉</div>
             <div style={{ fontSize: 16, fontWeight: 600, marginBottom: 4 }}>{d.couponName}</div>
             <div style={{ color: '#ff4d4f', fontSize: 20, fontWeight: 700 }}>{valueText}</div>
             <div style={{ fontSize: 13, color: '#999', marginTop: 8 }}>优惠券已放入您的账户</div>
@@ -94,7 +94,7 @@ export default function PrizeCenter() {
 
   return (
     <div className="page prize-page">
-      <NavBar onBack={() => navigate(-1)}>&#127873; 领券中心</NavBar>
+      <NavBar onBack={() => navigate(-1)}>🎁 领券中心</NavBar>
 
       {loading ? (
         <div style={{ textAlign: 'center', padding: 60 }}><SpinLoading /></div>
@@ -164,7 +164,7 @@ export default function PrizeCenter() {
       )}
 
       <div className="prize-tips">
-        <div className="tips-title">&#128161; 领券说明</div>
+        <div className="tips-title">💡 领券说明</div>
         <ul>
           <li>每个奖池有独立的领取限制, 请在有效期内领取</li>
           <li>优惠券领取后可在「我的 - 优惠券」中查看</li>
