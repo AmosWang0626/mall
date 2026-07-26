@@ -24,6 +24,7 @@ export default function OrderList() {
   const [page, setPage] = useState(1)
   const [hasMore, setHasMore] = useState(true)
   const [loading, setLoading] = useState(false)
+  const [initialized, setInitialized] = useState(false)
 
   const loadMore = async () => {
     if (loading) return
@@ -38,19 +39,18 @@ export default function OrderList() {
       setPage(p => p + 1)
     } catch (e) { /* handled */ }
     setLoading(false)
+    setInitialized(true)
   }
 
   const handleTabChange = (key) => {
     setActiveTab(key)
-    setList([])
-    setPage(1)
-    setHasMore(true)
   }
 
   useEffect(() => {
     setList([])
     setPage(1)
     setHasMore(true)
+    setInitialized(false)
   }, [activeTab])
 
   const handleAction = async (order, action) => {
@@ -72,6 +72,7 @@ export default function OrderList() {
       setList([])
       setPage(1)
       setHasMore(true)
+      setInitialized(false)
     } catch (e) { /* handled or cancelled */ }
   }
 
@@ -81,7 +82,7 @@ export default function OrderList() {
       <Tabs activeKey={activeTab} onChange={handleTabChange}>
         {TABS.map(t => <Tabs.Tab key={t.key} title={t.label} />)}
       </Tabs>
-      {list.length === 0 && !loading ? (
+      {list.length === 0 && initialized && !loading ? (
         <Empty description="暂无订单" style={{ padding: 60 }} />
       ) : (
         <>

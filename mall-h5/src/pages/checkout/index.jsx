@@ -49,7 +49,7 @@ export default function Checkout() {
       <NavBar onBack={() => navigate(-1)}>确认订单</NavBar>
 
       {/* Address */}
-      <div className="section checkout-address" onClick={() => navigate('/mine')}>
+      <div className="section checkout-address" onClick={() => navigate('/address')}>
         {address ? (
           <>
             <div className="addr-name">{address.receiver} {address.phone}</div>
