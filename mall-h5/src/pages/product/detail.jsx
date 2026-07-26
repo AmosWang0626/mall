@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { NavBar, Toast, Stepper, Button, Dialog } from 'antd-mobile'
 import { productApi, cartApi } from '../../api'
 import { useAuthStore } from '../../store'
-import './index.css'
+import './detail.css'
 
 const formatPrice = (v) => Number(v || 0).toFixed(2)
 

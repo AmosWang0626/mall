@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Form, Input, Button, Toast, NavBar, SegmentedValue } from 'antd-mobile'
+import { Form, Input, Button, Toast, NavBar, Tabs } from 'antd-mobile'
 import { authApi } from '../../api'
 import { useAuthStore } from '../../store'
 import './index.css'
@@ -35,14 +35,10 @@ export default function Login() {
       </div>
       <div className="login-form-wrap">
         <div className="mode-switch">
-          <SegmentedValue
-            value={mode}
-            onChange={v => setMode(v)}
-            options={[
-              { label: '登录', value: 'login' },
-              { label: '注册', value: 'register' }
-            ]}
-          />
+          <Tabs activeKey={mode} onChange={setMode}>
+            <Tabs.Tab key="login" title="登录" />
+            <Tabs.Tab key="register" title="注册" />
+          </Tabs>
         </div>
         <Form
           layout="horizontal"

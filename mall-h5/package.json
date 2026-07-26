@@ -12,6 +12,7 @@
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.20.0",
     "antd-mobile": "^5.34.0",
+    "antd-mobile-icons": "^0.3.0",
     "axios": "^1.6.2",
     "dayjs": "^1.11.10",
     "zustand": "^4.4.7"

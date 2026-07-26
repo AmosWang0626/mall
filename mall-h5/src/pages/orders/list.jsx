@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { NavBar, Tabs, InfiniteScroll, Empty, Button, Toast, Dialog } from 'antd-mobile'
 import { orderApi } from '../../api'
-import './index.css'
+import './list.css'
 
 const formatPrice = (v) => Number(v || 0).toFixed(2)
 const ORDER_STATUS = { 0: '待付款', 1: '待发货', 2: '待收货', 3: '已完成', 4: '已取消', 5: '退款中', 6: '已退款' }
