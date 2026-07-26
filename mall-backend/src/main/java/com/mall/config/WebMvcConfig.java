@@ -21,7 +21,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addInterceptor(jwtFilter)
                 .addPathPatterns("/**")
                 .excludePathPatterns(
-                        "/auth/**",          // 认证接口
+                        "/auth/login",        // 登录接口
+                        "/auth/register",     // 注册接口
                         "/public/**",        // 公开接口
                         "/doc.html",         // Knife4j
                         "/swagger-ui/**",

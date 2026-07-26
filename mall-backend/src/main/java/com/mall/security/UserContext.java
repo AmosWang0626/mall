@@ -1,5 +1,6 @@
 package com.mall.security;
 
+import com.mall.common.exception.BusinessException;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -21,7 +22,7 @@ public class UserContext {
     public static LoginUser require() {
         LoginUser user = CONTEXT.get();
         if (user == null) {
-            throw new RuntimeException("未登录或登录已过期");
+            throw BusinessException.of(401, "未登录或登录已过期");
         }
         return user;
     }
