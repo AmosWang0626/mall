@@ -533,7 +533,7 @@ INSERT INTO `product` (`category_id`, `name`, `subtitle`, `main_image`, `price`,
 -- 示例优惠券
 INSERT INTO `coupon_template` (`name`, `type`, `face_value`, `discount`, `min_spend`, `total_count`, `issued_count`, `per_limit`, `valid_type`, `valid_start`, `valid_end`, `valid_days`, `status`) VALUES
 ('新人满100减20', 1, 20.00, NULL, 100.00, 1000, 0, 1, 1, '2024-01-01 00:00:00', '2027-12-31 23:59:59', NULL, 1),
-('全场9折券', 2, NULL, 0.90, 0.00, 500, 0, 1, 1, '2024-01-01 00:00:00', '2027-12-31 23:59:59', NULL, 1),
+('全场9折券', 2, NULL, 0.90, 0.00, 500, 0, 2, 1, '2024-01-01 00:00:00', '2027-12-31 23:59:59', NULL, 1),
 ('无门槛10元券', 3, 10.00, NULL, 0.00, 200, 0, 1, 2, NULL, NULL, 30, 1),
 ('满500减50', 1, 50.00, NULL, 500.00, 300, 0, 2, 1, '2024-01-01 00:00:00', '2027-12-31 23:59:59', NULL, 1);
 
