@@ -3,12 +3,15 @@ package com.mall.module.prize.service;
 import com.mall.common.PageResult;
 import com.mall.common.RedisService;
 import com.mall.common.exception.BusinessException;
-import com.mall.module.coupon.entity.CouponTemplate;
-import com.mall.module.coupon.service.CouponService;
 import com.mall.module.prize.entity.PrizeClaimLog;
 import com.mall.module.prize.entity.PrizePool;
 import com.mall.module.prize.mapper.PrizeClaimLogMapper;
 import com.mall.module.prize.mapper.PrizePoolMapper;
+import com.mall.module.prize.spi.PrizeContext;
+import com.mall.module.prize.spi.PrizeDisplayInfo;
+import com.mall.module.prize.spi.PrizeProvider;
+import com.mall.module.prize.spi.PrizeProviderRegistry;
+import com.mall.module.prize.spi.PrizeResult;
 import com.mall.security.UserContext;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -25,7 +28,10 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
- * 奖池服务 — 通过奖池发券，控制库存、用户频控
+ * 奖池服务 — 通过奖池发放奖品（优惠券/积分/...），控制库存、用户频控
+ *
+ * <p>发放环节通过 {@link PrizeProviderRegistry} 按类型路由到对应 {@link PrizeProvider} SPI 实现，
+ * 支持外部 jar 扩展新奖品类型。</p>
  */
 @Service
 public class PrizePoolService {
@@ -35,7 +41,7 @@ public class PrizePoolService {
 
     @Autowired private PrizePoolMapper poolMapper;
     @Autowired private PrizeClaimLogMapper claimLogMapper;
-    @Autowired private CouponService couponService;
+    @Autowired private PrizeProviderRegistry providerRegistry;
     @Autowired private RedisService redisService;
 
     // ===== 公开接口 =====
@@ -45,7 +51,7 @@ public class PrizePoolService {
         return poolMapper.selectBannerList();
     }
 
-    /** 可领取奖池列表 (需登录, 带用户领取状态) */
+    /** 可领取奖池列表 (需登录, 带用户领取状态 + 奖品展示信息) */
     public List<PrizePool> activeList() {
         Long userId = UserContext.require().getUserId();
         List<PrizePool> list = poolMapper.selectActiveList();
@@ -59,6 +65,8 @@ public class PrizePoolService {
             } else {
                 pool.setRemainingStock(pool.getTotalStock() - pool.getClaimedCount());
             }
+            // 通过 SPI 填充奖品展示信息
+            fillDisplayInfo(pool);
         }
         return list;
     }
@@ -68,11 +76,19 @@ public class PrizePoolService {
     public PageResult<PrizePool> list(String name, Integer status, int pageNum, int pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         PageInfo<PrizePool> info = new PageInfo<>(poolMapper.selectList(name, status));
+        // 管理端列表也填充展示信息
+        for (PrizePool pool : info.getList()) {
+            fillDisplayInfo(pool);
+        }
         return PageResult.of(info.getList(), info.getTotal(), pageNum, pageSize);
     }
 
     public PrizePool getById(Long id) {
-        return poolMapper.selectById(id);
+        PrizePool pool = poolMapper.selectById(id);
+        if (pool != null) {
+            fillDisplayInfo(pool);
+        }
+        return pool;
     }
 
     @Transactional
@@ -80,6 +96,7 @@ public class PrizePoolService {
         if (pool.getId() == null) {
             if (pool.getStatus() == null) pool.setStatus(1);
             if (pool.getClaimedCount() == null) pool.setClaimedCount(0);
+            if (pool.getPrizeType() == null) pool.setPrizeType("COUPON");
             poolMapper.insert(pool);
         } else {
             poolMapper.updateById(pool);
@@ -96,22 +113,27 @@ public class PrizePoolService {
         poolMapper.updateStatus(id, status);
     }
 
-    // ===== 核心领券逻辑 =====
+    // ===== 核心领取逻辑 =====
 
     /**
-     * 从奖池领取优惠券
-     * <p>
-     * 频控层次:
-     * 1. 时间窗口校验 (DB)
-     * 2. 每人限领总数 (DB count)
-     * 3. 每人每日限领 (Redis, 当天失效)
-     * 4. 每日总量限领 (Redis, 当天失效)
-     * 5. 奖池库存原子扣减 (DB UPDATE...WHERE stock > 0)
-     * 6. 优惠券库存扣减 + UserCoupon 创建 (CouponService.receive)
-     * 7. 领取记录写入 (DB)
+     * 从奖池领取奖品
+     *
+     * <p>频控层次（与奖品类型无关，所有类型共用）:</p>
+     * <ol>
+     *   <li>时间窗口校验 (DB)</li>
+     *   <li>每人限领总数 (DB count)</li>
+     *   <li>每人每日限领 (Redis, 当天失效)</li>
+     *   <li>每日总量限领 (Redis, 当天失效)</li>
+     *   <li>奖池库存原子扣减 (DB UPDATE...WHERE stock > 0)</li>
+     *   <li>SPI 发放奖品 (PrizeProvider.grant, 同一事务)</li>
+     *   <li>领取记录写入 (DB)</li>
+     * </ol>
+     *
+     * @param poolId 奖池 ID
+     * @return 发放结果（含展示信息，用于前端弹窗）
      */
     @Transactional
-    public CouponTemplate claim(Long poolId) {
+    public PrizeResult claim(Long poolId) {
         Long userId = UserContext.require().getUserId();
 
         // 1. 查奖池
@@ -151,25 +173,35 @@ public class PrizePoolService {
         if (pool.getDailyLimit() > 0) {
             Long current = redisService.get(poolDailyKey, Long.class);
             if (current != null && current >= pool.getDailyLimit()) {
-                throw BusinessException.of("今日发券量已达上限, 明日再来吧");
+                throw BusinessException.of("今日发放量已达上限, 明日再来吧");
             }
         }
 
         // 6. 奖池库存原子扣减 (DB)
         int rows = poolMapper.incrementClaimed(poolId);
         if (rows == 0) {
-            throw BusinessException.of("手慢了, 优惠券已被抢光");
+            throw BusinessException.of("手慢了, 奖品已被抢光");
         }
 
-        // 7. 发券 (CouponService 内部会原子扣减券模板库存 + 创建 UserCoupon)
-        //    如果发券失败 (如券模板库存不足), @Transactional 会回滚上面的奖池库存扣减
-        couponService.receive(pool.getCouponId());
+        // 7. SPI 发放奖品 (如果发放失败, @Transactional 会回滚上面的奖池库存扣减)
+        PrizeProvider provider = providerRegistry.get(pool.getPrizeType());
+        PrizeContext context = PrizeContext.builder()
+                .userId(userId)
+                .poolId(poolId)
+                .poolName(pool.getName())
+                .prizeRefId(pool.getPrizeRefId())
+                .prizeValue(pool.getPrizeValue())
+                .prizeName(pool.getPrizeName())
+                .prizeDesc(pool.getPrizeDesc())
+                .build();
+        PrizeResult result = provider.grant(context);
 
         // 8. 写领取记录
         PrizeClaimLog logEntry = new PrizeClaimLog();
         logEntry.setPoolId(poolId);
         logEntry.setUserId(userId);
-        logEntry.setCouponId(pool.getCouponId());
+        logEntry.setPrizeType(pool.getPrizeType());
+        logEntry.setPrizeRefId(pool.getPrizeRefId());
         logEntry.setClaimTime(now);
         claimLogMapper.insert(logEntry);
 
@@ -187,23 +219,25 @@ public class PrizePoolService {
             }
         }
 
-        log.info("奖池领券成功: poolId={}, userId={}, couponId={}", poolId, userId, pool.getCouponId());
+        log.info("奖池领取成功: poolId={}, userId={}, prizeType={}, prizeRefId={}",
+                poolId, userId, pool.getPrizeType(), pool.getPrizeRefId());
 
-        // 返回优惠券模板信息供前端展示
-        CouponTemplate ct = pool.getCouponTemplate();
-        if (ct == null) {
-            // selectById 不带 JOIN, 单独查一次
-            List<PrizePool> active = poolMapper.selectActiveList();
-            for (PrizePool p : active) {
-                if (p.getId().equals(poolId)) {
-                    return p.getCouponTemplate();
-                }
-            }
-        }
-        return ct;
+        return result;
     }
 
     // ===== 工具方法 =====
+
+    /** 通过 SPI 填充奖品展示信息 */
+    private void fillDisplayInfo(PrizePool pool) {
+        try {
+            PrizeProvider provider = providerRegistry.get(pool.getPrizeType());
+            PrizeDisplayInfo info = provider.getDisplayInfo(pool);
+            pool.setPrizeDisplayInfo(info);
+        } catch (Exception e) {
+            log.warn("填充奖品展示信息失败: poolId={}, prizeType={}, error={}",
+                    pool.getId(), pool.getPrizeType(), e.getMessage());
+        }
+    }
 
     private String redisKey(String prefix, Long poolId, Long userId) {
         String today = LocalDate.now().format(DATE_FMT);
@@ -216,7 +250,6 @@ public class PrizePoolService {
     /** 设置 key 到当天 23:59:59 过期 */
     private void expireToEndOfDay(String key) {
         long secondsUntilMidnight = 86400 - (System.currentTimeMillis() / 1000) % 86400;
-        // 简化: 直接用 1 天 TTL, 误差可接受
         redisService.expire(key, secondsUntilMidnight, TimeUnit.SECONDS);
     }
 }

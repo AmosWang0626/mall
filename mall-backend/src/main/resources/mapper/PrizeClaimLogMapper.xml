@@ -5,9 +5,9 @@
 
     <insert id="insert" parameterType="com.mall.module.prize.entity.PrizeClaimLog" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO marketing_prize_claim_log
-        (pool_id, user_id, coupon_id, claim_time)
+        (pool_id, user_id, prize_type, prize_ref_id, claim_time)
         VALUES
-        (#{poolId}, #{userId}, #{couponId}, #{claimTime})
+        (#{poolId}, #{userId}, #{prizeType}, #{prizeRefId}, #{claimTime})
     </insert>
 
     <select id="countByPoolAndUser" resultType="int">

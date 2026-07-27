@@ -548,13 +548,17 @@ INSERT INTO `marketing_activity` (`name`, `type`, `description`, `start_time`, `
 -- 10. 奖池模块
 -- ============================================================
 
--- 奖池表 (通过奖池发券，控制库存、用户频控等)
+-- 奖池表 (通过奖池发放奖品, 支持优惠券/积分等多种类型, SPI扩展)
 DROP TABLE IF EXISTS `marketing_prize_pool`;
 CREATE TABLE `marketing_prize_pool` (
     `id`                  BIGINT        NOT NULL AUTO_INCREMENT,
     `name`                VARCHAR(100)  NOT NULL COMMENT '奖池名称',
     `description`         VARCHAR(500)           DEFAULT NULL COMMENT '奖池描述',
-    `coupon_id`           BIGINT        NOT NULL COMMENT '关联优惠券模板ID',
+    `prize_type`          VARCHAR(20)   NOT NULL DEFAULT 'COUPON' COMMENT '奖品类型: COUPON-优惠券, POINTS-积分',
+    `prize_ref_id`        BIGINT                 DEFAULT NULL COMMENT '奖品关联ID(优惠券→coupon_template.id, 积分→NULL)',
+    `prize_value`         INT                    DEFAULT NULL COMMENT '奖品面值(积分→数量, 优惠券→NULL)',
+    `prize_name`          VARCHAR(100)           DEFAULT NULL COMMENT '奖品展示名称',
+    `prize_desc`          VARCHAR(200)           DEFAULT NULL COMMENT '奖品展示描述',
     `total_stock`         INT           NOT NULL DEFAULT -1 COMMENT '总库存(-1不限)',
     `claimed_count`       INT           NOT NULL DEFAULT 0 COMMENT '已领取数量',
     `per_user_limit`      INT           NOT NULL DEFAULT 1 COMMENT '每人限领总数(0不限)',
@@ -572,7 +576,7 @@ CREATE TABLE `marketing_prize_pool` (
     `deleted`             TINYINT                DEFAULT 0,
     PRIMARY KEY (`id`),
     KEY `idx_status` (`status`),
-    KEY `idx_coupon` (`coupon_id`)
+    KEY `idx_prize_type` (`prize_type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='营销奖池';
 
 -- 奖池领取记录表
@@ -581,7 +585,8 @@ CREATE TABLE `marketing_prize_claim_log` (
     `id`          BIGINT    NOT NULL AUTO_INCREMENT,
     `pool_id`     BIGINT    NOT NULL COMMENT '奖池ID',
     `user_id`     BIGINT    NOT NULL COMMENT '用户ID',
-    `coupon_id`   BIGINT    NOT NULL COMMENT '优惠券模板ID',
+    `prize_type`  VARCHAR(20) NOT NULL DEFAULT 'COUPON' COMMENT '奖品类型',
+    `prize_ref_id` BIGINT   DEFAULT NULL COMMENT '奖品关联ID',
     `claim_time`  DATETIME  NOT NULL COMMENT '领取时间',
     `create_time` DATETIME           DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`),
@@ -590,10 +595,12 @@ CREATE TABLE `marketing_prize_claim_log` (
     KEY `idx_pool_user` (`pool_id`, `user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='奖池领取记录';
 
--- 示例奖池数据
-INSERT INTO `marketing_prize_pool` (`name`, `description`, `coupon_id`, `total_stock`, `claimed_count`, `per_user_limit`, `per_user_daily_limit`, `daily_limit`, `start_time`, `end_time`, `status`, `banner_text`, `banner_color`, `banner_color_end`, `sort`) VALUES
-('新人专享礼', '新用户专享无门槛10元券', 3, 100, 0, 1, 0, 0, '2024-01-01 00:00:00', '2027-12-31 23:59:59', 1, '新人专享 · 无门槛10元券', '#ff4d4f', '#ff7a45', 100),
-('限时抢券', '满500减50大额券限时抢', 4, 50, 0, 1, 1, 20, '2024-01-01 00:00:00', '2027-12-31 23:59:59', 1, '限时抢券 · 满500减50', '#722ed1', '#1890ff', 90),
-('会员福利日', '全场9折券会员专享', 2, 200, 0, 2, 1, 0, '2024-01-01 00:00:00', '2027-12-31 23:59:59', 1, '会员福利 · 全场9折', '#13c2c2', '#52c41a', 80);
+-- 示例奖池数据 (3个优惠券奖池 + 2个积分奖池)
+INSERT INTO `marketing_prize_pool` (`name`, `description`, `prize_type`, `prize_ref_id`, `prize_value`, `prize_name`, `prize_desc`, `total_stock`, `claimed_count`, `per_user_limit`, `per_user_daily_limit`, `daily_limit`, `start_time`, `end_time`, `status`, `banner_text`, `banner_color`, `banner_color_end`, `sort`) VALUES
+('新人专享礼', '新用户专享无门槛10元券', 'COUPON', 3, NULL, '无门槛10元券', '无门槛抵扣10元', 100, 0, 1, 0, 0, '2024-01-01 00:00:00', '2027-12-31 23:59:59', 1, '新人专享 · 无门槛10元券', '#ff4d4f', '#ff7a45', 100),
+('限时抢券', '满500减50大额券限时抢', 'COUPON', 4, NULL, '满500减50', '满500元可用', 50, 0, 1, 1, 20, '2024-01-01 00:00:00', '2027-12-31 23:59:59', 1, '限时抢券 · 满500减50', '#722ed1', '#1890ff', 90),
+('会员福利日', '全场9折券会员专享', 'COUPON', 2, NULL, '全场9折券', '全场商品9折', 200, 0, 2, 1, 0, '2024-01-01 00:00:00', '2027-12-31 23:59:59', 1, '会员福利 · 全场9折', '#13c2c2', '#52c41a', 80),
+('签到积分雨', '每日领取50积分', 'POINTS', NULL, 50, '50积分', '可用于积分兑换', -1, 0, 1, 1, 0, '2024-01-01 00:00:00', '2027-12-31 23:59:59', 1, '每日福利 · 50积分', '#fa8c16', '#faad14', 70),
+('新人积分包', '新用户专享100积分', 'POINTS', NULL, 100, '100积分', '新人专享积分礼包', 50, 0, 1, 0, 0, '2024-01-01 00:00:00', '2027-12-31 23:59:59', 1, '新人专享 · 100积分', '#eb2f96', '#f759ab', 60);
 
 SET FOREIGN_KEY_CHECKS = 1;

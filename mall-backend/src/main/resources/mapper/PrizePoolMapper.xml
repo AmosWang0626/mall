@@ -7,7 +7,11 @@
         <id property="id" column="id"/>
         <result property="name" column="name"/>
         <result property="description" column="description"/>
-        <result property="couponId" column="coupon_id"/>
+        <result property="prizeType" column="prize_type"/>
+        <result property="prizeRefId" column="prize_ref_id"/>
+        <result property="prizeValue" column="prize_value"/>
+        <result property="prizeName" column="prize_name"/>
+        <result property="prizeDesc" column="prize_desc"/>
         <result property="totalStock" column="total_stock"/>
         <result property="claimedCount" column="claimed_count"/>
         <result property="perUserLimit" column="per_user_limit"/>
@@ -25,27 +29,9 @@
         <result property="deleted" column="deleted"/>
     </resultMap>
 
-    <resultMap id="DetailResultMap" type="com.mall.module.prize.entity.PrizePool" extends="BaseResultMap">
-        <association property="couponTemplate" javaType="com.mall.module.coupon.entity.CouponTemplate">
-            <id property="id" column="ct_id"/>
-            <result property="name" column="ct_name"/>
-            <result property="type" column="ct_type"/>
-            <result property="faceValue" column="ct_face_value"/>
-            <result property="discount" column="ct_discount"/>
-            <result property="minSpend" column="ct_min_spend"/>
-            <result property="totalCount" column="ct_total_count"/>
-            <result property="issuedCount" column="ct_issued_count"/>
-            <result property="perLimit" column="ct_per_limit"/>
-            <result property="validType" column="ct_valid_type"/>
-            <result property="validStart" column="ct_valid_start"/>
-            <result property="validEnd" column="ct_valid_end"/>
-            <result property="validDays" column="ct_valid_days"/>
-            <result property="status" column="ct_status"/>
-        </association>
-    </resultMap>
-
     <sql id="Base_Column_List">
-        p.id, p.name, p.description, p.coupon_id, p.total_stock, p.claimed_count,
+        p.id, p.name, p.description, p.prize_type, p.prize_ref_id, p.prize_value,
+        p.prize_name, p.prize_desc, p.total_stock, p.claimed_count,
         p.per_user_limit, p.per_user_daily_limit, p.daily_limit,
         p.start_time, p.end_time, p.status, p.banner_text, p.banner_color,
         p.banner_color_end, p.sort, p.create_time, p.update_time, p.deleted
@@ -53,12 +39,12 @@
 
     <insert id="insert" parameterType="com.mall.module.prize.entity.PrizePool" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO marketing_prize_pool
-        (name, description, coupon_id, total_stock, claimed_count,
-         per_user_limit, per_user_daily_limit, daily_limit,
+        (name, description, prize_type, prize_ref_id, prize_value, prize_name, prize_desc,
+         total_stock, claimed_count, per_user_limit, per_user_daily_limit, daily_limit,
          start_time, end_time, status, banner_text, banner_color, banner_color_end, sort)
         VALUES
-        (#{name}, #{description}, #{couponId}, #{totalStock}, 0,
-         #{perUserLimit}, #{perUserDailyLimit}, #{dailyLimit},
+        (#{name}, #{description}, #{prizeType}, #{prizeRefId}, #{prizeValue}, #{prizeName}, #{prizeDesc},
+         #{totalStock}, 0, #{perUserLimit}, #{perUserDailyLimit}, #{dailyLimit},
          #{startTime}, #{endTime}, #{status}, #{bannerText}, #{bannerColor}, #{bannerColorEnd}, #{sort})
     </insert>
 
@@ -67,7 +53,11 @@
         <set>
             <if test="name != null">name = #{name},</if>
             <if test="description != null">description = #{description},</if>
-            <if test="couponId != null">coupon_id = #{couponId},</if>
+            <if test="prizeType != null">prize_type = #{prizeType},</if>
+            <if test="prizeRefId != null">prize_ref_id = #{prizeRefId},</if>
+            <if test="prizeValue != null">prize_value = #{prizeValue},</if>
+            <if test="prizeName != null">prize_name = #{prizeName},</if>
+            <if test="prizeDesc != null">prize_desc = #{prizeDesc},</if>
             <if test="totalStock != null">total_stock = #{totalStock},</if>
             <if test="perUserLimit != null">per_user_limit = #{perUserLimit},</if>
             <if test="perUserDailyLimit != null">per_user_daily_limit = #{perUserDailyLimit},</if>
@@ -103,18 +93,9 @@
         WHERE p.id = #{id} AND p.deleted = 0
     </select>
 
-    <select id="selectActiveList" resultMap="DetailResultMap">
-        SELECT
-            <include refid="Base_Column_List"/>,
-            ct.id AS ct_id, ct.name AS ct_name, ct.type AS ct_type,
-            ct.face_value AS ct_face_value, ct.discount AS ct_discount,
-            ct.min_spend AS ct_min_spend, ct.total_count AS ct_total_count,
-            ct.issued_count AS ct_issued_count, ct.per_limit AS ct_per_limit,
-            ct.valid_type AS ct_valid_type, ct.valid_start AS ct_valid_start,
-            ct.valid_end AS ct_valid_end, ct.valid_days AS ct_valid_days,
-            ct.status AS ct_status
+    <select id="selectActiveList" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
         FROM marketing_prize_pool p
-        LEFT JOIN coupon_template ct ON ct.id = p.coupon_id AND ct.deleted = 0
         WHERE p.deleted = 0 AND p.status = 1
           AND p.start_time &lt;= NOW() AND p.end_time &gt;= NOW()
         ORDER BY p.sort DESC, p.create_time DESC
@@ -123,25 +104,16 @@
     <select id="selectBannerList" resultMap="BaseResultMap">
         SELECT
             p.id, p.name, p.banner_text, p.banner_color, p.banner_color_end,
-            p.description, p.sort, p.coupon_id
+            p.description, p.sort, p.prize_type, p.prize_name
         FROM marketing_prize_pool p
         WHERE p.deleted = 0 AND p.status = 1
           AND p.start_time &lt;= NOW() AND p.end_time &gt;= NOW()
         ORDER BY p.sort DESC
     </select>
 
-    <select id="selectList" resultMap="DetailResultMap">
-        SELECT
-            <include refid="Base_Column_List"/>,
-            ct.id AS ct_id, ct.name AS ct_name, ct.type AS ct_type,
-            ct.face_value AS ct_face_value, ct.discount AS ct_discount,
-            ct.min_spend AS ct_min_spend, ct.total_count AS ct_total_count,
-            ct.issued_count AS ct_issued_count, ct.per_limit AS ct_per_limit,
-            ct.valid_type AS ct_valid_type, ct.valid_start AS ct_valid_start,
-            ct.valid_end AS ct_valid_end, ct.valid_days AS ct_valid_days,
-            ct.status AS ct_status
+    <select id="selectList" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
         FROM marketing_prize_pool p
-        LEFT JOIN coupon_template ct ON ct.id = p.coupon_id AND ct.deleted = 0
         WHERE p.deleted = 0
         <if test="name != null and name != ''">
             AND p.name LIKE CONCAT('%', #{name}, '%')

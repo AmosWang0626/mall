@@ -2,15 +2,13 @@ package com.mall.module.prize.controller;
 
 import com.mall.common.PageResult;
 import com.mall.common.Result;
-import com.mall.module.coupon.entity.CouponTemplate;
 import com.mall.module.prize.entity.PrizePool;
 import com.mall.module.prize.service.PrizePoolService;
+import com.mall.module.prize.spi.PrizeResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 奖池控制器
@@ -19,8 +17,8 @@ import java.util.Map;
  *   GET /public/prize/banners    — 首页Banner列表
  * <p>
  * 用户接口 (需登录):
- *   GET  /prize/list             — 可领取奖池列表(带用户领取状态)
- *   POST /prize/claim/{poolId}   — 领取优惠券
+ *   GET  /prize/list             — 可领取奖池列表(带用户领取状态 + 奖品展示信息)
+ *   POST /prize/claim/{poolId}   — 领取奖品(优惠券/积分/...)
  * <p>
  * 管理接口:
  *   GET    /prize/admin/list     — 分页查询
@@ -50,15 +48,8 @@ public class PrizePoolController {
     }
 
     @PostMapping("/prize/claim/{poolId}")
-    public Result<Map<String, Object>> claim(@PathVariable Long poolId) {
-        CouponTemplate coupon = prizePoolService.claim(poolId);
-        Map<String, Object> data = new HashMap<>();
-        data.put("couponName", coupon != null ? coupon.getName() : "优惠券");
-        data.put("couponType", coupon != null ? coupon.getType() : null);
-        data.put("faceValue", coupon != null ? coupon.getFaceValue() : null);
-        data.put("discount", coupon != null ? coupon.getDiscount() : null);
-        data.put("minSpend", coupon != null ? coupon.getMinSpend() : null);
-        return Result.success(data, "领取成功");
+    public Result<PrizeResult> claim(@PathVariable Long poolId) {
+        return Result.success(prizePoolService.claim(poolId), "领取成功");
     }
 
     // ===== 管理接口 =====
