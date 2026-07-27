@@ -40,7 +40,10 @@ export default function Mine() {
       {/* Profile header */}
       <div className="mine-header">
         <div className="mine-profile">
-          <Avatar style={{ '--size': '60px', '--border-radius': '50%', background: '#fff', color: '#ff4d4f', fontSize: 24, fontWeight: 600 }}>
+          <Avatar
+            src={userInfo.avatar || undefined}
+            style={{ '--size': '60px', '--border-radius': '50%', background: '#fff', color: '#ff4d4f', fontSize: 24, fontWeight: 600 }}
+          >
             {userInfo.nickname?.[0] || userInfo.username?.[0] || 'U'}
           </Avatar>
           <div className="mine-info">

@@ -108,6 +108,7 @@ public class AuthService {
         user.setPassword(BCrypt.hashpw(dto.getPassword()));
         user.setNickname(dto.getNickname() != null ? dto.getNickname() : dto.getUsername());
         user.setPhone(dto.getPhone());
+        user.setAvatar(dto.getAvatar());
         user.setGender(0);
         user.setStatus(1);
         user.setRegisterIp("0.0.0.0");
@@ -120,6 +121,7 @@ public class AuthService {
         vo.setUserId(user.getId());
         vo.setUsername(user.getUsername());
         vo.setNickname(user.getNickname());
+        vo.setAvatar(user.getAvatar());
         vo.setType("user");
         return vo;
     }

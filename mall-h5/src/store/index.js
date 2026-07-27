@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { authApi } from '../api'
+import { authApi, userApi } from '../api'
 
 export const useAuthStore = create((set) => ({
   token: localStorage.getItem('h5_token') || '',
@@ -16,7 +16,7 @@ export const useAuthStore = create((set) => ({
 
   fetchUserInfo: async () => {
     try {
-      const res = await authApi.info()
+      const res = await userApi.info()
       if (res.data) {
         localStorage.setItem('h5_user', JSON.stringify(res.data))
         set({ userInfo: res.data })

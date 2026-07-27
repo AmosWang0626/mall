@@ -20,4 +20,5 @@ public class RegisterDTO {
 
     private String nickname;
     private String phone;
+    private String avatar;
 }
