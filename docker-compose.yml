@@ -8,6 +8,8 @@ services:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: mini_mall
       TZ: Asia/Shanghai
+      LANG: C.UTF-8
+      LC_ALL: C.UTF-8
     ports:
       - "3306:3306"
     volumes:
@@ -17,6 +19,7 @@ services:
     command:
       - --character-set-server=utf8mb4
       - --collation-server=utf8mb4_unicode_ci
+      - --init-connect=SET NAMES utf8mb4
       - --default-time-zone=+08:00
       - --max_allowed_packet=64M
     healthcheck:

@@ -4,10 +4,12 @@
 -- 字符集: utf8mb4
 -- ============================================================
 
+-- 务必最先设置字符集，防止中文乱码
+SET NAMES utf8mb4;
+
 CREATE DATABASE IF NOT EXISTS `mini_mall` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE `mini_mall`;
 
-SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
 -- ============================================================
