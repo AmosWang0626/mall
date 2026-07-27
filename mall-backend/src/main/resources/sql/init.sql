@@ -526,11 +526,11 @@ INSERT INTO `product_category` (`id`, `parent_id`, `name`, `sort`, `status`, `le
 
 -- 示例商品
 INSERT INTO `product` (`category_id`, `name`, `subtitle`, `main_image`, `price`, `original_price`, `cost`, `stock`, `sales`, `status`, `sort`, `tags`) VALUES
-(6, '智能手机 Pro Max', '6.7英寸旗舰屏 | 1亿像素', 'https://placeholder.com/phone1.jpg', 4999.00, 5499.00, 3500.00, 500, 128, 1, 100, '热销,新品'),
-(6, '智能手表 Series 9', '健康监测 | 超长续航', 'https://placeholder.com/watch1.jpg', 1999.00, 2299.00, 1200.00, 300, 89, 1, 90, '热销'),
-(9, '超薄笔记本 Air', '16GB | 512GB SSD', 'https://placeholder.com/laptop1.jpg', 6999.00, 7999.00, 5000.00, 200, 56, 1, 80, '新品'),
-(11, '4K智能电视 65寸', 'HDR10+ | 杜比音效', 'https://placeholder.com/tv1.jpg', 3299.00, 3999.00, 2200.00, 150, 34, 1, 70, ''),
-(8, '无线蓝牙耳机', '主动降噪 | 30小时续航', 'https://placeholder.com/earphone1.jpg', 599.00, 799.00, 300.00, 1000, 256, 1, 60, '热销');
+(6, '智能手机 Pro Max', '6.7英寸旗舰屏 | 1亿像素', 'https://picsum.photos/seed/phone/400/400', 4999.00, 5499.00, 3500.00, 500, 128, 1, 100, '热销,新品'),
+(6, '智能手表 Series 9', '健康监测 | 超长续航', 'https://picsum.photos/seed/watch/400/400', 1999.00, 2299.00, 1200.00, 300, 89, 1, 90, '热销'),
+(9, '超薄笔记本 Air', '16GB | 512GB SSD', 'https://picsum.photos/seed/laptop/400/400', 6999.00, 7999.00, 5000.00, 200, 56, 1, 80, '新品'),
+(11, '4K智能电视 65寸', 'HDR10+ | 杜比音效', 'https://picsum.photos/seed/tv/400/400', 3299.00, 3999.00, 2200.00, 150, 34, 1, 70, ''),
+(8, '无线蓝牙耳机', '主动降噪 | 30小时续航', 'https://picsum.photos/seed/headphone/400/400', 599.00, 799.00, 300.00, 1000, 256, 1, 60, '热销');
 
 -- 示例优惠券
 INSERT INTO `coupon_template` (`name`, `type`, `face_value`, `discount`, `min_spend`, `total_count`, `issued_count`, `per_limit`, `valid_type`, `valid_start`, `valid_end`, `valid_days`, `status`) VALUES
