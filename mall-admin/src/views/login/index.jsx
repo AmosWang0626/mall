@@ -26,7 +26,7 @@ export default function Login() {
   return (
     <div style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' }}>
       <Card style={{ width: 400, boxShadow: '0 4px 12px rgba(0,0,0,0.15)' }}>
-        <Typography.Title level={3} style={{ textAlign: 'center', marginBottom: 32 }}>Mini-Mall 管理后台</Typography.Title>
+        <Typography.Title level={3} style={{ textAlign: 'center', marginBottom: 32 }}>Mall 管理后台</Typography.Title>
         <Form onFinish={onFinish} initialValues={{ username: 'admin', password: 'admin123' }}>
           <Form.Item name="username" rules={[{ required: true, message: '请输入用户名' }]}>
             <Input prefix={<UserOutlined />} placeholder="用户名" size="large" />

@@ -12,9 +12,9 @@
     </parent>
 
     <groupId>com.mall</groupId>
-    <artifactId>mini-mall</artifactId>
+    <artifactId>mall</artifactId>
     <version>1.0.0</version>
-    <name>mini-mall</name>
+    <name>mall</name>
     <description>简易Java商城 - SpringBoot + Mybatis + Redis + React</description>
 
     <properties>

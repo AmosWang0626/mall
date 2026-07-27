@@ -1,4 +1,4 @@
-# Mini-Mall 简易Java商城
+# Mall 简易Java商城
 
 > 蚂蚁虽小，五脏俱全。一个适合快速二次开发的Java商城系统。
 

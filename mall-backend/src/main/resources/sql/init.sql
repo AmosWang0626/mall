@@ -1,5 +1,5 @@
 -- ============================================================
--- Mini-Mall 数据库初始化脚本
+-- Mall 数据库初始化脚本
 -- 数据库: MySQL 8.0+
 -- 字符集: utf8mb4
 -- ============================================================
@@ -7,8 +7,8 @@
 -- 务必最先设置字符集，防止中文乱码
 SET NAMES utf8mb4;
 
-CREATE DATABASE IF NOT EXISTS `mini_mall` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE `mini_mall`;
+CREATE DATABASE IF NOT EXISTS `mall` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE `mall`;
 
 SET FOREIGN_KEY_CHECKS = 0;
 
@@ -499,7 +499,7 @@ SELECT 1, id FROM `sys_permission`;
 
 -- 默认系统配置
 INSERT INTO `sys_config` (`config_key`, `config_value`, `config_type`, `name`, `description`, `is_system`) VALUES
-('site_name', 'Mini-Mall 商城', 'string', '站点名称', '商城站点名称', 1),
+('site_name', 'Mall 商城', 'string', '站点名称', '商城站点名称', 1),
 ('site_logo', '', 'string', '站点Logo', '商城Logo地址', 0),
 ('order_timeout', '30', 'number', '订单超时时间', '订单未支付自动取消时间(分钟)', 1),
 ('points_rate', '1', 'number', '积分兑换比例', '1元=N积分', 1),

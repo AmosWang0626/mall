@@ -5,9 +5,9 @@ server:
 
 spring:
   application:
-    name: mini-mall
+    name: mall
   datasource:
-    url: jdbc:mysql://localhost:3306/mini_mall?useUnicode=true&characterEncoding=UTF-8&connectionCollation=utf8mb4_unicode_ci&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://localhost:3306/mall?useUnicode=true&characterEncoding=UTF-8&connectionCollation=utf8mb4_unicode_ci&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
     username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -40,7 +40,7 @@ pagehelper:
 
 # JWT 配置
 jwt:
-  secret: mini-mall-secret-key-2024-please-change-in-production-environment
+  secret: mall-secret-key-2024-please-change-in-production-environment
   expiration: 86400000  # 24小时 (毫秒)
   header: Authorization
   prefix: "Bearer "

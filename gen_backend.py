@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate all remaining backend Java files and mapper XMLs for mini-mall project."""
+"""Generate all remaining backend Java files and mapper XMLs for mall project."""
 import os
 
 BASE = "/Users/dorian/WorkBuddy/2026-07-21-23-31-52/mall-backend/src/main"

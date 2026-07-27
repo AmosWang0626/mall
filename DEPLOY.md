@@ -1,4 +1,4 @@
-# Mini-Mall 部署文档
+# Mall 部署文档
 
 ## 环境要求
 
@@ -59,7 +59,7 @@ docker compose logs -f
 # 看到 "Started MallApplication" 表示后端就绪
 
 # 4. 等待 MySQL 健康检查通过后，查看初始化是否成功
-docker compose exec mysql mysql -uroot -proot -e "USE mini_mall; SHOW TABLES;"
+docker compose exec mysql mysql -uroot -proot -e "USE mall; SHOW TABLES;"
 ```
 
 ## 访问地址
@@ -142,7 +142,7 @@ docker compose down -v
 
 # 进入容器调试
 docker compose exec backend sh
-docker compose exec mysql mysql -uroot -proot mini_mall
+docker compose exec mysql mysql -uroot -proot mall
 docker compose exec redis redis-cli
 ```
 
@@ -168,7 +168,7 @@ docker compose exec redis redis-cli
 
 MySQL 容器首次启动时自动执行 `/docker-entrypoint-initdb.d/` 下的 `.sql` 文件。
 `init.sql` 包含：
-- 创建数据库 `mini_mall`
+- 创建数据库 `mall`
 - 20 张业务表（用户、商品、订单、积分、优惠券、营销、权限等）
 - 种子数据（管理员账号、角色权限、示例商品、示例优惠券等）
 

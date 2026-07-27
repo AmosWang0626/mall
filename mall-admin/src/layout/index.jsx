@@ -71,7 +71,7 @@ export default function Layout() {
     <AntLayout style={{ height: '100vh' }}>
       <Sider trigger={null} collapsible collapsed={collapsed} theme="dark">
         <div style={{ height: 64, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: 18, fontWeight: 'bold' }}>
-          {collapsed ? 'M' : 'Mini-Mall'}
+          {collapsed ? 'M' : 'Mall'}
         </div>
         <Menu
           theme="dark"

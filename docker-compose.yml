@@ -6,7 +6,7 @@ services:
     restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: mini_mall
+      MYSQL_DATABASE: mall
       TZ: Asia/Shanghai
       LANG: C.UTF-8
       LC_ALL: C.UTF-8

@@ -1,4 +1,4 @@
-# Mini-Mall 性能评估与高并发优化方案
+# Mall 性能评估与高并发优化方案
 
 ## 一、现状诊断
 
@@ -33,7 +33,7 @@
 ```yaml
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/mini_mall?...  # 已有
+    url: jdbc:mysql://localhost:3306/mall?...  # 已有
     username: root                                   # 已有
     password: root                                   # 已有
     hikari:
@@ -425,7 +425,7 @@ public class SentinelConfig {
     public void init() {
         // 1. 初始化控制台（Dashboard）通信
         System.setProperty("csp.sentinel.dashboard.server", "localhost:8080");
-        System.setProperty("project.name", "mini-mall");
+        System.setProperty("project.name", "mall");
         InitExecutor.doInit();
     }
 }

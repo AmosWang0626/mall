@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate React frontend project for mini-mall admin panel."""
+"""Generate React frontend project for mall admin panel."""
 import os
 
 BASE = "/Users/dorian/WorkBuddy/2026-07-21-23-31-52/mall-admin"
@@ -64,7 +64,7 @@ w(f"{BASE}/index.html", '''<!DOCTYPE html>
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mini-Mall 商城管理后台</title>
+  <title>Mall 商城管理后台</title>
 </head>
 <body>
   <div id="root"></div>
@@ -412,7 +412,7 @@ export default function Layout() {
     <AntLayout style={{ height: '100vh' }}>
       <Sider trigger={null} collapsible collapsed={collapsed} theme="dark">
         <div style={{ height: 64, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: 18, fontWeight: 'bold' }}>
-          {collapsed ? 'M' : 'Mini-Mall'}
+          {collapsed ? 'M' : 'Mall'}
         </div>
         <Menu
           theme="dark"
@@ -475,7 +475,7 @@ export default function Login() {
   return (
     <div style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' }}>
       <Card style={{ width: 400, boxShadow: '0 4px 12px rgba(0,0,0,0.15)' }}>
-        <Typography.Title level={3} style={{ textAlign: 'center', marginBottom: 32 }}>Mini-Mall 管理后台</Typography.Title>
+        <Typography.Title level={3} style={{ textAlign: 'center', marginBottom: 32 }}>Mall 管理后台</Typography.Title>
         <Form onFinish={onFinish} initialValues={{ username: 'admin', password: 'admin123' }}>
           <Form.Item name="username" rules={[{ required: true, message: '请输入用户名' }]}>
             <Input prefix={<UserOutlined />} placeholder="用户名" size="large" />

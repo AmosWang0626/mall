@@ -44,10 +44,10 @@ export default function Login() {
   return (
     <div className="login-page">
       <NavBar back={null}>
-        <span style={{ fontWeight: 600 }}>Mini Mall</span>
+        <span style={{ fontWeight: 600 }}>Mall</span>
       </NavBar>
       <div className="login-header">
-        <div className="logo">Mini Mall</div>
+        <div className="logo">Mall</div>
         <div className="slogan">一站式购物体验</div>
       </div>
       <div className="login-form-wrap">
