@@ -113,3 +113,8 @@ export const sysLogApi = {
   list: (params) => request.get('/system/log/list', { params }),
   delete: (id) => request.delete(`/system/log/${id}`)
 }
+
+// Dashboard
+export const dashboardApi = {
+  stats: () => request.get('/dashboard/stats')
+}

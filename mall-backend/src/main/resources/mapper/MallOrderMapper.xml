@@ -56,4 +56,15 @@
     <select id="count" resultType="long">SELECT COUNT(*) FROM mall_order WHERE deleted=0<if test="orderNo!=null and orderNo!=''">AND order_no LIKE CONCAT('%',#{orderNo},'%')</if><if test="status!=null">AND status=#{status}</if><if test="userId!=null">AND user_id=#{userId}</if></select>
     <update id="updateStatus">UPDATE mall_order SET status=#{status} WHERE id=#{id} AND deleted=0</update>
     <update id="updateShip">UPDATE mall_order SET ship_company=#{shipCompany},ship_no=#{shipNo},ship_time=NOW(),status=2 WHERE id=#{id} AND deleted=0</update>
+
+    <!-- Dashboard 统计 -->
+    <select id="todayOrderCount" resultType="long">
+        SELECT COUNT(*) FROM mall_order WHERE deleted=0 AND DATE(create_time)=CURDATE()
+    </select>
+    <select id="todaySales" resultType="java.math.BigDecimal">
+        SELECT IFNULL(SUM(pay_amount), 0) FROM mall_order WHERE deleted=0 AND DATE(create_time)=CURDATE() AND status IN (1,2,3)
+    </select>
+    <select id="selectRecent" resultMap="BaseResultMap">
+        SELECT <include refid="cols"/> FROM mall_order WHERE deleted=0 ORDER BY create_time DESC LIMIT #{limit}
+    </select>
 </mapper>

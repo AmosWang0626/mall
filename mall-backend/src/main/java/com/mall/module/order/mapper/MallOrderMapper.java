@@ -17,4 +17,9 @@ public interface MallOrderMapper {
     long count(@Param("orderNo") String orderNo, @Param("status") Integer status, @Param("userId") Long userId);
     int updateStatus(@Param("id") Long id, @Param("status") int status);
     int updateShip(@Param("id") Long id, @Param("shipCompany") String shipCompany, @Param("shipNo") String shipNo);
+
+    // Dashboard 统计
+    long todayOrderCount();
+    java.math.BigDecimal todaySales();
+    List<MallOrder> selectRecent(@Param("limit") int limit);
 }
