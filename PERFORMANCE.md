@@ -17,6 +17,7 @@
 | **中等** | 缺少 `create_time` 排序字段索引，需 filesort | 订单/积分日志列表 |
 | **中等** | 营销活动列表 N+1、角色权限逐条插入 | 活动/权限管理 |
 | **轻微** | 登录事务范围过大、未使用只读事务 | 部分接口 |
+| ✅ 已解决 | 奖池领取频控 + 库存原子扣减 | 奖池系统 (5层频控: 时间窗口→每人限领DB→每人每日Redis→每日总量Redis→库存UPDATE WHERE claimed<stock) |
 
 ---
 
@@ -24,7 +25,7 @@
 
 ### 问题
 
-`application.yml` 和 `application-docker.yml` 中 `spring.datasource` 仅配置了 url/username/password，HikariCP 参数完全缺失。Spring Boot 2.7 默认最大连接数仅 10。
+`application.yml` 和 `application-docker.yml` 中 `spring.datasource` 仅配置了 url/username/password，HikariCP 参数完全缺失。Spring Boot 默认最大连接数仅 10。
 
 ### 方案
 
@@ -791,7 +792,7 @@ public class ApiMetricsAspect {
 | 数据库连接 | 默认 10，高并发耗尽 | 30+，连接池管理 |
 | 缓存 | 仅 1 个 Redis key | 多级缓存，命中率 > 95% |
 | SQL 查询 | 多处 N+1，LIKE 全表扫描 | 批量查询 + 全文索引 |
-| 并发控制 | 基本无 | Sentinel 限流 + Redisson 分布式锁 |
+| 并发控制 | 奖池5层频控 (已实现)，其余待优化 | Sentinel 限流 + Redisson 分布式锁 |
 | 异步处理 | 完全同步阻塞 | 线程池异步化日志/积分/通知 |
 | 数据持久层索引 | 缺少排序字段索引 | 8+ 补充索引 |
 | 监控 | 无 | AOP 耗时统计 + Sentinel Dashboard |

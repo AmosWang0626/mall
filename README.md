@@ -22,13 +22,14 @@
 | 技术 | 版本 | 说明 |
 |------|------|------|
 | React | 18.2 | UI框架 |
-| Ant Design | 5.12 | UI组件库 |
+| Ant Design | 5.12 | UI组件库 (管理后台) |
+| antd-mobile | 5.36 | 移动端组件库 (C端H5) |
 | React Router | 6.20 | 路由 |
 | Axios | 1.6 | HTTP请求 |
 | Vite | 5.0 | 构建工具 |
 | Zustand | 4.4 | 状态管理 |
 
-> **注意**: 用户要求的是 Element UI，但 Element UI 是 Vue 专用组件库，React 生态中对应的是 Ant Design，功能和使用方式非常接近。
+> 前端包含两套应用：**管理后台** (mall-admin, Ant Design) 和 **C端H5商城** (mall-h5, antd-mobile)。
 
 ## 功能模块
 
@@ -40,6 +41,7 @@
 - **积分系统**: 积分账户、签到获得、下单获得/使用、退款退回、流水记录
 - **优惠券系统**: 满减券/折扣券/无门槛券、领取、使用、有效期管理
 - **营销活动**: 限时秒杀、满减活动、折扣活动、活动商品关联
+- **奖池系统**: 通用奖品发放框架(SPI架构)、多类型奖品(优惠券/积分等)、5层频控(时间窗口/每人限领/每人每日/每日总量/库存扣减)、Banner展示、后台配置管理
 
 ### 后台管理功能
 - **仪表盘**: 关键数据概览
@@ -78,6 +80,9 @@ mall-backend/                          # 后端项目
     │       ├── points/                # 积分模块
     │       ├── coupon/                # 优惠券模块
     │       ├── marketing/             # 营销模块
+    │       ├── prize/                 # 奖池模块 (SPI奖品发放)
+    │       │   ├── spi/               #   SPI接口与注册中心
+    │       │   └── spi/provider/      #   内置Provider (优惠券/积分)
     │       └── system/                # 系统管理模块
     └── resources/
         ├── application.yml            # 应用配置
@@ -106,12 +111,49 @@ mall-admin/                            # 前端项目
         ├── order/                     # 订单管理
         ├── user/                      # 用户管理
         ├── points/                    # 积分管理
-        ├── coupon/                    # 优惠券管理
+        ├��─ coupon/                    # 优惠券管理
         ├── marketing/                 # 营销活动
+        ├── prize/                     # 奖池管理
         └── system/                    # 系统管理
+
+mall-h5/                               # C端H5商城
+├── package.json
+├── vite.config.js
+├── index.html
+└── src/
+    ├── main.jsx                       # 入口
+    ├── App.jsx                        # 路由配置 (底部3Tab)
+    ├── api/                           # API请求
+    ├── store/                         # 状态管理
+    └── pages/                         # 页面
+        ├── home/                      # 首页 (商品浏览+Banner)
+        ├── cart/                      # 购物车
+        ├── checkout/                  # 结算下单
+        ├── orders/                    # 订单列表
+        ├── login/                     # 登录注册
+        ├── mine/                      # 我的 (积分/订单/退出)
+        └── prize/                     # 奖池领取
 ```
 
 ## 快速开始
+
+> **推荐使用 Docker Compose 一键部署**，详情见 [DEPLOY.md](DEPLOY.md)。
+
+## Docker 部署 (推荐)
+
+```bash
+cd mall
+docker compose up -d --build
+```
+
+| 服务 | 地址 |
+|------|------|
+| 管理后台 | http://localhost |
+| C端H5商城 | http://localhost:81 |
+| 后端 API | http://localhost:8080/api |
+| Swagger 文档 | http://localhost:8080/api/doc.html |
+
+## 本地开发
 
 ### 环境要求
 - JDK 21+
@@ -150,15 +192,17 @@ mvn spring-boot:run
 ### 4. 启动前端
 
 ```bash
+# 管理后台
 cd mall-admin
-
-# 安装依赖
 npm install
-
-# 启动开发服务器
 npm run dev
+# 运行在 http://localhost:3000
 
-# 前端运行在 http://localhost:3000
+# C端H5商城
+cd mall-h5
+npm install
+npm run dev
+# 运行在 http://localhost:3001
 ```
 
 ### 5. 默认管理员账号
@@ -193,6 +237,24 @@ module/xxx/
   "data": {}
 }
 ```
+
+### 奖池SPI架构
+
+奖池系统采用 SPI (Service Provider Interface) 架构，支持多类型奖品发放和外部扩展：
+
+```
+PrizePoolService.claim()
+    ↓
+PrizeProviderRegistry.get(prizeType)     ← Spring Bean 注入 (内置)
+    │                                       ← Java ServiceLoader (外部扩展)
+    ↓
+PrizeProvider.grant(context)
+    ├── CouponPrizeProvider  → CouponService.receive()   (优惠券)
+    ├── PointsPrizeProvider  → PointsService.addPoints()  (积分)
+    └── YourPrizeProvider    → 实现接口 + META-INF/services 注册 (第三方扩展)
+```
+
+**扩展三方奖品类型**：实现 `PrizeProvider` 接口，在 `META-INF/services/` 注册，加入 classpath 即可自动生效。
 
 ### 认证流程
 
@@ -233,6 +295,9 @@ module/xxx/
 | 积分 | /points | account, sign, logs |
 | 优惠券 | /coupon | available, mine, receive, list, save, delete |
 | 营销 | /marketing | active, list, detail, save, delete |
+| 奖池(公开) | /public/prize | banners (首页Banner) |
+| 奖池(用户) | /prize | list, claim/{poolId} (领取奖品) |
+| 奖池(管理) | /prize/admin | list, detail, save, delete, status, types (SPI类型列表) |
 | 管理员 | /system/admin | list, save, update, delete, roles, password |
 | 角色 | /system/role | list, all, save, delete, permissions |
 | 权限 | /system/permission | tree, list, save, delete |

@@ -67,6 +67,7 @@ docker compose exec mysql mysql -uroot -proot -e "USE mall; SHOW TABLES;"
 | 服务 | 地址 | 说明 |
 |------|------|------|
 | 管理后台 | http://localhost | React 前端 (Nginx 80端口) |
+| C端H5商城 | http://localhost:81 | React 移动端 (Nginx 81端口) |
 | 后端 API | http://localhost:8080/api | SpringBoot 接口 |
 | Swagger 文档 | http://localhost:8080/api/doc.html | Knife4j 在线文档 |
 
@@ -80,21 +81,25 @@ docker compose exec mysql mysql -uroot -proot -e "USE mall; SHOW TABLES;"
 ## 服务架构
 
 ```
-┌──────────────────────────────────────────┐
-│                 Browser                   │
-│              http://localhost             │
-└───────────────┬──────────────────────────┘
-                │
-┌───────────────▼──────────────────────────┐
-│          frontend (Nginx :80)             │
-│  ├─ /             → 静态 SPA             │
-│  └─ /api/*        → proxy → backend      │
-└───────────────┬──────────────────────────┘
-                │
-┌───────────────▼──────────────────────────┐
-│          backend (Java :8080)            │
-│     SpringBoot 2.7 + MyBatis + Redis     │
-└──────┬──────────────────────┬────────────┘
+┌──────────────────────────────────────────────────┐
+│                   Browser                        │
+│   管理后台 http://localhost                       │
+│   H5商城 http://localhost:81                      │
+└─────────┬────────────────────┬──────────────────┘
+          │                    │
+┌─────────▼────────┐  ┌────────▼──────────┐
+│ frontend (Nginx) │  │  h5 (Nginx :81)   │
+│ :80              │  │  静态SPA + /api   │
+│ SPA + /api →     │  │  → proxy backend  │
+└────────┬─────────┘  └────────┬──────────┘
+         │                     │
+         └──────────┬──────────┘
+                    │
+┌───────────────────▼──────────────────────────────┐
+│          backend (Java :8080)                    │
+│     SpringBoot 3.3.2 + MyBatis + Redis           │
+│     JDK 21 (eclipse-temurin:21-jre-alpine)       │
+└──────┬──────────────────────┬────────────────────┘
        │                      │
 ┌──────▼──────┐        ┌──────▼──────┐
 │    MySQL    │        │    Redis    │
@@ -109,13 +114,16 @@ docker compose exec mysql mysql -uroot -proot -e "USE mall; SHOW TABLES;"
 ├── docker-compose.yml              # 服务编排
 ├── DEPLOY.md                       # 本文档
 ├── mall-backend/
-│   ├── Dockerfile                  # 后端多阶段构建 (Maven → JRE)
+│   ├── Dockerfile                  # 后端多阶段构建 (Maven → eclipse-temurin:21-jre-alpine)
 │   └── src/main/resources/
 │       ├── application.yml         # 本地开发配置
 │       ├── application-docker.yml  # Docker 环境配置
 │       └── sql/init.sql            # 库表 + 种子数据（自动执行）
-└── mall-admin/
-    ├── Dockerfile                  # 前端多阶段构建 (Node → Nginx)
+├── mall-admin/
+│   ├── Dockerfile                  # 管理后台多阶段构建 (Node → Nginx)
+│   └── nginx.conf                  # Nginx SPA + API 反向代理
+└── mall-h5/
+    ├── Dockerfile                  # H5商城多阶段构建 (Node → Nginx)
     └── nginx.conf                  # Nginx SPA + API 反向代理
 ```
 
@@ -169,8 +177,8 @@ docker compose exec redis redis-cli
 MySQL 容器首次启动时自动执行 `/docker-entrypoint-initdb.d/` 下的 `.sql` 文件。
 `init.sql` 包含：
 - 创建数据库 `mall`
-- 20 张业务表（用户、商品、订单、积分、优惠券、营销、权限等）
-- 种子数据（管理员账号、角色权限、示例商品、示例优惠券等）
+- 22 张业务表（用户、商品、订单、积分、优惠券、营销、奖池、权限等）
+- 种子数据（管理员账号、角色权限、示例商品、示例优惠券、示例奖池等）
 
 ### 数据持久化
 
