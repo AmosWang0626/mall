@@ -13,6 +13,7 @@ import PointsLog from './views/points/log'
 import CouponTemplate from './views/coupon/template'
 import CouponRecord from './views/coupon/record'
 import MarketingActivity from './views/marketing/activity'
+import PrizePoolPage from './views/prize/pool'
 import SysAdmin from './views/system/admin'
 import SysRole from './views/system/role'
 import SysPermission from './views/system/permission'
@@ -44,6 +45,7 @@ export default function App() {
           <Route path="coupon/template" element={<CouponTemplate />} />
           <Route path="coupon/record" element={<CouponRecord />} />
           <Route path="marketing/activity" element={<MarketingActivity />} />
+          <Route path="prize/pool" element={<PrizePoolPage />} />
           <Route path="system/admin" element={<SysAdmin />} />
           <Route path="system/role" element={<SysRole />} />
           <Route path="system/permission" element={<SysPermission />} />

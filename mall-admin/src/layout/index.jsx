@@ -31,7 +31,10 @@ const menuItems = [
     { key: '/coupon/template', label: '优惠券模板' },
     { key: '/coupon/record', label: '领取记录' }
   ]},
-  { key: '/marketing/activity', icon: <ThunderboltOutlined />, label: '营销活动' },
+  { key: '/marketing', icon: <ThunderboltOutlined />, label: '营销管理', children: [
+    { key: '/marketing/activity', label: '营销活动' },
+    { key: '/prize/pool', label: '奖池管理' }
+  ]},
   { key: '/system', icon: <SettingOutlined />, label: '系统管理', children: [
     { key: '/system/admin', label: '管理员管理' },
     { key: '/system/role', label: '角色管理' },

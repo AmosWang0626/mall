@@ -6,6 +6,7 @@ mall-backend/target/
 
 # Node
 mall-admin/node_modules/
+mall-admin/package-lock.json
 mall-admin/dist/
 mall-admin/.vite/
 

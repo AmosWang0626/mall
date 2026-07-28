@@ -4,11 +4,16 @@ import com.mall.common.PageResult;
 import com.mall.common.Result;
 import com.mall.module.prize.entity.PrizePool;
 import com.mall.module.prize.service.PrizePoolService;
+import com.mall.module.prize.spi.PrizeProvider;
+import com.mall.module.prize.spi.PrizeProviderRegistry;
 import com.mall.module.prize.spi.PrizeResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 奖池控制器
@@ -33,6 +38,9 @@ public class PrizePoolController {
     @Autowired
     private PrizePoolService prizePoolService;
 
+    @Autowired
+    private PrizeProviderRegistry providerRegistry;
+
     // ===== 公开接口 =====
 
     @GetMapping("/public/prize/banners")
@@ -53,6 +61,21 @@ public class PrizePoolController {
     }
 
     // ===== 管理接口 =====
+
+    /**
+     * 已注册的奖品类型列表 (供后台下拉选择, 自动反映 SPI 扩展)
+     */
+    @GetMapping("/prize/admin/types")
+    public Result<List<Map<String, String>>> adminTypes() {
+        List<Map<String, String>> types = new ArrayList<>();
+        for (PrizeProvider p : providerRegistry.getAllProviders()) {
+            Map<String, String> t = new LinkedHashMap<>();
+            t.put("type", p.getType());
+            t.put("displayName", p.getDisplayName());
+            types.add(t);
+        }
+        return Result.success(types);
+    }
 
     @GetMapping("/prize/admin/list")
     public Result<PageResult<PrizePool>> adminList(

@@ -73,6 +73,16 @@ export const marketingApi = {
   updateStatus: (id, status) => request.put(`/marketing/${id}/status`, null, { params: { status } })
 }
 
+// Prize (奖池)
+export const prizeApi = {
+  list: (params) => request.get('/prize/admin/list', { params }),
+  detail: (id) => request.get(`/prize/admin/${id}`),
+  types: () => request.get('/prize/admin/types'),
+  save: (data) => request.post('/prize/admin', data),
+  delete: (id) => request.delete(`/prize/admin/${id}`),
+  updateStatus: (id, status) => request.put(`/prize/admin/${id}/status`, null, { params: { status } })
+}
+
 // System
 export const sysAdminApi = {
   list: (params) => request.get('/system/admin/list', { params }),

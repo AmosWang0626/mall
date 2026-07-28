@@ -54,8 +54,8 @@
             <if test="name != null">name = #{name},</if>
             <if test="description != null">description = #{description},</if>
             <if test="prizeType != null">prize_type = #{prizeType},</if>
-            <if test="prizeRefId != null">prize_ref_id = #{prizeRefId},</if>
-            <if test="prizeValue != null">prize_value = #{prizeValue},</if>
+            prize_ref_id = #{prizeRefId},
+            prize_value = #{prizeValue},
             <if test="prizeName != null">prize_name = #{prizeName},</if>
             <if test="prizeDesc != null">prize_desc = #{prizeDesc},</if>
             <if test="totalStock != null">total_stock = #{totalStock},</if>
