@@ -12,12 +12,14 @@ import com.mall.security.UserContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import java.util.List;
 
 @Service
 public class PointsService {
-    @Autowired private PointsAccountMapper accountMapper;
-    @Autowired private PointsLogMapper logMapper;
+
+    @Autowired
+    private PointsAccountMapper accountMapper;
+    @Autowired
+    private PointsLogMapper logMapper;
 
     private PointsAccount getOrCreate(Long userId) {
         PointsAccount acc = accountMapper.selectByUserId(userId);
@@ -34,9 +36,9 @@ public class PointsService {
         return acc;
     }
 
-    public PointsAccount getAccount(Long userId) { return getOrCreate(userId); }
-
-    public PointsAccount myAccount() { return getOrCreate(UserContext.require().getUserId()); }
+    public PointsAccount myAccount() {
+        return getOrCreate(UserContext.require().getUserId());
+    }
 
     @Transactional
     public void addPoints(Long userId, int points, String source, Long refId, String remark) {
@@ -98,12 +100,6 @@ public class PointsService {
 
     public PageResult<PointsLog> myLogs(String source, int pageNum, int pageSize) {
         Long userId = UserContext.require().getUserId();
-        PageHelper.startPage(pageNum, pageSize);
-        PageInfo<PointsLog> info = new PageInfo<>(logMapper.selectByUserId(userId, source));
-        return PageResult.of(info.getList(), info.getTotal(), pageNum, pageSize);
-    }
-
-    public PageResult<PointsLog> adminLogs(Long userId, String source, int pageNum, int pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         PageInfo<PointsLog> info = new PageInfo<>(logMapper.selectByUserId(userId, source));
         return PageResult.of(info.getList(), info.getTotal(), pageNum, pageSize);

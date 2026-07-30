@@ -14,7 +14,6 @@ import com.mall.module.order.mapper.OrderItemMapper;
 import com.mall.module.product.entity.Product;
 import com.mall.module.product.mapper.ProductMapper;
 import com.mall.module.product.mapper.ProductSkuMapper;
-import com.mall.module.product.entity.ProductSku;
 import com.mall.module.user.entity.UserAddress;
 import com.mall.module.user.mapper.UserAddressMapper;
 import com.mall.security.UserContext;
@@ -28,6 +27,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class OrderService {
+
     @Autowired private MallOrderMapper orderMapper;
     @Autowired private OrderItemMapper itemMapper;
     @Autowired private CartItemMapper cartMapper;
@@ -63,7 +63,6 @@ public class OrderService {
                     product.getStock();
             if (stock < cart.getQuantity()) throw BusinessException.of("库存不足: " + cart.getProductName());
 
-            // deduct stock
             if (cart.getSkuId() != null) {
                 skuMapper.reduceStock(cart.getSkuId(), cart.getQuantity());
             } else {
@@ -94,7 +93,7 @@ public class OrderService {
         if (couponId != null) {
             discountAmount = couponService.calculateDiscount(couponId, userId, totalAmount);
             if (discountAmount.compareTo(BigDecimal.ZERO) > 0) {
-                couponService.useCoupon(couponId, userId, null); // order id set later
+                couponService.useCoupon(couponId, userId, null);
             }
         }
 
@@ -115,7 +114,7 @@ public class OrderService {
         if (payAmount.compareTo(BigDecimal.ZERO) < 0) payAmount = BigDecimal.ZERO;
 
         // 7. earned points
-        int pointsEarned = payAmount.intValue(); // 1 yuan = 1 point
+        int pointsEarned = payAmount.intValue();
 
         // 8. create order
         String orderNo = generateOrderNo(userId);
@@ -129,7 +128,7 @@ public class OrderService {
         order.setPointsUsed(pointsUsed);
         order.setPointsEarned(pointsEarned);
         order.setCouponId(couponId);
-        order.setStatus(0); // pending payment
+        order.setStatus(0);
         order.setPayType(dto.getPayType() != null ? dto.getPayType() : 1);
         order.setReceiver(addr.getReceiver());
         order.setReceiverPhone(addr.getPhone());
@@ -176,13 +175,6 @@ public class OrderService {
         return PageResult.of(info.getList(), info.getTotal(), pageNum, pageSize);
     }
 
-    public PageResult<MallOrder> adminList(String orderNo, Integer status, Long userId, int pageNum, int pageSize) {
-        PageHelper.startPage(pageNum, pageSize);
-        PageInfo<MallOrder> info = new PageInfo<>(orderMapper.selectList(orderNo, status, userId));
-        for (MallOrder o : info.getList()) o.setItems(itemMapper.selectByOrderId(o.getId()));
-        return PageResult.of(info.getList(), info.getTotal(), pageNum, pageSize);
-    }
-
     @Transactional
     public void pay(Long id, Integer payType) {
         MallOrder order = orderMapper.selectById(id);
@@ -194,7 +186,6 @@ public class OrderService {
         update.setPayType(payType);
         update.setPayTime(new Date());
         orderMapper.updateById(update);
-        // award points
         if (order.getPointsEarned() > 0) {
             pointsService.addPoints(order.getUserId(), order.getPointsEarned(), "ORDER", order.getId(), "下单获得积分");
         }
@@ -205,7 +196,6 @@ public class OrderService {
         MallOrder order = orderMapper.selectById(id);
         if (order == null) throw BusinessException.of("订单不存在");
         if (order.getStatus() != 0) throw BusinessException.of("只能取消待付款订单");
-        // restore stock
         List<OrderItem> items = itemMapper.selectByOrderId(id);
         for (OrderItem item : items) {
             if (item.getSkuId() != null) {
@@ -214,7 +204,6 @@ public class OrderService {
                 productMapper.restoreStock(item.getProductId(), item.getQuantity());
             }
         }
-        // refund points
         if (order.getPointsUsed() > 0) {
             pointsService.refundPoints(order.getUserId(), order.getPointsUsed(), "ORDER_CANCEL", order.getId(), "订单取消退回积分");
         }
@@ -226,14 +215,6 @@ public class OrderService {
     }
 
     @Transactional
-    public void ship(Long id, String company, String no) {
-        MallOrder order = orderMapper.selectById(id);
-        if (order == null) throw BusinessException.of("订单不存在");
-        if (order.getStatus() != 1) throw BusinessException.of("只能发货待发货订单");
-        orderMapper.updateShip(id, company, no);
-    }
-
-    @Transactional
     public void receive(Long id) {
         MallOrder order = orderMapper.selectById(id);
         if (order == null) throw BusinessException.of("订单不存在");
@@ -242,30 +223,6 @@ public class OrderService {
         update.setId(id);
         update.setStatus(3);
         update.setReceiveTime(new Date());
-        orderMapper.updateById(update);
-    }
-
-    @Transactional
-    public void refund(Long id) {
-        MallOrder order = orderMapper.selectById(id);
-        if (order == null) throw BusinessException.of("订单不存在");
-        // restore stock
-        List<OrderItem> items = itemMapper.selectByOrderId(id);
-        for (OrderItem item : items) {
-            if (item.getSkuId() != null) skuMapper.restoreStock(item.getSkuId(), item.getQuantity());
-            else productMapper.restoreStock(item.getProductId(), item.getQuantity());
-        }
-        // refund points
-        if (order.getPointsEarned() > 0) {
-            pointsService.deductPoints(order.getUserId(), order.getPointsEarned(), "REFUND", order.getId(), "退款扣除积分");
-        }
-        if (order.getPointsUsed() > 0) {
-            pointsService.refundPoints(order.getUserId(), order.getPointsUsed(), "REFUND", order.getId(), "退款退回使用积分");
-        }
-        MallOrder update = new MallOrder();
-        update.setId(id);
-        update.setStatus(5);
-        update.setCloseTime(new Date());
         orderMapper.updateById(update);
     }
 

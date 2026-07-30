@@ -1,8 +1,5 @@
 package com.mall.module.coupon.service;
 
-import com.mall.common.PageResult;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.mall.common.exception.BusinessException;
 import com.mall.module.coupon.entity.CouponTemplate;
 import com.mall.module.coupon.entity.UserCoupon;
@@ -12,46 +9,24 @@ import com.mall.security.UserContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 @Service
 public class CouponService {
-    @Autowired private CouponTemplateMapper templateMapper;
-    @Autowired private UserCouponMapper userCouponMapper;
 
-    // ===== Template CRUD =====
-    public PageResult<CouponTemplate> list(String name, Integer status, int pageNum, int pageSize) {
-        PageHelper.startPage(pageNum, pageSize);
-        PageInfo<CouponTemplate> info = new PageInfo<>(templateMapper.selectList(name, status));
-        return PageResult.of(info.getList(), info.getTotal(), pageNum, pageSize);
+    @Autowired
+    private CouponTemplateMapper templateMapper;
+    @Autowired
+    private UserCouponMapper userCouponMapper;
+
+    public List<CouponTemplate> available() {
+        return templateMapper.selectAvailable();
     }
 
-    public CouponTemplate getById(Long id) { return templateMapper.selectById(id); }
-
-    @Transactional
-    public void save(CouponTemplate coupon) {
-        if (coupon.getId() == null) {
-            coupon.setIssuedCount(0);
-            if (coupon.getStatus() == null) coupon.setStatus(1);
-            templateMapper.insert(coupon);
-        } else {
-            templateMapper.updateById(coupon);
-        }
-    }
-
-    @Transactional
-    public void delete(Long id) { templateMapper.deleteById(id); }
-
-    @Transactional
-    public void updateStatus(Long id, int status) { templateMapper.updateStatus(id, status); }
-
-    public List<CouponTemplate> available() { return templateMapper.selectAvailable(); }
-
-    // ===== User Coupon =====
     public List<UserCoupon> myCoupons(Integer status) {
         return userCouponMapper.selectByUserIdWithDetail(UserContext.require().getUserId(), status);
     }
@@ -89,14 +64,10 @@ public class CouponService {
         if (coupon == null) return BigDecimal.ZERO;
         if (totalAmount.compareTo(coupon.getMinSpend()) < 0) return BigDecimal.ZERO;
         switch (coupon.getType()) {
-            case 1: // 满减
-                return coupon.getFaceValue();
-            case 2: // 折扣
-                return totalAmount.multiply(BigDecimal.ONE.subtract(coupon.getDiscount())).setScale(2, RoundingMode.HALF_UP);
-            case 3: // 无门槛
-                return coupon.getFaceValue();
-            default:
-                return BigDecimal.ZERO;
+            case 1:  return coupon.getFaceValue();
+            case 2:  return totalAmount.multiply(BigDecimal.ONE.subtract(coupon.getDiscount())).setScale(2, RoundingMode.HALF_UP);
+            case 3:  return coupon.getFaceValue();
+            default: return BigDecimal.ZERO;
         }
     }
 

@@ -10,67 +10,67 @@ export const authApi = {
 
 // Product
 export const productApi = {
-  list: (params) => request.get('/product/list', { params }),
+  list: (params) => request.get('/admin/product/list', { params }),
   publicList: (params) => request.get('/public/product/list', { params }),
-  detail: (id) => request.get(`/product/${id}`),
-  save: (data) => request.post('/product', data),
-  update: (data) => request.put(`/product/${data.id}`, data),
-  updateStatus: (id, status) => request.put(`/product/${id}/status`, null, { params: { status } }),
-  delete: (id) => request.delete(`/product/${id}`)
+  detail: (id) => request.get(`/admin/product/${id}`),
+  save: (data) => request.post('/admin/product', data),
+  update: (data) => request.put(`/admin/product/${data.id}`, data),
+  updateStatus: (id, status) => request.put(`/admin/product/${id}/status`, null, { params: { status } }),
+  delete: (id) => request.delete(`/admin/product/${id}`)
 }
 
 export const categoryApi = {
-  tree: () => request.get('/product/category/tree'),
-  save: (data) => request.post('/product/category', data),
-  update: (data) => request.put(`/product/category/${data.id}`, data),
-  delete: (id) => request.delete(`/product/category/${id}`)
+  tree: () => request.get('/admin/product/category/tree/all'),
+  save: (data) => request.post('/admin/product/category', data),
+  update: (data) => request.put(`/admin/product/category/${data.id}`, data),
+  delete: (id) => request.delete(`/admin/product/category/${id}`)
 }
 
 export const skuApi = {
   listByProduct: (productId) => request.get(`/product/sku/list/${productId}`),
-  save: (data) => request.post('/product/sku', data),
-  delete: (id) => request.delete(`/product/sku/${id}`)
+  save: (data) => request.post('/admin/product/sku', data),
+  delete: (id) => request.delete(`/admin/product/sku/${id}`)
 }
 
 // Order
 export const orderApi = {
-  list: (params) => request.get('/order/list', { params }),
-  detail: (id) => request.get(`/order/${id}`),
-  ship: (id, data) => request.put(`/order/${id}/ship`, null, { params: data }),
-  refund: (id) => request.put(`/order/${id}/refund`)
+  list: (params) => request.get('/admin/order/list', { params }),
+  detail: (id) => request.get(`/admin/order/${id}`),
+  ship: (id, data) => request.put(`/admin/order/${id}/ship`, null, { params: data }),
+  refund: (id) => request.put(`/admin/order/${id}/refund`)
 }
 
 // User
 export const userApi = {
-  list: (params) => request.get('/user/list', { params }),
-  detail: (id) => request.get(`/user/${id}`),
-  update: (data) => request.put('/user', data),
-  updateStatus: (id, status) => request.put(`/user/${id}/status`, null, { params: { status } }),
-  delete: (id) => request.delete(`/user/${id}`)
+  list: (params) => request.get('/admin/user/list', { params }),
+  detail: (id) => request.get(`/admin/user/${id}`),
+  update: (data) => request.put('/admin/user', data),
+  updateStatus: (id, status) => request.put(`/admin/user/${id}/status`, null, { params: { status } }),
+  delete: (id) => request.delete(`/admin/user/${id}`)
 }
 
 // Points
 export const pointsApi = {
-  account: (userId) => request.get(`/points/account/${userId}`),
-  logs: (params) => request.get(`/points/logs/${params.userId}`, { params })
+  account: (userId) => request.get(`/admin/points/account/${userId}`),
+  logs: (params) => request.get(`/admin/points/logs/${params.userId}`, { params })
 }
 
 // Coupon
 export const couponApi = {
-  list: (params) => request.get('/coupon/list', { params }),
-  detail: (id) => request.get(`/coupon/${id}`),
-  save: (data) => request.post('/coupon', data),
-  delete: (id) => request.delete(`/coupon/${id}`),
-  updateStatus: (id, status) => request.put(`/coupon/${id}/status`, null, { params: { status } })
+  list: (params) => request.get('/admin/coupon/list', { params }),
+  detail: (id) => request.get(`/admin/coupon/${id}`),
+  save: (data) => request.post('/admin/coupon', data),
+  delete: (id) => request.delete(`/admin/coupon/${id}`),
+  updateStatus: (id, status) => request.put(`/admin/coupon/${id}/status`, null, { params: { status } })
 }
 
 // Marketing
 export const marketingApi = {
-  list: (params) => request.get('/marketing/list', { params }),
-  detail: (id) => request.get(`/marketing/${id}`),
-  save: (data) => request.post('/marketing', data),
-  delete: (id) => request.delete(`/marketing/${id}`),
-  updateStatus: (id, status) => request.put(`/marketing/${id}/status`, null, { params: { status } })
+  list: (params) => request.get('/admin/marketing/list', { params }),
+  detail: (id) => request.get(`/admin/marketing/${id}`),
+  save: (data) => request.post('/admin/marketing', data),
+  delete: (id) => request.delete(`/admin/marketing/${id}`),
+  updateStatus: (id, status) => request.put(`/admin/marketing/${id}/status`, null, { params: { status } })
 }
 
 // Prize (奖池)
