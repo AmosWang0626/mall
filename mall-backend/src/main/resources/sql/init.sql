@@ -511,38 +511,171 @@ INSERT INTO `sys_config` (`config_key`, `config_value`, `config_type`, `name`, `
 
 -- 默认商品分类
 INSERT INTO `product_category` (`id`, `parent_id`, `name`, `sort`, `status`, `level`) VALUES
-(1, 0, '手机数码', 10, 1, 1),
-(2, 0, '电脑办公', 9, 1, 1),
-(3, 0, '家用电器', 8, 1, 1),
-(4, 0, '服饰鞋包', 7, 1, 1),
-(5, 0, '食品生鲜', 6, 1, 1),
-(6, 1, '手机', 10, 1, 2),
-(7, 1, '平板', 9, 1, 2),
-(8, 1, '配件', 8, 1, 2),
-(9, 2, '笔记本', 10, 1, 2),
-(10, 2, '台式机', 9, 1, 2),
-(11, 3, '大家电', 10, 1, 2),
-(12, 3, '小家电', 9, 1, 2);
+(1, 0, 'Apple 苹果', 100, 1, 1),
+(2, 0, '华为 Huawei', 90, 1, 1),
+(3, 0, '虚拟商品', 80, 1, 1),
+(11, 1, 'iPhone', 100, 1, 2),
+(12, 1, 'Mac 电脑', 90, 1, 2),
+(13, 1, 'iPad 平板', 80, 1, 2),
+(14, 1, 'Apple Watch', 70, 1, 2),
+(21, 2, '华为手机', 100, 1, 2),
+(22, 2, '华为手表', 90, 1, 2),
+(23, 2, '华为耳机', 80, 1, 2),
+(31, 3, '手机充值', 100, 1, 2),
+(32, 3, '视频会员', 90, 1, 2),
+(33, 3, '购物娱乐会员', 80, 1, 2);
 
--- 示例商品
-INSERT INTO `product` (`category_id`, `name`, `subtitle`, `main_image`, `price`, `original_price`, `cost`, `stock`, `sales`, `status`, `sort`, `tags`) VALUES
-(6, '智能手机 Pro Max', '6.7英寸旗舰屏 | 1亿像素', 'https://picsum.photos/seed/phone/400/400', 4999.00, 5499.00, 3500.00, 500, 128, 1, 100, '热销,新品'),
-(6, '智能手表 Series 9', '健康监测 | 超长续航', 'https://picsum.photos/seed/watch/400/400', 1999.00, 2299.00, 1200.00, 300, 89, 1, 90, '热销'),
-(9, '超薄笔记本 Air', '16GB | 512GB SSD', 'https://picsum.photos/seed/laptop/400/400', 6999.00, 7999.00, 5000.00, 200, 56, 1, 80, '新品'),
-(11, '4K智能电视 65寸', 'HDR10+ | 杜比音效', 'https://picsum.photos/seed/tv/400/400', 3299.00, 3999.00, 2200.00, 150, 34, 1, 70, ''),
-(8, '无线蓝牙耳机', '主动降噪 | 30小时续航', 'https://picsum.photos/seed/headphone/400/400', 599.00, 799.00, 300.00, 1000, 256, 1, 60, '热销');
+-- ========== Apple iPhone ==========
+INSERT INTO `product` (`id`, `category_id`, `name`, `subtitle`, `main_image`, `price`, `original_price`, `cost`, `stock`, `sales`, `status`, `sort`, `tags`) VALUES
+(1, 11, 'iPhone 15 Pro Max', 'A17 Pro芯片 | 6.7英寸 | 5倍光学变焦', 'https://picsum.photos/seed/iphone15promax/400/400', 9999.00, 10999.00, 7500.00, 500, 328, 1, 1000, '热销,新品,5G'),
+(2, 11, 'iPhone 15 Pro', 'A17 Pro芯片 | 6.1英寸 | 钛金属设计', 'https://picsum.photos/seed/iphone15pro/400/400', 7999.00, 8999.00, 6000.00, 600, 256, 1, 990, '热销,新品,5G'),
+(3, 11, 'iPhone 15', 'A16仿生芯片 | 6.1英寸 | 灵动岛', 'https://picsum.photos/seed/iphone15/400/400', 5999.00, 6499.00, 4500.00, 800, 189, 1, 980, '热销,5G'),
 
--- 示例优惠券
-INSERT INTO `coupon_template` (`name`, `type`, `face_value`, `discount`, `min_spend`, `total_count`, `issued_count`, `per_limit`, `valid_type`, `valid_start`, `valid_end`, `valid_days`, `status`) VALUES
-('新人满100减20', 1, 20.00, NULL, 100.00, 1000, 0, 1, 1, '2024-01-01 00:00:00', '2027-12-31 23:59:59', NULL, 1),
-('全场9折券', 2, NULL, 0.90, 0.00, 500, 0, 2, 1, '2024-01-01 00:00:00', '2027-12-31 23:59:59', NULL, 1),
-('无门槛10元券', 3, 10.00, NULL, 0.00, 200, 0, 1, 2, NULL, NULL, 30, 1),
-('满500减50', 1, 50.00, NULL, 500.00, 300, 0, 2, 1, '2024-01-01 00:00:00', '2027-12-31 23:59:59', NULL, 1);
+-- ========== Apple Mac ==========
+(4, 12, 'MacBook Pro 14 M3 Pro', 'M3 Pro芯片 | 18GB统一内存 | Liquid视网膜XDR', 'https://picsum.photos/seed/macbookpro14/400/400', 15999.00, 16999.00, 12000.00, 200, 78, 1, 900, '新品,M系列,专业'),
+(5, 12, 'MacBook Air 15 M3', 'M3芯片 | 8GB统一内存 | 15.3英寸轻薄本', 'https://picsum.photos/seed/macbookair15/400/400', 8999.00, 9499.00, 6500.00, 300, 156, 1, 890, '热销,轻薄,M系列'),
+(6, 12, 'iMac 24 M3', 'M3芯片 | 24英寸4.5K视网膜 | 七彩设计', 'https://picsum.photos/seed/imac24/400/400', 10999.00, 11499.00, 8000.00, 150, 45, 1, 880, '新品,一体机,M系列'),
 
--- 示例营销活动
+-- ========== Apple iPad ==========
+(7, 13, 'iPad Pro 12.9 M2', 'M2芯片 | 12.9英寸Liquid视网膜XDR | ProMotion', 'https://picsum.photos/seed/ipadpro129/400/400', 8999.00, 9499.00, 6500.00, 250, 92, 1, 800, '热销,专业,生产力'),
+(8, 13, 'iPad Air 5', 'M1芯片 | 10.9英寸Liquid视网膜 | 支持Apple Pencil', 'https://picsum.photos/seed/ipadair5/400/400', 4799.00, 4999.00, 3500.00, 400, 167, 1, 790, '热销,轻薄,生产力'),
+(9, 13, 'iPad 10', 'A14芯片 | 10.9英寸视网膜 | 全屏幕设计', 'https://picsum.photos/seed/ipad10/400/400', 3599.00, 3799.00, 2500.00, 500, 234, 1, 780, '热销,入门'),
+
+-- ========== Apple Watch ==========
+(10, 14, 'Apple Watch Series 9', 'S9芯片 | 亮度翻倍 | 双指互点手势', 'https://picsum.photos/seed/applewatchs9/400/400', 3199.00, 3499.00, 2200.00, 350, 145, 1, 700, '热销,健康,运动'),
+(11, 14, 'Apple Watch SE', 'S8芯片 | 跌倒检测 | 性价比之选', 'https://picsum.photos/seed/applewatchse/400/400', 1999.00, 2199.00, 1400.00, 400, 98, 1, 690, '热销,入门,健康'),
+
+-- ========== 华为手机 ==========
+(12, 21, 'HUAWEI Mate 60 Pro', '麒麟9000S | 卫星通话 | 昆仑玻璃', 'https://picsum.photos/seed/mate60pro/400/400', 6999.00, 7299.00, 5000.00, 300, 412, 1, 600, '热销,新品,5G,国产之光'),
+(13, 21, 'HUAWEI P60 Pro', '超聚光XMAGE | 4810万像素 | 洛可可白', 'https://picsum.photos/seed/p60pro/400/400', 5488.00, 5988.00, 4000.00, 400, 267, 1, 590, '热销,影像,5G'),
+(14, 21, 'HUAWEI nova 12', '骁龙8 Gen3 | 6000万像素追焦 | 轻薄设计', 'https://picsum.photos/seed/nova12/400/400', 2999.00, 3299.00, 2000.00, 600, 178, 1, 580, '新品,自拍,5G'),
+
+-- ========== 华为手表 ==========
+(15, 22, 'HUAWEI Watch GT4', '14天超长续航 | 双频GPS | 健康监测', 'https://picsum.photos/seed/watchgt4/400/400', 1588.00, 1788.00, 1000.00, 500, 203, 1, 500, '热销,运动,长续航'),
+(16, 22, 'HUAWEI Watch Fit 3', '超轻薄设计 | 10天续航 | 100+运动模式', 'https://picsum.photos/seed/watchfit3/400/400', 999.00, 1099.00, 650.00, 800, 312, 1, 490, '热销,轻薄,性价比'),
+
+-- ========== 华为耳机 ==========
+(17, 23, 'HUAWEI FreeBuds Pro 3', '通话降噪2.0 | LDAC高清音质 | 智慧音频', 'https://picsum.photos/seed/freebudspro3/400/400', 1499.00, 1599.00, 1000.00, 600, 189, 1, 400, '热销,降噪,新品'),
+(18, 23, 'HUAWEI FreeBuds 5', '双单元设计 | 主动降噪 | 舒适佩戴', 'https://picsum.photos/seed/freebuds5/400/400', 699.00, 799.00, 450.00, 1000, 356, 1, 390, '热销,性价比'),
+
+-- ========== 虚拟商品 - 手机充值 ==========
+(19, 31, '手机充值卡 50元', '全国三网通用 | 即时到账', 'https://picsum.photos/seed/recharge50/400/400', 50.00, NULL, 48.00, 99999, 1567, 1, 300, '即时发货,虚拟商品'),
+(20, 31, '手机充值卡 100元', '全国三网通用 | 即时到账', 'https://picsum.photos/seed/recharge100/400/400', 100.00, NULL, 97.00, 99999, 2345, 1, 290, '即时发货,虚拟商品'),
+(21, 31, '手机充值卡 200元', '全国三网通用 | 即时到账', 'https://picsum.photos/seed/recharge200/400/400', 200.00, NULL, 194.00, 99999, 876, 1, 280, '即时发货,虚拟商品'),
+(22, 31, '手机充值卡 500元', '全国三网通用 | 即时到账', 'https://picsum.photos/seed/recharge500/400/400', 500.00, NULL, 485.00, 99999, 345, 1, 270, '即时发货,虚拟商品'),
+
+-- ========== 虚拟商品 - 视频会员 ==========
+(23, 32, '爱奇艺黄金VIP 月卡', '去广告 | 1080P | 4台设备', 'https://picsum.photos/seed/iqiyim/400/400', 25.00, 30.00, 18.00, 99999, 3421, 1, 200, '即时发货,虚拟商品'),
+(24, 32, '爱奇艺黄金VIP 年卡', '去广告 | 1080P | 4台设备 | 超值年卡', 'https://picsum.photos/seed/iqiyiy/400/400', 218.00, 248.00, 160.00, 99999, 1876, 1, 190, '即时发货,虚拟商品,超值'),
+(25, 32, '腾讯视频VIP 月卡', '专属内容 | 4K | 5台设备', 'https://picsum.photos/seed/tencentm/400/400', 25.00, 30.00, 18.00, 99999, 2987, 1, 180, '即时发货,虚拟商品'),
+(26, 32, '腾讯视频VIP 年卡', '专属内容 | 4K | 5台设备 | 超值年卡', 'https://picsum.photos/seed/tencenty/400/400', 233.00, 253.00, 170.00, 99999, 1543, 1, 170, '即时发货,虚拟商品,超值'),
+(27, 32, '优酷VIP 月卡', '免广告 | 1080P | 3台设备', 'https://picsum.photos/seed/youkum/400/400', 25.00, 30.00, 18.00, 99999, 1234, 1, 160, '即时发货,虚拟商品'),
+(28, 32, '优酷VIP 年卡', '免广告 | 1080P | 3台设备 | 超值年卡', 'https://picsum.photos/seed/youkuy/400/400', 218.00, 248.00, 160.00, 99999, 678, 1, 150, '即时发货,虚拟商品,超值'),
+(29, 32, 'B站大会员 月卡', '4K画质 | 专属番剧 | 优惠券礼包', 'https://picsum.photos/seed/bilibilim/400/400', 25.00, 30.00, 18.00, 99999, 2109, 1, 140, '即时发货,虚拟商品'),
+(30, 32, 'B站大会员 年卡', '4K画质 | 专属番剧 | 超值年卡', 'https://picsum.photos/seed/bilibiliy/400/400', 148.00, 168.00, 110.00, 99999, 987, 1, 130, '即时发货,虚拟商品,超值'),
+
+-- ========== 虚拟商品 - 购物娱乐会员 ==========
+(31, 33, '京东PLUS会员 年卡', 'PLUS专享价 | 免邮券 | 专属客服', 'https://picsum.photos/seed/jdplus/400/400', 148.00, 198.00, 100.00, 99999, 1456, 1, 100, '即时发货,虚拟商品,超值'),
+(32, 33, '大麦VIP 年卡', '演出优先购 | 专属折扣 | 会员日', 'https://picsum.photos/seed/damai/400/400', 128.00, 158.00, 90.00, 99999, 567, 1, 90, '即时发货,虚拟商品');
+
+-- ========== 商品SKU ==========
+INSERT INTO `product_sku` (`id`, `product_id`, `sku_code`, `name`, `specs`, `price`, `stock`, `image`, `status`) VALUES
+-- iPhone 15 Pro Max
+(1, 1, 'IP15PM-256-BK', '256GB 黑色钛金属', '{"存储":"256GB","颜色":"黑色钛金属"}', 9999.00, 200, 'https://picsum.photos/seed/iphone15promax/400/400', 1),
+(2, 1, 'IP15PM-512-BK', '512GB 黑色钛金属', '{"存储":"512GB","颜色":"黑色钛金属"}', 10999.00, 150, 'https://picsum.photos/seed/iphone15promax/400/400', 1),
+(3, 1, 'IP15PM-1TB-BL', '1TB 蓝色钛金属', '{"存储":"1TB","颜色":"蓝色钛金属"}', 11999.00, 100, 'https://picsum.photos/seed/iphone15promax/400/400', 1),
+(4, 1, 'IP15PM-256-NL', '256GB 原色钛金属', '{"存储":"256GB","颜色":"原色钛金属"}', 9999.00, 150, 'https://picsum.photos/seed/iphone15promax/400/400', 1),
+-- iPhone 15 Pro
+(5, 2, 'IP15P-128-BK', '128GB 黑色钛金属', '{"存储":"128GB","颜色":"黑色钛金属"}', 7999.00, 200, 'https://picsum.photos/seed/iphone15pro/400/400', 1),
+(6, 2, 'IP15P-256-NL', '256GB 原色钛金属', '{"存储":"256GB","颜色":"原色钛金属"}', 8999.00, 200, 'https://picsum.photos/seed/iphone15pro/400/400', 1),
+(7, 2, 'IP15P-512-BL', '512GB 蓝色钛金属', '{"存储":"512GB","颜色":"蓝色钛金属"}', 9999.00, 150, 'https://picsum.photos/seed/iphone15pro/400/400', 1),
+-- iPhone 15
+(8, 3, 'IP15-128-BK', '128GB 黑色', '{"存储":"128GB","颜色":"黑色"}', 5999.00, 300, 'https://picsum.photos/seed/iphone15/400/400', 1),
+(9, 3, 'IP15-256-BL', '256GB 蓝色', '{"存储":"256GB","颜色":"蓝色"}', 6999.00, 250, 'https://picsum.photos/seed/iphone15/400/400', 1),
+(10, 3, 'IP15-128-PK', '128GB 粉色', '{"存储":"128GB","颜色":"粉色"}', 5999.00, 200, 'https://picsum.photos/seed/iphone15/400/400', 1),
+-- MacBook Pro 14
+(11, 4, 'MBP14-18-512-BK', '18GB+512GB 深空黑', '{"内存":"18GB","存储":"512GB","颜色":"深空黑"}', 15999.00, 100, 'https://picsum.photos/seed/macbookpro14/400/400', 1),
+(12, 4, 'MBP14-36-1TB-BK', '36GB+1TB 深空黑', '{"内存":"36GB","存储":"1TB","颜色":"深空黑"}', 19999.00, 80, 'https://picsum.photos/seed/macbookpro14/400/400', 1),
+-- MacBook Air 15
+(13, 5, 'MBA15-8-256-MD', '8GB+256GB 午夜色', '{"内存":"8GB","存储":"256GB","颜色":"午夜色"}', 8999.00, 150, 'https://picsum.photos/seed/macbookair15/400/400', 1),
+(14, 5, 'MBA15-16-512-SL', '16GB+512GB 星光色', '{"内存":"16GB","存储":"512GB","颜色":"星光色"}', 10499.00, 120, 'https://picsum.photos/seed/macbookair15/400/400', 1),
+-- iMac 24
+(15, 6, 'IMAC24-8-256-SL', '8GB+256GB 星光色', '{"内存":"8GB","存储":"256GB","颜色":"星光色"}', 10999.00, 80, 'https://picsum.photos/seed/imac24/400/400', 1),
+(16, 6, 'IMAC24-16-512-BL', '16GB+512GB 蓝色', '{"内存":"16GB","存储":"512GB","颜色":"蓝色"}', 12999.00, 50, 'https://picsum.photos/seed/imac24/400/400', 1),
+-- iPad Pro 12.9
+(17, 7, 'IPP129-256-SL', '256GB 银色', '{"存储":"256GB","颜色":"银色"}', 8999.00, 100, 'https://picsum.photos/seed/ipadpro129/400/400', 1),
+(18, 7, 'IPP129-512-SG', '512GB 深空灰', '{"存储":"512GB","颜色":"深空灰"}', 9999.00, 100, 'https://picsum.photos/seed/ipadpro129/400/400', 1),
+-- iPad Air 5
+(19, 8, 'IPA5-64-SL', '64GB 星光色', '{"存储":"64GB","颜色":"星光色"}', 4799.00, 200, 'https://picsum.photos/seed/ipadair5/400/400', 1),
+(20, 8, 'IPA5-256-SG', '256GB 深空灰', '{"存储":"256GB","颜色":"深空灰"}', 5599.00, 150, 'https://picsum.photos/seed/ipadair5/400/400', 1),
+-- iPad 10
+(21, 9, 'IP10-64-SL', '64GB 银色', '{"存储":"64GB","颜色":"银色"}', 3599.00, 250, 'https://picsum.photos/seed/ipad10/400/400', 1),
+(22, 9, 'IP10-256-BL', '256GB 蓝色', '{"存储":"256GB","颜色":"蓝色"}', 4399.00, 200, 'https://picsum.photos/seed/ipad10/400/400', 1),
+-- Apple Watch Series 9
+(23, 10, 'AWS9-41-MD', '41mm 午夜色', '{"表盘":"41mm","颜色":"午夜色"}', 3199.00, 150, 'https://picsum.photos/seed/applewatchs9/400/400', 1),
+(24, 10, 'AWS9-45-SL', '45mm 星光色', '{"表盘":"45mm","颜色":"星光色"}', 3499.00, 150, 'https://picsum.photos/seed/applewatchs9/400/400', 1),
+-- Apple Watch SE
+(25, 11, 'AWSE-40-SL', '40mm 银色', '{"表盘":"40mm","颜色":"银色"}', 1999.00, 200, 'https://picsum.photos/seed/applewatchse/400/400', 1),
+(26, 11, 'AWSE-44-SG', '44mm 深空灰', '{"表盘":"44mm","颜色":"深空灰"}', 2299.00, 150, 'https://picsum.photos/seed/applewatchse/400/400', 1),
+-- HUAWEI Mate 60 Pro
+(27, 12, 'M60P-256-GN', '256GB 雅川青', '{"存储":"256GB","颜色":"雅川青"}', 6999.00, 150, 'https://picsum.photos/seed/mate60pro/400/400', 1),
+(28, 12, 'M60P-512-WT', '512GB 白色', '{"存储":"512GB","颜色":"白色"}', 7999.00, 100, 'https://picsum.photos/seed/mate60pro/400/400', 1),
+-- HUAWEI P60 Pro
+(29, 13, 'P60P-256-WT', '256GB 洛可可白', '{"存储":"256GB","颜色":"洛可可白"}', 5488.00, 200, 'https://picsum.photos/seed/p60pro/400/400', 1),
+(30, 13, 'P60P-512-BK', '512GB 羽砂黑', '{"存储":"512GB","颜色":"羽砂黑"}', 5988.00, 150, 'https://picsum.photos/seed/p60pro/400/400', 1),
+-- HUAWEI nova 12
+(31, 14, 'NOVA12-256-12', '256GB 12号色', '{"存储":"256GB","颜色":"12号色"}', 2999.00, 300, 'https://picsum.photos/seed/nova12/400/400', 1),
+-- HUAWEI Watch GT4
+(32, 15, 'GT4-46-BK', '46mm 曜石黑', '{"表盘":"46mm","颜色":"曜石黑"}', 1588.00, 250, 'https://picsum.photos/seed/watchgt4/400/400', 1),
+(33, 15, 'GT4-41-WT', '41mm 凝霜白', '{"表盘":"41mm","颜色":"凝霜白"}', 1388.00, 200, 'https://picsum.photos/seed/watchgt4/400/400', 1),
+-- HUAWEI Watch Fit 3
+(34, 16, 'FIT3-STD', '标准版', '{"版本":"标准版"}', 999.00, 400, 'https://picsum.photos/seed/watchfit3/400/400', 1),
+-- HUAWEI FreeBuds Pro 3
+(35, 17, 'FBP3-GN', '雅川青', '{"颜色":"雅川青"}', 1499.00, 300, 'https://picsum.photos/seed/freebudspro3/400/400', 1),
+-- HUAWEI FreeBuds 5
+(36, 18, 'FB5-SL', '冰霜银', '{"颜色":"冰霜银"}', 699.00, 500, 'https://picsum.photos/seed/freebuds5/400/400', 1),
+
+-- ========== 虚拟商品SKU (单SKU) ==========
+(37, 19, 'RECH-50', '50元面值', '{"面值":"50元"}', 50.00, 99999, 'https://picsum.photos/seed/recharge50/400/400', 1),
+(38, 20, 'RECH-100', '100元面值', '{"面值":"100元"}', 100.00, 99999, 'https://picsum.photos/seed/recharge100/400/400', 1),
+(39, 21, 'RECH-200', '200元面值', '{"面值":"200元"}', 200.00, 99999, 'https://picsum.photos/seed/recharge200/400/400', 1),
+(40, 22, 'RECH-500', '500元面值', '{"面值":"500元"}', 500.00, 99999, 'https://picsum.photos/seed/recharge500/400/400', 1),
+(41, 23, 'IQY-M', '月卡', '{"时长":"月卡"}', 25.00, 99999, 'https://picsum.photos/seed/iqiyim/400/400', 1),
+(42, 24, 'IQY-Y', '年卡', '{"时长":"年卡"}', 218.00, 99999, 'https://picsum.photos/seed/iqiyiy/400/400', 1),
+(43, 25, 'TX-M', '月卡', '{"时长":"月卡"}', 25.00, 99999, 'https://picsum.photos/seed/tencentm/400/400', 1),
+(44, 26, 'TX-Y', '年卡', '{"时长":"年卡"}', 233.00, 99999, 'https://picsum.photos/seed/tencenty/400/400', 1),
+(45, 27, 'YK-M', '月卡', '{"时长":"月卡"}', 25.00, 99999, 'https://picsum.photos/seed/youkum/400/400', 1),
+(46, 28, 'YK-Y', '年卡', '{"时长":"年卡"}', 218.00, 99999, 'https://picsum.photos/seed/youkuy/400/400', 1),
+(47, 29, 'BILI-M', '月卡', '{"时长":"月卡"}', 25.00, 99999, 'https://picsum.photos/seed/bilibilim/400/400', 1),
+(48, 30, 'BILI-Y', '年卡', '{"时长":"年卡"}', 148.00, 99999, 'https://picsum.photos/seed/bilibiliy/400/400', 1),
+(49, 31, 'JD-PLUS-Y', '年卡', '{"时长":"年卡"}', 148.00, 99999, 'https://picsum.photos/seed/jdplus/400/400', 1),
+(50, 32, 'DM-VIP-Y', '年卡', '{"时长":"年卡"}', 128.00, 99999, 'https://picsum.photos/seed/damai/400/400', 1);
+
+-- 优惠券模板
+INSERT INTO `coupon_template` (`id`, `name`, `type`, `face_value`, `discount`, `min_spend`, `category_limit`, `total_count`, `issued_count`, `per_limit`, `valid_type`, `valid_start`, `valid_end`, `valid_days`, `status`) VALUES
+(1, '新人满100减20', 1, 20.00, NULL, 100.00, NULL, 1000, 0, 1, 1, '2024-01-01 00:00:00', '2027-12-31 23:59:59', NULL, 1),
+(2, '全场9折券', 2, NULL, 0.90, 0.00, NULL, 500, 0, 2, 1, '2024-01-01 00:00:00', '2027-12-31 23:59:59', NULL, 1),
+(3, '无门槛10元券', 3, 10.00, NULL, 0.00, NULL, 200, 0, 1, 2, NULL, NULL, 30, 1),
+(4, '满500减50', 1, 50.00, NULL, 500.00, NULL, 300, 0, 2, 1, '2024-01-01 00:00:00', '2027-12-31 23:59:59', NULL, 1),
+(5, 'Apple专场满5000减300', 1, 300.00, NULL, 5000.00, 1, 200, 0, 1, 1, '2024-01-01 00:00:00', '2027-12-31 23:59:59', NULL, 1),
+(6, '华为专场满3000减200', 1, 200.00, NULL, 3000.00, 2, 200, 0, 1, 1, '2024-01-01 00:00:00', '2027-12-31 23:59:59', NULL, 1),
+(7, '虚拟商品满100减10', 1, 10.00, NULL, 100.00, 3, 500, 0, 3, 1, '2024-01-01 00:00:00', '2027-12-31 23:59:59', NULL, 1);
+
+-- 营销活动
 INSERT INTO `marketing_activity` (`name`, `type`, `description`, `start_time`, `end_time`, `status`, `enabled`, `rules`) VALUES
-('限时秒杀-数码专场', 'FLASH_SALE', '精选数码产品限时秒杀', '2024-06-01 00:00:00', '2027-12-31 23:59:59', 1, 1, '{"limitPerUser":1}'),
-('满300减30', 'FULL_REDUCTION', '全场满300减30元', '2024-01-01 00:00:00', '2027-12-31 23:59:59', 1, 1, '{"threshold":300,"reduction":30}');
+('限时秒杀-Apple专场', 'FLASH_SALE', 'iPhone/Mac/iPad 限时特价', '2024-06-01 00:00:00', '2027-12-31 23:59:59', 1, 1, '{"limitPerUser":1}'),
+('限时秒杀-华为专场', 'FLASH_SALE', 'Mate/P系列 限时特价', '2024-06-01 00:00:00', '2027-12-31 23:59:59', 1, 1, '{"limitPerUser":1}'),
+('数码满3000减200', 'FULL_REDUCTION', '全场数码产品满3000减200', '2024-01-01 00:00:00', '2027-12-31 23:59:59', 1, 1, '{"threshold":3000,"reduction":200}'),
+('视频会员特惠', 'DISCOUNT', '爱奇艺/腾讯/优酷/B站 会员8.5折', '2024-01-01 00:00:00', '2027-12-31 23:59:59', 1, 1, '{"discount":0.85}');
+
+-- 活动商品关联 (秒杀商品)
+INSERT INTO `activity_product` (`activity_id`, `product_id`, `sku_id`, `activity_price`, `activity_stock`, `limit_per_user`, `sort`) VALUES
+(1, 1, 1, 9499.00, 50, 1, 100),
+(1, 4, 11, 15499.00, 30, 1, 90),
+(1, 7, 17, 8499.00, 40, 1, 80),
+(2, 12, 27, 6499.00, 50, 1, 100),
+(2, 13, 29, 4988.00, 50, 1, 90),
+(2, 17, 35, 1299.00, 80, 1, 80);
 
 -- ============================================================
 -- 10. 奖池模块
@@ -595,11 +728,13 @@ CREATE TABLE `marketing_prize_claim_log` (
     KEY `idx_pool_user` (`pool_id`, `user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='奖池领取记录';
 
--- 示例奖池数据 (3个优惠券奖池 + 2个积分奖池)
+-- 奖池数据 (5个优惠券奖池 + 2个积分奖池)
 INSERT INTO `marketing_prize_pool` (`name`, `description`, `prize_type`, `prize_ref_id`, `prize_value`, `prize_name`, `prize_desc`, `total_stock`, `claimed_count`, `per_user_limit`, `per_user_daily_limit`, `daily_limit`, `start_time`, `end_time`, `status`, `banner_text`, `banner_color`, `banner_color_end`, `sort`) VALUES
 ('新人专享礼', '新用户专享无门槛10元券', 'COUPON', 3, NULL, '无门槛10元券', '无门槛抵扣10元', 100, 0, 1, 0, 0, '2024-01-01 00:00:00', '2027-12-31 23:59:59', 1, '新人专享 · 无门槛10元券', '#ff4d4f', '#ff7a45', 100),
 ('限时抢券', '满500减50大额券限时抢', 'COUPON', 4, NULL, '满500减50', '满500元可用', 50, 0, 1, 1, 20, '2024-01-01 00:00:00', '2027-12-31 23:59:59', 1, '限时抢券 · 满500减50', '#722ed1', '#1890ff', 90),
 ('会员福利日', '全场9折券会员专享', 'COUPON', 2, NULL, '全场9折券', '全场商品9折', 200, 0, 2, 1, 0, '2024-01-01 00:00:00', '2027-12-31 23:59:59', 1, '会员福利 · 全场9折', '#13c2c2', '#52c41a', 80),
+('Apple大额券', '满5000减300 Apple专场', 'COUPON', 5, NULL, 'Apple满5000减300', 'Apple专场满5000元可用', 80, 0, 1, 1, 10, '2024-01-01 00:00:00', '2027-12-31 23:59:59', 1, 'Apple专场 · 满5000减300', '#1890ff', '#722ed1', 75),
+('华为大额券', '满3000减200 华为专场', 'COUPON', 6, NULL, '华为满3000减200', '华为专场满3000元可用', 80, 0, 1, 1, 10, '2024-01-01 00:00:00', '2027-12-31 23:59:59', 1, '华为专场 · 满3000减200', '#52c41a', '#13c2c2', 72),
 ('签到积分雨', '每日领取50积分', 'POINTS', NULL, 50, '50积分', '可用于积分兑换', -1, 0, 1, 1, 0, '2024-01-01 00:00:00', '2027-12-31 23:59:59', 1, '每日福利 · 50积分', '#fa8c16', '#faad14', 70),
 ('新人积分包', '新用户专享100积分', 'POINTS', NULL, 100, '100积分', '新人专享积分礼包', 50, 0, 1, 0, 0, '2024-01-01 00:00:00', '2027-12-31 23:59:59', 1, '新人专享 · 100积分', '#eb2f96', '#f759ab', 60);
 
